@@ -1,6 +1,4 @@
 *.o
-a.out
 *.out
-*.o
 *.DS_STORE
 
