@@ -1,0 +1,369 @@
+make: `minishell' is up to date.
+======================================MAKE======================================
+================================================================================
+[34m################################## builtin/cd ##################################[0m
+[31mecho $PWD; echo $OLDPWD; cd .; pwd; echo $PWD; echo $OLDPWD\n             [FAIL][0m
+[31mecho $PWD; echo $OLDPWD; cd ..; pwd; echo $PWD; echo $OLDPWD\n            [FAIL][0m
+[31mecho $PWD; echo $OLDPWD; cd ../..; pwd; echo $PWD; echo $OLDPWD\n         [FAIL][0m
+[31mecho $PWD; echo $OLDPWD; cd ../../..; pwd; echo $PWD; echo $OLDPWD\n      [FAIL][0m
+[31mecho $PWD; echo $OLDPWD; cd ../../../..; pwd; echo $PWD; echo $OLDPWD\n   [FAIL][0m
+[31mecho $PWD; echo $OLDPWD; cd ../../../../..; pwd; echo $PWD; echo $OLDP... [FAIL][0m
+[31mecho $PWD; echo $OLDPWD; cd ../../../../../..; pwd; echo $PWD; echo $O... [FAIL][0m
+[31mecho $PWD; echo $OLDPWD; cd /; pwd; echo $PWD; echo $OLDPWD\n             [FAIL][0m
+[31mecho $PWD; echo $OLDPWD; cd ''; pwd; echo $PWD; echo $OLDPWD\n            [FAIL][0m
+[31mecho $PWD; echo $OLDPWD; cd '' ''; pwd; echo $PWD; echo $OLDPWD\n         [FAIL][0m
+[31mecho $PWD; echo $OLDPWD; cd '' '' ''; pwd; echo $PWD; echo $OLDPWD\n      [FAIL][0m
+[31mecho $PWD; echo $OLDPWD; cd ' '; pwd; echo $PWD; echo $OLDPWD\n           [FAIL][0m
+[31m[SETUP mkdir d] echo $PWD; echo $OLDPWD; cd d ''; pwd; echo $PWD; echo... [FAIL][0m
+[31m[SETUP mkdir d] echo $PWD; echo $OLDPWD; cd d d; pwd; echo $PWD; echo ... [FAIL][0m
+[31m[SETUP mkdir d] echo $PWD; echo $OLDPWD; cd d ' '; pwd; echo $PWD; ech... [FAIL][0m
+[31m[EXPORTS HOME='/Users/fcoindre'] echo $PWD; echo $OLDPWD; cd $HOME; pw... [FAIL][0m
+[31mecho $PWD; echo $OLDPWD; cd /; pwd; echo $PWD; echo $OLDPWD\n             [FAIL][0m
+[31mecho $PWD; echo $OLDPWD; cd /.; pwd; echo $PWD; echo $OLDPWD\n            [FAIL][0m
+[31mecho $PWD; echo $OLDPWD; cd /./; pwd; echo $PWD; echo $OLDPWD\n           [FAIL][0m
+[31mecho $PWD; echo $OLDPWD; cd /././././; pwd; echo $PWD; echo $OLDPWD\n     [FAIL][0m
+[31mecho $PWD; echo $OLDPWD; cd //; pwd; echo $PWD; echo $OLDPWD\n            [FAIL][0m
+[31mecho $PWD; echo $OLDPWD; cd ///; pwd; echo $PWD; echo $OLDPWD\n           [FAIL][0m
+[31mecho $PWD; echo $OLDPWD; cd ////; pwd; echo $PWD; echo $OLDPWD\n          [FAIL][0m
+[31mecho $PWD; echo $OLDPWD; cd //////////////////////////////////////////... [FAIL][0m
+[31mecho $PWD; echo $OLDPWD; cd; echo $OLDPWD\n                               [FAIL][0m
+[31m[EXPORTS HOME='/Users/fcoindre'] echo $PWD; echo $OLDPWD; cd; echo $PW... [FAIL][0m
+[31mecho $PWD; echo $OLDPWD; cd ' /'; pwd; echo $PWD; echo $OLDPWD\n          [FAIL][0m
+[31mecho $PWD; echo $OLDPWD; cd ' / '; pwd; echo $PWD; echo $OLDPWD\n         [FAIL][0m
+[31mecho $PWD; echo $OLDPWD; cd '                  /'; pwd; echo $PWD; ech... [FAIL][0m
+[31mecho $PWD; echo $OLDPWD; cd '                  /              '; pwd; ... [FAIL][0m
+[31mecho $PWD; echo $OLDPWD; cd ' // '; pwd; echo $PWD; echo $OLDPWD\n        [FAIL][0m
+[31mecho $PWD; echo $OLDPWD; cd //home; pwd; echo $PWD; echo $OLDPWD\n        [FAIL][0m
+[31mecho $PWD; echo $OLDPWD; cd ' //home'; pwd; echo $PWD; echo $OLDPWD\n     [FAIL][0m
+[31mecho $PWD; echo $OLDPWD; cd '     //home    '; pwd; echo $PWD; echo $O... [FAIL][0m
+[31m[SETUP mkdir -m 000 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n      [FAIL][0m
+[31m[SETUP mkdir -m 001 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n      [FAIL][0m
+[31m[SETUP mkdir -m 002 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n      [FAIL][0m
+[31m[SETUP mkdir -m 003 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n      [FAIL][0m
+[31m[SETUP mkdir -m 004 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n      [FAIL][0m
+[31m[SETUP mkdir -m 005 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n      [FAIL][0m
+[31m[SETUP mkdir -m 006 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n      [FAIL][0m
+[31m[SETUP mkdir -m 007 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n      [FAIL][0m
+[31m[SETUP mkdir -m 010 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n      [FAIL][0m
+[31m[SETUP mkdir -m 020 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n      [FAIL][0m
+[31m[SETUP mkdir -m 030 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n      [FAIL][0m
+[31m[SETUP mkdir -m 040 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n      [FAIL][0m
+[31m[SETUP mkdir -m 050 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n      [FAIL][0m
+[31m[SETUP mkdir -m 060 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n      [FAIL][0m
+[31m[SETUP mkdir -m 070 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n      [FAIL][0m
+[31m[SETUP mkdir -m 100 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n      [FAIL][0m
+[31m[SETUP mkdir -m 200 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n      [FAIL][0m
+[31m[SETUP mkdir -m 300 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n      [FAIL][0m
+[31m[SETUP mkdir -m 400 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n      [FAIL][0m
+[31m[SETUP mkdir -m 500 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n      [FAIL][0m
+[31m[SETUP mkdir -m 600 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n      [FAIL][0m
+[31m[SETUP mkdir -m 700 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n      [FAIL][0m
+[31m[SETUP mkdir -m 755 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n      [FAIL][0m
+[31m[SETUP mkdir -m 644 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n      [FAIL][0m
+[31m[SETUP mkdir -m 311 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n      [FAIL][0m
+[31m[SETUP mkdir -m 111 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n      [FAIL][0m
+[31m[SETUP mkdir -m 222 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n      [FAIL][0m
+[31m[SETUP mkdir -m 333 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n      [FAIL][0m
+[31m[SETUP mkdir -m 0777 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n     [FAIL][0m
+[31m[SETUP mkdir -m 1000 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n     [FAIL][0m
+[31m[SETUP mkdir -m 2000 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n     [FAIL][0m
+[31m[SETUP mkdir -m 3000 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n     [FAIL][0m
+[31m[SETUP mkdir -m 4000 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n     [FAIL][0m
+[31m[SETUP mkdir -m 5000 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n     [FAIL][0m
+[31m[SETUP mkdir -m 6000 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n     [FAIL][0m
+[31m[SETUP mkdir -m 7000 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n     [FAIL][0m
+[31m[SETUP mkdir -m 1777 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n     [FAIL][0m
+[31m[SETUP mkdir -m 2777 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n     [FAIL][0m
+[31m[SETUP mkdir -m 3777 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n     [FAIL][0m
+[31m[SETUP mkdir -m 4777 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n     [FAIL][0m
+[31m[SETUP mkdir -m 5777 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n     [FAIL][0m
+[31m[SETUP mkdir -m 6777 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n     [FAIL][0m
+[31m[SETUP mkdir -m 7777 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n     [FAIL][0m
+[31m[SETUP mkdir -m 0000 d] echo $PWD; echo $OLDPWD; cd d; echo $OLDPWD\n     [FAIL][0m
+[31mecho $PWD; echo $OLDPWD; cd /; echo $PWD; echo $OLDPWD; unset PWD; cd ... [FAIL][0m
+[31mecho $PWD; echo $OLDPWD; cd /; echo $PWD; echo $OLDPWD; export PWD=bon... [FAIL][0m
+[31mCd .\n                                                                    [FAIL][0m
+[31mcD .\n                                                                    [FAIL][0m
+[31m[EXPORTS PATH='/bin:/usr/bin'] Cd .\n                                     [FAIL][0m
+[31m[EXPORTS PATH='/bin:/usr/bin'] cD .\n                                     [FAIL][0m
+[34m################################# builtin/echo #################################[0m
+[31mecho\n                                                                    [FAIL][0m
+[31mecho bonjour\n                                                            [FAIL][0m
+[31mecho lalalala lalalalal alalalalal alalalala\n                            [FAIL][0m
+[31mecho lalalala                lalalalal      alalalalal alalalala\n        [FAIL][0m
+[31mecho Mollitia asperiores assumenda excepturi et ipsa. Nihil corporis f... [FAIL][0m
+[31mecho -n\n                                                                 [FAIL][0m
+[31mecho -n bonjour\n                                                         [FAIL][0m
+[31mecho -n lalalala lalalalal alalalalal alalalala\n                         [FAIL][0m
+[31mecho -n lalalala                lalalalal      alalalalal alalalala\n     [FAIL][0m
+[31mecho -n Mollitia asperiores assumenda excepturi et ipsa. Nihil corpori... [FAIL][0m
+[31mecho bonjour -n\n                                                         [FAIL][0m
+[31mecho -n bonjour -n\n                                                      [FAIL][0m
+[31m                        echo                     bonjour             je\n [FAIL][0m
+[31m                        echo       -n            bonjour             je\n [FAIL][0m
+[31mecho a '' b '' c '' d\n                                                   [FAIL][0m
+[31mecho a "" b "" c "" d\n                                                   [FAIL][0m
+[31mecho -n a '' b '' c '' d\n                                                [FAIL][0m
+[31mecho -n a "" b "" c "" d\n                                                [FAIL][0m
+[31mecho '' '' ''\n                                                           [FAIL][0m
+[31mEcho bonjour\n                                                            [FAIL][0m
+[31meCho bonjour\n                                                            [FAIL][0m
+[31mecHo bonjour\n                                                            [FAIL][0m
+[31mechO bonjour\n                                                            [FAIL][0m
+[31mEchO bonjour\n                                                            [FAIL][0m
+[31meCHo bonjour\n                                                            [FAIL][0m
+[31mEcHo bonjour\n                                                            [FAIL][0m
+[31meChO bonjour\n                                                            [FAIL][0m
+[31m[EXPORTS PATH='/bin:/usr/bin'] Echo bonjour\n                             [FAIL][0m
+[31m[EXPORTS PATH='/bin:/usr/bin'] eCho bonjour\n                             [FAIL][0m
+[31m[EXPORTS PATH='/bin:/usr/bin'] ecHo bonjour\n                             [FAIL][0m
+[31m[EXPORTS PATH='/bin:/usr/bin'] echO bonjour\n                             [FAIL][0m
+[31m[EXPORTS PATH='/bin:/usr/bin'] EchO bonjour\n                             [FAIL][0m
+[31m[EXPORTS PATH='/bin:/usr/bin'] eCHo bonjour\n                             [FAIL][0m
+[31m[EXPORTS PATH='/bin:/usr/bin'] EcHo bonjour\n                             [FAIL][0m
+[31m[EXPORTS PATH='/bin:/usr/bin'] eChO bonjour\n                             [FAIL][0m
+[31m[EXPORTS PATH='/bin:/usr/bin'] eChO -e 'bonjo\nur'\n                      [FAIL][0m
+[31mecho -n -n -n -n bonjour\n                                                [FAIL][0m
+[31mecho -nnnnnnnnnnnnnnnnnnnnn bonjour\n                                     [FAIL][0m
+[31mecho -nnnnnnnnnnnnnnnnnnnnn -n -n -n bonjour -n -n\n                      [FAIL][0m
+[34m################################# builtin/env ##################################[0m
+[31menv\n                                                                     [FAIL][0m
+[31m[SETUP export A=a] env\n                                                  [FAIL][0m
+[31m[SETUP export A=a B=b C=c] env\n                                          [FAIL][0m
+[31m[SETUP export A=a B=b C=c] env | cat -e\n                                 [FAIL][0m
+[31mEnv\n                                                                     [FAIL][0m
+[31menV\n                                                                     [FAIL][0m
+[31m[EXPORTS PATH='/bin:/usr/bin'] Env\n                                      [FAIL][0m
+[31m[EXPORTS PATH='/bin:/usr/bin'] enV\n                                      [FAIL][0m
+[34m################################# builtin/exit #################################[0m
+[31mexit\n                                                                    [FAIL][0m
+[31mexit 1\n                                                                  [FAIL][0m
+[31mexit 2\n                                                                  [FAIL][0m
+[31mexit 3\n                                                                  [FAIL][0m
+[31mexit ' 3'\n                                                               [FAIL][0m
+[31mexit '\t3'\n                                                              [FAIL][0m
+[31mexit '\t\f\r 3'\n                                                         [FAIL][0m
+[31mexit '3 '\n                                                               [FAIL][0m
+[31mexit '3\t'\n                                                              [FAIL][0m
+[31mexit '3\r'\n                                                              [FAIL][0m
+[31mexit '3\t\f\r '\n                                                         [FAIL][0m
+[31mexit '3     a'\n                                                          [FAIL][0m
+[31mexit '3\t\t\ta'\n                                                         [FAIL][0m
+[31mexit 0\n                                                                  [FAIL][0m
+[31mexit -0\n                                                                 [FAIL][0m
+[31mexit -1\n                                                                 [FAIL][0m
+[31mexit 255\n                                                                [FAIL][0m
+[31mexit 256\n                                                                [FAIL][0m
+[31mexit 2000000\n                                                            [FAIL][0m
+[31mexit -2000000\n                                                           [FAIL][0m
+[31mexit 2147483647\n                                                         [FAIL][0m
+[31mexit -2147483648\n                                                        [FAIL][0m
+[31mexit 2147483648\n                                                         [FAIL][0m
+[31mexit -2147483649\n                                                        [FAIL][0m
+[31mexit 3147483648\n                                                         [FAIL][0m
+[31mexit -3147483649\n                                                        [FAIL][0m
+[31mexit 4294967295\n                                                         [FAIL][0m
+[31mexit 4294967296\n                                                         [FAIL][0m
+[31mexit -9223372036854775808\n                                               [FAIL][0m
+[31mexit 9223372036854775807\n                                                [FAIL][0m
+[31mexit -9223372036854775809\n                                               [FAIL][0m
+[31mexit 9223372036854775808\n                                                [FAIL][0m
+[31mexit 18446744073709551615\n                                               [FAIL][0m
+[31mexit 18446744073709551616\n                                               [FAIL][0m
+[31mexit +1\n                                                                 [FAIL][0m
+[31mexit +2\n                                                                 [FAIL][0m
+[31mexit +3\n                                                                 [FAIL][0m
+[31mexit +0\n                                                                 [FAIL][0m
+[31mexit +255\n                                                               [FAIL][0m
+[31mexit +256\n                                                               [FAIL][0m
+[31mexit +2000000\n                                                           [FAIL][0m
+[31mexit +2147483647\n                                                        [FAIL][0m
+[31mexit ++1\n                                                                [FAIL][0m
+[31mexit ++2\n                                                                [FAIL][0m
+[31mexit ++3\n                                                                [FAIL][0m
+[31mexit ++0\n                                                                [FAIL][0m
+[31mexit ++255\n                                                              [FAIL][0m
+[31mexit ++256\n                                                              [FAIL][0m
+[31mexit ++2000000\n                                                          [FAIL][0m
+[31mexit ++2147483647\n                                                       [FAIL][0m
+[31mexit --1\n                                                                [FAIL][0m
+[31mexit --2\n                                                                [FAIL][0m
+[31mexit --3\n                                                                [FAIL][0m
+[31mexit --0\n                                                                [FAIL][0m
+[31mexit --255\n                                                              [FAIL][0m
+[31mexit --256\n                                                              [FAIL][0m
+[31mexit --2000000\n                                                          [FAIL][0m
+[31mexit --2147483647\n                                                       [FAIL][0m
+[31mexit bonjour\n                                                            [FAIL][0m
+[31mexit 0_\n                                                                 [FAIL][0m
+[31mexit _0\n                                                                 [FAIL][0m
+[31mexit 0123456789\n                                                         [FAIL][0m
+[31mexit -0123456789\n                                                        [FAIL][0m
+[31mexit 00000000000000000000000000000000000000000000001\n                    [FAIL][0m
+[31mexit 00000000000000000000000000000000000000000000000000000000000000000... [FAIL][0m
+[31mexit 00000000000000000000000000000000000000000000000000000000000000000... [FAIL][0m
+[31mexit -0000000000000000000000000000000000000000000000000000000000000000... [FAIL][0m
+[31mexit -9999999999999999999999999999999999999999999999999999999999999999... [FAIL][0m
+[31mexit 99999999999999999999999999999999999999999999999999999999999999999... [FAIL][0m
+[31mexit 0 bonjour\n                                                          [FAIL][0m
+[31mexit bonjour 0\n                                                          [FAIL][0m
+[31mexit 0 1\n                                                                [FAIL][0m
+[31mexit 0 1 2 3 4 5 6 7 8 9\n                                                [FAIL][0m
+[31mexit Mollitia asperiores assumenda excepturi et ipsa. Nihil corporis f... [FAIL][0m
+[31mexit bonjoru; echo should have exited\n                                   [FAIL][0m
+[31mexit 99999999999999999999999999999999999999999999999999999; echo shoul... [FAIL][0m
+[31mexit 9999; echo should have exited\n                                      [FAIL][0m
+[31mExit; echo a\n                                                            [FAIL][0m
+[31mexiT; echo a\n                                                            [FAIL][0m
+[31m[EXPORTS PATH='/bin:/usr/bin'] Exit; echo a\n                             [FAIL][0m
+[31m[EXPORTS PATH='/bin:/usr/bin'] exiT; echo a\n                             [FAIL][0m
+[34m################################ builtin/export ################################[0m
+[31mexport\n                                                                  [FAIL][0m
+[31m[EXPORTS A=''] export\n                                                   [FAIL][0m
+[31m[EXPORTS A='"'] export\n                                                  [FAIL][0m
+[31m[EXPORTS A='\'] export\n                                                  [FAIL][0m
+[31m[EXPORTS A='$'] export\n                                                  [FAIL][0m
+[31m[EXPORTS A='\t'] export\n                                                 [FAIL][0m
+[31m[EXPORTS A='''] export\n                                                  [FAIL][0m
+[31m[EXPORTS A='a'] export\n                                                  [FAIL][0m
+[31mexport A=a; echo $A\n                                                     [FAIL][0m
+[31mexport A=a B=b C=c; echo $A$B$C\n                                         [FAIL][0m
+[31mexport A=a B=b C=c D=d E=e F=f G=g H=h I=i J=j K=k L=lM=m N=n O=o P=p ... [FAIL][0m
+[31mexport BONJOURJESUIS=a; echo $BONJOURJESUIS\n                             [FAIL][0m
+[31mexport bonjourjesuis=a; echo $bonjourjesuis\n                             [FAIL][0m
+[31mexport bonjour_je_suis=a; echo $bonjour_je_suis\n                         [FAIL][0m
+[31mexport BONJOURJESUIS1=a; echo $BONJOURJESUIS1\n                           [FAIL][0m
+[31mexport bO_nJq123o__1ju_je3234sui__a=a; echo $bO_nJq123o__1ju_je3234sui... [FAIL][0m
+[31mexport a0123456789=a; echo $a0123456789\n                                 [FAIL][0m
+[31mexport abcdefghijklmnopqrstuvwxyz=a; echo $abcdefghijklmnopqrstuvwxyz\n   [FAIL][0m
+[31mexport ABCDEFGHIJKLMNOPQRSTUVWXYZ=a; echo $ABCDEFGHIJKLMNOPQRSTUVWXYZ\n   [FAIL][0m
+[31mexport __________________________=a; echo $__________________________\n   [FAIL][0m
+[31mexport _bonjour_=a; echo $_bonjour_\n                                     [FAIL][0m
+[31mexport _=a; echo $_a\n                                                    [FAIL][0m
+[31mexport 1=a\n                                                              [FAIL][0m
+[31mexport BONJOURJESUIS =a\n                                                 [FAIL][0m
+[31mexport BONJOURJESUIS= a\n                                                 [FAIL][0m
+[31mexport BONJOUR\\JESUIS=a\n                                                [FAIL][0m
+[31mexport BONJOUR\'JESUIS=a\n                                                [FAIL][0m
+[31mexport BONJOUR\"JESUIS=a\n                                                [FAIL][0m
+[31mexport BONJOUR\$JESUIS=a\n                                                [FAIL][0m
+[31mexport BONJOUR\&JESUIS=a\n                                                [FAIL][0m
+[31mexport BONJOUR\|JESUIS=a\n                                                [FAIL][0m
+[31mexport BONJOUR\;JESUIS=a\n                                                [FAIL][0m
+[31mexport BONJOUR\_JESUIS=a\n                                                [FAIL][0m
+[31mexport BONJOUR\0JESUIS=a\n                                                [FAIL][0m
+[31mexport \B\O\N\ \ \ \ \ \ \ JOURJESUIS=a\n                                 [FAIL][0m
+[31mexport A=\B\O\N\ \ \ \ \ \ \ JOURJESUIS; echo $A\n                        [FAIL][0m
+[31mexport A='bonjour je suis charles'; echo $A\n                             [FAIL][0m
+[31mexport A="bonjour je suis charles"; echo $A\n                             [FAIL][0m
+[31mexport A==a; echo $A\n                                                    [FAIL][0m
+[31mexport A===a; echo $A\n                                                   [FAIL][0m
+[31mexport A====a; echo $A\n                                                  [FAIL][0m
+[31mexport A=====a; echo $A\n                                                 [FAIL][0m
+[31mexport A======a; echo $A\n                                                [FAIL][0m
+[31mexport A=a=a=a=a=a; echo $A\n                                             [FAIL][0m
+[31mexport A 'asdf ' B ' asdf asdf asd f' ' asdf ' '' 'asdf ' C; echo $A$B... [FAIL][0m
+[31mexport 'asdf ' B ' asdf asdf asd f' ' asdf ' '' 'asdf ' C; echo $A$B$C\n  [FAIL][0m
+[31mexport A 'asdf ' B ' asdf asdf asd f' ' asdf ' '' 'asdf '; echo $A$B$C\n  [FAIL][0m
+[31mexport A B C; echo $A$B$C\n                                               [FAIL][0m
+[31mexport A B C; env\n                                                       [FAIL][0m
+[31mexport 'AH@'=nop\n                                                        [FAIL][0m
+[31mexport "AH'"=nop\n                                                        [FAIL][0m
+[31mexport 'AH"'=nop\n                                                        [FAIL][0m
+[31mexport 'AH$'=nop\n                                                        [FAIL][0m
+[31mexport 'AH!'=nop\n                                                        [FAIL][0m
+[31mexport 'AH|'=nop\n                                                        [FAIL][0m
+[31mexport 'AH;'=nop\n                                                        [FAIL][0m
+[31mexport 'AH&'=nop\n                                                        [FAIL][0m
+[31mexport 'AH\'=nop\n                                                        [FAIL][0m
+[31m[EXPORTS TEST='A=a'] export $TEST\n                                       [FAIL][0m
+[31mexport BONJOUR\\JESUIS\n                                                  [FAIL][0m
+[31mexport BONJOUR\'JESUIS\n                                                  [FAIL][0m
+[31mexport BONJOUR\"JESUIS\n                                                  [FAIL][0m
+[31mexport BONJOUR\$JESUIS\n                                                  [FAIL][0m
+[31mexport BONJOUR\&JESUIS\n                                                  [FAIL][0m
+[31mexport BONJOUR\|JESUIS\n                                                  [FAIL][0m
+[31mexport BONJOUR\;JESUIS\n                                                  [FAIL][0m
+[31mexport BONJOUR\_JESUIS\n                                                  [FAIL][0m
+[31mexport BONJOUR\0JESUIS\n                                                  [FAIL][0m
+[31mExport B=bonjour\n                                                        [FAIL][0m
+[31mexporT B=bonjour\n                                                        [FAIL][0m
+[31m[EXPORTS PATH='/bin:/usr/bin'] Export B=bonjour\n                         [FAIL][0m
+[31m[EXPORTS PATH='/bin:/usr/bin'] exporT B=bonjour\n                         [FAIL][0m
+[34m################################# builtin/pwd ##################################[0m
+[31mpwd\n                                                                     [FAIL][0m
+[31m[SETUP cd ..] pwd\n                                                       [FAIL][0m
+[31m[SETUP cd ../..] pwd\n                                                    [FAIL][0m
+[31m[SETUP cd ../../..] pwd\n                                                 [FAIL][0m
+[31m[SETUP cd /] pwd\n                                                        [FAIL][0m
+[31m[SETUP cd $HOME] pwd\n                                                    [FAIL][0m
+[31mpwd | cat -e\n                                                            [FAIL][0m
+[31m[EXPORTS PWD='/etc'] pwd\n                                                [FAIL][0m
+[31munset PWD; pwd; echo $PWD\n                                               [FAIL][0m
+[31mexport PWD=foo; pwd; echo $PWD\n                                          [FAIL][0m
+[31mPwd\n                                                                     [FAIL][0m
+[31mpwD\n                                                                     [FAIL][0m
+[31m[EXPORTS PATH='/bin:/usr/bin'] Pwd\n                                      [FAIL][0m
+[31m[EXPORTS PATH='/bin:/usr/bin'] pwD\n                                      [FAIL][0m
+[34m################################ builtin/unset #################################[0m
+[31munset\n                                                                   [FAIL][0m
+[31m[EXPORTS A='a'] unset A; echo $A\n                                        [FAIL][0m
+[31m[EXPORTS A='a'] unset 'A '; echo $A\n                                     [FAIL][0m
+[31m[EXPORTS A='a'] unset 'A='; echo $A\n                                     [FAIL][0m
+[31m[EXPORTS A='a' B='b' C='c'] unset A B C; echo $A$B$C\n                    [FAIL][0m
+[31m[EXPORTS A='a' B='b' C='c'] unset A 'asdf ' B ' asdf asdf asd f' ' asd... [FAIL][0m
+[31m[EXPORTS A='a' B='b' C='c'] unset 'asdf ' B ' asdf asdf asd f' ' asdf ... [FAIL][0m
+[31m[EXPORTS A='a' B='b' C='c'] unset A 'asdf ' B ' asdf asdf asd f' ' asd... [FAIL][0m
+[31m[EXPORTS A='a' B='b' C='c'] unset A; echo $A$B$C\n                        [FAIL][0m
+[31m[EXPORTS A='a' B='b' C='c'] unset C; echo $A$B$C\n                        [FAIL][0m
+[31m[EXPORTS A='a' B='b' C='c'] unset A B C\n                                 [FAIL][0m
+[31m[EXPORTS A='a' B='b' C='c'] unset A 'asdf ' B ' asdf asdf asd f' ' asd... [FAIL][0m
+[31m[EXPORTS A='a' B='b' C='c'] unset 'asdf ' B ' asdf asdf asd f' ' asdf ... [FAIL][0m
+[31m[EXPORTS A='a' B='b' C='c'] unset A 'asdf ' B ' asdf asdf asd f' ' asd... [FAIL][0m
+[31m[EXPORTS A='a' B='b' C='c'] unset A\n                                     [FAIL][0m
+[31munset 'AH@'=nop\n                                                         [FAIL][0m
+[31munset "AH'"=nop\n                                                         [FAIL][0m
+[31munset 'AH"'=nop\n                                                         [FAIL][0m
+[31munset 'AH$'=nop\n                                                         [FAIL][0m
+[31munset 'AH!'=nop\n                                                         [FAIL][0m
+[31munset 'AH|'=nop\n                                                         [FAIL][0m
+[31munset 'AH;'=nop\n                                                         [FAIL][0m
+[31munset 'AH&'=nop\n                                                         [FAIL][0m
+[31munset 'AH\'=nop\n                                                         [FAIL][0m
+[31mUnset TERM\n                                                              [FAIL][0m
+[31munseT TERM\n                                                              [FAIL][0m
+[31m[EXPORTS PATH='/bin:/usr/bin'] Unset TERM\n                               [FAIL][0m
+[31m[EXPORTS PATH='/bin:/usr/bin'] unseT TERM\n                               [FAIL][0m
+[34m################################### cmd/cmd ####################################[0m
+[31mnotfound\n                                                                [FAIL][0m
+[31mnotfound a b c\n                                                          [FAIL][0m
+[31mecho "\"" >>a"b""c"  \n                                                   [FAIL][0m
+[31mecho \t\v\f\r !#$%*+,-./0123456789:;=?@ABCDE... [FAIL][0m
+[31mecho foo>bar\n                                                            [FAIL][0m
+[31mecho foo >bar\n                                                           [FAIL][0m
+[31mecho foo> bar\n                                                           [FAIL][0m
+[31mecho foo > bar\n                                                          [FAIL][0m
+[31mecho a as df sad f as df qw e  qwe  as df asd f as df as d fas d fasd ... [FAIL][0m
+[31mecho Mollitia asperiores assumenda excepturi et ipsa. Nihil corporis f... [FAIL][0m
+[31mecho Mollitia asperiores assumenda excepturi et ipsa. Nihil corporis f... [FAIL][0m
+[34m################################# cmd/cmd_path #################################[0m
+[31m[SETUP touch a b c] /bin/ls\n                                             [FAIL][0m
+[31m[SETUP touch a b c] /bin/ls -l\n                                          [FAIL][0m
+[31m[SETUP touch a b c; cp /bin/ls bonjour] ./bonjour\n                       [FAIL][0m
+[31m[SETUP touch a b c; cp /bin/ls bonjour] ./bonjour -l\n                    [FAIL][0m
+[31m[SETUP mkdir somedir; touch a b c; touch somedir/d somedir/e;cp /bin/l... [FAIL][0m
+[31m[SETUP touch a b c; echo bonjour > a; cp /bin/cat ls] ./ls . a b c\n      [FAIL][0m
+[31m[SETUP touch a b c; echo bonjour > a; cp /bin/cat ls] ls . a b c\n        [FAIL][0m
+[31m[SETUP echo > somefile; chmod 000 somefile] ./somefile\n                  [FAIL][0m
+[31m[SETUP echo > somefile; chmod 001 somefile] ./somefile\n                  [FAIL][0m
+[31m[SETUP echo > somefile; chmod 002 somefile] ./somefile\n                  [FAIL][0m
+[31m[SETUP echo > somefile; chmod 003 somefile] ./somefile\n                  [FAIL][0m
+[31m[SETUP echo > somefile; chmod 004 somefile] ./somefile\n                  [FAIL][0m
+[31m[SETUP echo > somefile; chmod 005 somefile] ./somefile\n                  [FAIL][0m
+[31m[SETUP echo > somefile; chmod 006 somefile] ./somefile\n                  [FAIL][0m
+[31m[SETUP echo > somefile; chmod 007 somefile] ./somefile\n                  [FAIL][0m
+[31m[SETUP echo > somefile; chmod 010 somefile] ./somefile\n                  [FAIL][0m
+[31m[SETUP echo > somefile; chmod 020 somefile] ./somefile\n                  [FAIL][0m
+[31m[SETUP echo > somefile; chmod 030 somefile] ./somefile\n                  [FAIL][0m
+[31m[SETUP echo > somefile; chmod 040 somefile] ./somefile\n                  [FAIL][0m
+[31m[SETUP echo > somefile; chmod 050 somefile] ./somefile\n                  [FAIL][0m

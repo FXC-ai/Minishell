@@ -6,9 +6,6 @@ void handler(int sig) {
     printf("Received signal %d\n", sig);
 }
 
-dfg "" '' dfgdf
-
-
 int main() {
 
 
