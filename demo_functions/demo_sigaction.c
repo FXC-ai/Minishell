@@ -6,7 +6,22 @@ void handler(int sig) {
     printf("Received signal %d\n", sig);
 }
 
+dfg "" '' dfgdf
+
+
 int main() {
+
+
+    /*
+        struct  sigaction 
+        {
+            union __sigaction_u __sigaction_u; 
+            sigset_t sa_mask;                   
+            int     sa_flags;                   
+        };
+
+    */
+
     struct sigaction sa;
 
     sa.sa_handler = handler;
