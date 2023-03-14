@@ -6,8 +6,13 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 12:36:34 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/14 13:40:02 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/14 15:31:05 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/header.h"
+#include "../includes/header.h"
+
+void    parsing(char **args)
+{
+	(void) args;
+}

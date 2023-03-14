@@ -1,4 +1,4 @@
-SRCS	= $(addprefix srcs/, main.c signal.c)
+SRCS	= $(addprefix srcs/, main.c signal.c parse_args.c lexer.c)
 
 OBJS	= ${SRCS:.c=.o}
 
@@ -19,7 +19,7 @@ INCLUDE = includes
 
 $(NAME): $(OBJS)
 	make -C libft
-	$(CC) -o $(NAME) $(OBJS) -Llibft -lft -I $(INCLUDE)
+	$(CC) -o $(NAME) $(OBJS) -Llibft -lft -I $(INCLUDE) -lreadline
 
 all: $(NAME)
 

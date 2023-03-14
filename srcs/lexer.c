@@ -1,27 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/14 11:39:22 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/14 15:46:23 by vgiordan         ###   ########.fr       */
+/*   Created: 2023/03/14 15:32:28 by vgiordan          #+#    #+#             */
+/*   Updated: 2023/03/14 15:53:47 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
 
-int	main(void)
+char **lexer(char *str)
 {
-	char    *line;
-	
-	signal_handler();
-	while(42)
+	char	**result;
+	int		i;
+
+	i = 0;
+	result = ft_split(str, ' ');
+	while (result[i])
 	{
-		line = readline("$ ");
-		add_history(line);
-		lexer(line);
+		printf("%s\n", result[i]);
+		i++;
 	}
-	return (0);
+	return (result);
 }
