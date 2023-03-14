@@ -6,6 +6,6 @@
 int main ()
 {
 
+    printf("minishell");
 
-    
 }
