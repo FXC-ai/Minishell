@@ -1,4 +1,4 @@
-SRCS	=	srcs/main.c
+SRCS	= $(addprefix srcs/, main.c)
 
 OBJS	= ${SRCS:.c=.o}
 
