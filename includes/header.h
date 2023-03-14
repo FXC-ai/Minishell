@@ -15,5 +15,5 @@
 
 void    signal_handler();
 char	**lexer(char *str);
-
+char	**ft_split_lexer(char const *s);
 #endif
