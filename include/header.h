@@ -9,4 +9,9 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+//<-----------SIGNAL.C--------------->
+
+void    signal_handler();
+
+
 #endif

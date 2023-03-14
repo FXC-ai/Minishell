@@ -1,24 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/14 11:39:22 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/14 13:48:12 by vgiordan         ###   ########.fr       */
+/*   Created: 2023/03/14 12:15:22 by vgiordan          #+#    #+#             */
+/*   Updated: 2023/03/14 13:44:56 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/header.h"
 
-int	main(void)
+static void handler(int sig)
 {
+    if (sig == SIGINT)
+        exit(0);
+}
 
-    signal_handler(); 
-    while(42)
-    {
-    }
+void    signal_handler()
+{
+    struct sigaction	sa;
     
-    return (0);
+    sa.sa_handler = handler;
+    sigaction(SIGINT, &sa, NULL);
+	//sigaction(SIGQUIT , &sa, NULL);
 }
