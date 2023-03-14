@@ -1,4 +1,4 @@
-SRCS	=	main.c
+SRCS	=	srcs/main.c
 
 OBJS	= ${SRCS:.c=.o}
 
@@ -19,7 +19,7 @@ INCLUDE = includes
 
 $(NAME): $(OBJS)
 	make -C libft
-	$(CC) -o $(NAME) $(OBJS) -Llibft -lft -I $(INCLUDE) -g -fsanitize=address
+	$(CC) -o $(NAME) $(OBJS) -Llibft -lft -I $(INCLUDE)
 
 all: $(NAME)
 
