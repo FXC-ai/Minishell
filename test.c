@@ -164,7 +164,7 @@ int main(int argc, char const *argv[])
 {
     char *str = "ls -la";
     char *str1 = "<<LIM cat -e";
-    char *str2 = "<infile cat -e | wc > \"outfile\"";
+    char *str2 = "<infile cat -e > \"outfile\" | wc -l";
     char *str3 = "echo \"'\"";
     char *str4 = "cd ../chemin/vers/fichier";
     char *str5 = "exit 2123";
