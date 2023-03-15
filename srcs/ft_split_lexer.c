@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_lexer.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:58:03 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/15 12:48:31 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/15 13:54:16 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,52 @@ static char	*word_dup(const char *str, int start, int finish)
 	return (word);
 }
 
+static int process(char *str, char **result)
+{
+    int i = 0;
+    int j = 0;
+    int words_count;
+    int start;
+    char quote_char = '\0';
+    char *check_result;
+
+    words_count = count_words(str);
+    printf("count %d\n", words_count);
+    while(str[i] && str[i] == ' ')
+        i++;
+    while (str[i])
+    {
+        start = i;
+        while (str[i] && is_quote(str[i]) == 0)
+        {
+            i++;
+        }
+        if (start < i)
+        {
+            result[j++] = word_dup(str, start, i);
+            check_result = result[j-1];
+        }
+        quote_char = str[i];
+        if(str[i])
+        {
+            i++;
+        }
+        start = i;
+        while (str[i] && str[i] != quote_char)
+        {
+            i++;
+        }
+        if (is_quote(str[start-1])==1)
+        {
+            result[j++] = word_dup(str, start-1, i+1);
+            check_result = result[j-1];
+        }
+        if(str[i])
+            i++;
+    }
+    result[j] = NULL;
+    return (0);
+}
 /*static void	freemalloc(char **result, int j)
 {
 	while (j >= 0)
@@ -132,4 +178,5 @@ char	**ft_split_lexer(char *s)
 		return (NULL);
 	return (result);
 }
+
 

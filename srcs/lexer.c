@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:32:28 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/15 12:44:57 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/15 13:53:28 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,6 @@ char **lexer(char *str)
 	int		i;
 
 	i = 0;
-	/*if (count_char(str, '\'') % 2 || count_char(str, '"') % 2)
-	{
-		my_error();
-	}*/
 	result = ft_split_lexer(str);
 	while (result[i])
 	{

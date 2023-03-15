@@ -58,16 +58,7 @@ static char	*word_dup(const char *str, int start, int finish)
 	return (word);
 }
 
-/*static void	freemalloc(char **result, int j)
-{
-	while (j >= 0)
-	{
-		free(result[j]);
-		result[j] = NULL;
-		j--;
-	}
-	free(result);
-}*/
+
 
 static int process(char *str, char **result)
 {
@@ -104,7 +95,7 @@ static int process(char *str, char **result)
         {
             i++;
         }
-        if (start < i)
+        if (is_quote(str[start-1])==1)
         {
             result[j++] = word_dup(str, start-1, i+1);
             check_result = result[j-1];
@@ -137,10 +128,6 @@ char **lexer(char *str)
 	int		i;
 
 	i = 0;
-	/*if (count_char(str, '\'') % 2 || count_char(str, '"') % 2)
-	{
-		my_error();
-	}*/
 	result = ft_split_lexer(str);
 	while (result[i])
 	{
@@ -150,44 +137,80 @@ char **lexer(char *str)
 	return (result);
 }
 
+static int size_tab(char **tab)
+{
+    int c =0;
+
+    while (tab[c] != NULL)
+    {
+        c++;
+    }
+    return c;
+}
+
+
+static void	freemalloc(char **result, int j)
+{
+	while (j >= 0)
+	{
+		free(result[j]);
+		result[j] = NULL;
+		j--;
+	}
+	free(result);
+}
 
 int main(int argc, char const *argv[])
 {
-    char *str = "''";
-    char *str1 = "sssssssss";
-    char *str2 = "1ssssssss sssss";
-    char *str3 = "     1ssssssss   n\"2s\" sadakshdsalhdljsahls 'kljlk' 'jjuuju' ";
-    char *str4 = "    11111 22222";
-    char *str5 = "   \"111\"  \"222\"  \"333\"  llkjlkj lkjlkjlkj lkjlkj ";
-    char *str6 = " '11\"1'   '222'  '333'   ";
-    char *str7 = "   \" 111''''''''''' \"   ''  '  2222 ' \"\" ' 3333\"333 '   ";
+    char *str = "ls -la";
+    char *str1 = "<<LIM cat -e";
+    char *str2 = "<infile cat -e | wc > \"outfile\"";
+    char *str3 = "echo \"'\"";
+    char *str4 = "cd ../chemin/vers/fichier";
+    char *str5 = "exit 2123";
+    char *str6 = "/bin/ls 'abc";
+    char *str7 = " 'cat file | grep bla | more";
+
+    char **r;
+    
+    printf("\nTEST = [%s]\n", str);
+    r = lexer(str);
+    freemalloc(r , size_tab(r));
+    
 
     
-    printf("\nTEST = %s\n", str);
-    lexer(str);
     
+    printf("\nTEST = [%s]\n", str1);
+    r = lexer(str1);
+    freemalloc(r , size_tab(r));
     
-    printf("\nTEST = %s\n", str1);
-    lexer(str1);
+    printf("\n TEST = [%s]\n", str2);
+    r = lexer(str2);
+    freemalloc(r , size_tab(r));
 
+    printf("\n TEST = [%s]\n", str3);
+    r = lexer(str3);
+    freemalloc(r , size_tab(r));
+
+    printf("\n TEST = [%s]\n", str4);
+    r = lexer(str4);
+    freemalloc(r , size_tab(r));
+
+    printf("\n TEST = [%s]\n", str5);
+    r = lexer(str5);
+    freemalloc(r , size_tab(r));
+
+    printf("\n TEST = [%s]\n", str6);
+    r = lexer(str6);
+    freemalloc(r , size_tab(r));
+
+    printf("\n TEST = [%s]\n", str7);
+    r = lexer(str7);
+    freemalloc(r , size_tab(r));
     
-    printf("\n TEST = %s\n", str2);
-    lexer(str2);
 
-    printf("\n TEST = %s\n", str3);
-    lexer(str3);
 
-    printf("\n TEST = %s\n", str4);
-    lexer(str4);
 
-    printf("\n TEST = %s\n", str5);
-    lexer(str5);
 
-    printf("\n TEST = %s\n", str6);
-    lexer(str6);
-
-    printf("\n TEST = %s\n", str7);
-    lexer(str7);
-    
     return 0;
 }
