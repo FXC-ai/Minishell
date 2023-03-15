@@ -16,7 +16,7 @@ int	main(void)
 	
 	getcwd(cwd, 1024);
 	printf("%s\n", cwd);
-	signal_handler();
+
 	while(42)
 	{
 		line = readline("test ");
