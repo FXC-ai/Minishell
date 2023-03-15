@@ -1,16 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_split_lexer.c                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/14 15:58:03 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/15 12:48:31 by vgiordan         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "../includes/header.h"
+#include "includes/header.h"
 
 static int  is_quote(char c)
 {
@@ -88,6 +76,7 @@ static int process(char *str, char **result)
     int words_count;
     int start;
     char quote_char = '\0';
+    char *check_result;
 
     words_count = count_words(str);
     printf("count %d\n", words_count);
@@ -100,7 +89,11 @@ static int process(char *str, char **result)
         {
             i++;
         }
-        result[j++] = word_dup(str, start, i);
+        if (start < i)
+        {
+            result[j++] = word_dup(str, start, i);
+            check_result = result[j-1];
+        }
         quote_char = str[i];
         if(str[i])
         {
@@ -111,7 +104,11 @@ static int process(char *str, char **result)
         {
             i++;
         }
-        result[j++] = word_dup(str, start, i);
+        if (start < i)
+        {
+            result[j++] = word_dup(str, start-1, i+1);
+            check_result = result[j-1];
+        }
         if(str[i])
             i++;
     }
@@ -133,3 +130,64 @@ char	**ft_split_lexer(char *s)
 	return (result);
 }
 
+
+char **lexer(char *str)
+{
+	char	**result;
+	int		i;
+
+	i = 0;
+	/*if (count_char(str, '\'') % 2 || count_char(str, '"') % 2)
+	{
+		my_error();
+	}*/
+	result = ft_split_lexer(str);
+	while (result[i])
+	{
+		printf("str %d = [%s]\n", i, result[i]);
+		i++;
+	}
+	return (result);
+}
+
+
+int main(int argc, char const *argv[])
+{
+    char *str = "''";
+    char *str1 = "sssssssss";
+    char *str2 = "1ssssssss sssss";
+    char *str3 = "     1ssssssss   n\"2s\" sadakshdsalhdljsahls 'kljlk' 'jjuuju' ";
+    char *str4 = "    11111 22222";
+    char *str5 = "   \"111\"  \"222\"  \"333\"  llkjlkj lkjlkjlkj lkjlkj ";
+    char *str6 = " '11\"1'   '222'  '333'   ";
+    char *str7 = "   \" 111''''''''''' \"   ''  '  2222 ' \"\" ' 3333\"333 '   ";
+
+    
+    printf("\nTEST = %s\n", str);
+    lexer(str);
+    
+    
+    printf("\nTEST = %s\n", str1);
+    lexer(str1);
+
+    
+    printf("\n TEST = %s\n", str2);
+    lexer(str2);
+
+    printf("\n TEST = %s\n", str3);
+    lexer(str3);
+
+    printf("\n TEST = %s\n", str4);
+    lexer(str4);
+
+    printf("\n TEST = %s\n", str5);
+    lexer(str5);
+
+    printf("\n TEST = %s\n", str6);
+    lexer(str6);
+
+    printf("\n TEST = %s\n", str7);
+    lexer(str7);
+    
+    return 0;
+}
