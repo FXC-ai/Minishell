@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 11:39:22 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/14 17:01:13 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/15 17:25:27 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int	main(int ac, char **argv, char **env)
 {
-	printf("argc %d\n",ac);
 	(void) argv;
 	(void) env;
+	(void) ac;
 	char    *line;
 	
 	signal_handler();

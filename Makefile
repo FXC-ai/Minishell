@@ -1,4 +1,4 @@
-SRCS	= $(addprefix srcs/, main.c signal.c parse_args.c lexer.c ft_split_lexer.c)
+SRCS	= $(addprefix srcs/, main.c signal.c parse_args.c lexer.c ft_split_lexer.c redirection.c)
 
 OBJS	= ${SRCS:.c=.o}
 

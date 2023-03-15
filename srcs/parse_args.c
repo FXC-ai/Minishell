@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 12:36:34 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/14 15:31:05 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/15 17:42:26 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,13 @@
 
 void    parsing(char **args)
 {
+	int	i;
+
+	i = 0;
+	while (args[i])
+	{
+		manage_redirection(args[i]);
+		i++;
+	}
 	(void) args;
 }

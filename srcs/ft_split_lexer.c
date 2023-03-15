@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_lexer.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:58:03 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/15 17:03:10 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/03/15 17:34:05 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int  is_quote(char c)
     return (c == '\'' || c == '"');
 }
 
-static int count_chr(const char *str, char c)
+int count_chr(const char *str, char c)
 {
     int count;
     int i;
@@ -99,7 +99,7 @@ static int process(char const *s, char **result, char c)
     char quote_char = '\0';
 
     words_count = count_chr(s, c);
-    printf("count %d\n", words_count);
+    //printf("count %d\n", words_count);
     while (s[i])
     {
         
