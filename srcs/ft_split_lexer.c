@@ -6,54 +6,62 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:58:03 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/15 17:01:30 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/03/15 17:03:10 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
+
+
+
 
 static int  is_quote(char c)
 {
     return (c == '\'' || c == '"');
 }
 
-static int count_words(char *str)
+static int count_chr(const char *str, char c)
 {
-    int i = 0;
-    int count = 0;
-    int in_quotes = 0;
-    int in_word = 0;
-    char quote_char = '\0';
-    while(str[i] && str[i] == ' ')
-        i++;
-    while (str[i])
+    int count;
+    int i;
+    int in_quote;
+    char quote;
+    char check_c;
+
+
+    count = 0;
+    i = 0;
+    in_quote = 0;
+    quote = '\0';
+
+    while (str[i] != '\0')
     {
-        
-        while (str[i] && is_quote(str[i]) == 0)
+        check_c = str[i];
+        if (str[i] == c && in_quote == 0)
         {
-            in_word = 1;
-            i++;
-            
+            count++;
         }
-        quote_char = str[i];
-        if(str[i])
+        if (is_quote(str[i]) == 1 && in_quote == 0)
         {
-            in_quotes = 1;
+            in_quote = 1;
+            quote = str[i];
             i++;
         }
-            
-        while (str[i] && str[i] != quote_char)
+        if (str[i] == quote && in_quote == 1)
         {
-            i++;
+            in_quote = 0;
+            quote = '\0';
         }
-        if(str[i])
-            i++;
-        count += (in_quotes + in_word);
-        in_quotes = 0;
-        in_word = 0; 
+        i++;
     }
-    return (count);
+    if (str[i-1] != c)
+    {
+        count++;
+    }
+    return count;
 }
+
+
 
 static char	*word_dup(const char *str, int start, int finish)
 {
@@ -70,53 +78,7 @@ static char	*word_dup(const char *str, int start, int finish)
 	return (word);
 }
 
-static int process(char *str, char **result)
-{
-    int i = 0;
-    int j = 0;
-    int words_count;
-    int start;
-    char quote_char = '\0';
-    char *check_result;
-
-    words_count = count_words(str);
-    printf("count %d\n", words_count);
-    while(str[i] && str[i] == ' ')
-        i++;
-    while (str[i])
-    {
-        start = i;
-        while (str[i] && is_quote(str[i]) == 0)
-        {
-            i++;
-        }
-        if (start < i)
-        {
-            result[j++] = word_dup(str, start, i);
-            check_result = result[j-1];
-        }
-        quote_char = str[i];
-        if(str[i])
-        {
-            i++;
-        }
-        start = i;
-        while (str[i] && str[i] != quote_char)
-        {
-            i++;
-        }
-        if (is_quote(str[start-1])==1)
-        {
-            result[j++] = word_dup(str, start-1, i+1);
-            check_result = result[j-1];
-        }
-        if(str[i])
-            i++;
-    }
-    result[j] = NULL;
-    return (0);
-}
-/*static void	freemalloc(char **result, int j)
+static void	freemalloc(char **result, int j)
 {
 	while (j >= 0)
 	{
@@ -125,58 +87,72 @@ static int process(char *str, char **result)
 		j--;
 	}
 	free(result);
-}*/
+}
 
-static int process(char *str, char **result)
+static int process(char const *s, char **result, char c)
 {
     int i = 0;
     int j = 0;
     int words_count;
-    int start;
+    int start = 0;
+    int in_quotes = 0;
     char quote_char = '\0';
 
-    words_count = count_words(str);
+    words_count = count_chr(s, c);
     printf("count %d\n", words_count);
-    while(str[i] && str[i] == ' ')
-        i++;
-    while (str[i])
+    while (s[i])
     {
-        start = i;
-        while (str[i] && is_quote(str[i]) == 0)
+        
+        
+        if ((s[i] == '\'' || s[i] == '\"') && !in_quotes)
         {
-            i++;
+            in_quotes = 1;
+            quote_char = s[i];
         }
-        result[j++] = word_dup(str, start, i);
-        quote_char = str[i];
-        if(str[i])
+        else if ((s[i] == '\'' || s[i] == '\"') && in_quotes && s[i] == quote_char)
         {
-            i++;
+            in_quotes = 0;
         }
-        start = i;
-        while (str[i] && str[i] != quote_char)
+        else if (!in_quotes && s[i] == c)
         {
-            i++;
+            if (j < words_count)
+            {
+                result[j++] = word_dup(s, start, i);
+                if (!result[j - 1])
+                {
+                    freemalloc(result, j - 1);
+                    return (-1);
+                }
+            }
+            while (s[i + 1] && s[i + 1] == ' ' && !in_quotes)
+                i++;
+            start = i + 1;
         }
-        result[j++] = word_dup(str, start, i);
-        if(str[i])
-            i++;
+        i++;
+    }
+    if (!in_quotes && j < words_count)
+    {
+        result[j++] = word_dup(s, start, i);
+        if (!result[j - 1])
+        {
+            freemalloc(result, j - 1);
+            return (-1);
+        }
     }
     result[j] = NULL;
     return (0);
 }
 
 
-
-char	**ft_split_lexer(char *s)
+char	**ft_split_lexer(char const *s, char c)
 {
 	char	**result;
 
-	result = malloc((count_words(s) + 1) * sizeof(char *));
+	result = malloc((count_chr(s,c) + 1) * sizeof(char *));
 	if (!result)
 		return (NULL);
-	if (process(s, result) == -1)
+	if (process(s, result, c) == -1)
 		return (NULL);
 	return (result);
 }
-
 
