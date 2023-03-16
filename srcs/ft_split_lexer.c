@@ -26,7 +26,7 @@ int count_chr(const char *str, char c)
     int i;
     int in_quote;
     char quote;
-    char check_c;
+
 
 
     count = 0;
@@ -36,7 +36,6 @@ int count_chr(const char *str, char c)
 
     while (str[i] != '\0')
     {
-        check_c = str[i];
         if (str[i] == c && in_quote == 0)
         {
             count++;
@@ -148,7 +147,7 @@ char	**ft_split_lexer(char const *s, char c)
 {
 	char	**result;
 
-	result = malloc((count_chr(s,c) + 1) * sizeof(char *));
+	result = malloc((count_chr(s, c) + 1) * sizeof(char *));
 	if (!result)
 		return (NULL);
 	if (process(s, result, c) == -1)

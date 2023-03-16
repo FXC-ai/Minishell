@@ -17,10 +17,6 @@ void	my_error()
 	exit(EXIT_FAILURE);
 }
 
-
-
-
-
 char **lexer(char *str)
 {
 	char	**result;

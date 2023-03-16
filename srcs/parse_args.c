@@ -12,11 +12,18 @@
 
 #include "../includes/header.h"
 
+
+
+
+
+
 void    parsing(char **args)
 {
 	int	i;
 
 	i = 0;
+
+	//execute_command(args[0], args[1]);
 	while (args[i])
 	{
 		manage_redirection(args[i]);
