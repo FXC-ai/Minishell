@@ -2,7 +2,7 @@ SRCS	= $(addprefix srcs/, main.c signal.c parse_args.c lexer.c ft_split_lexer.c 
 
 OBJS	= ${SRCS:.c=.o}
 
-CFLAGS	= 
+CFLAGS	= -Wall -Werror -Wextra
 
 CC		= gcc
 

@@ -35,7 +35,7 @@ typedef struct s_redirect
 //REDIRECTION.C
 int		string_has_right_redirection(char *str);
 int		string_has_left_redirection(char *str);
-void	manage_redirection(char *str);
+t_pipe	manage_redirection(char *str);
 
 //SIGNAL.C
 
@@ -44,7 +44,6 @@ void    signal_handler();
 //PARSE_ARGS.C
 
 void    parsing(char **args);
-void	manage_redirection(char *str);
 
 //LEXER.C
 char	**lexer(char *str);

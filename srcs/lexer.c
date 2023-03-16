@@ -29,7 +29,6 @@ char **lexer(char *str)
 		printf("str %d = [%s]\n", i, result[i]);
 		i++;
 	}
-	
 	parsing(result);
 	return (result);
 }

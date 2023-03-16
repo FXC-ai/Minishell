@@ -19,14 +19,21 @@
 
 void    parsing(char **args)
 {
-	int	i;
+	int		i;
+	t_pipe	pipe;
 
 	i = 0;
 
-	//execute_command(args[0], args[1]);
 	while (args[i])
 	{
-		manage_redirection(args[i]);
+		printf("args[i] = %s\n", args[i]);
+		pipe = manage_redirection(args[i]);
+		(void) pipe;
+		if (i != 0)
+		{
+			//call pipe
+		}
+			
 		i++;
 	}
 	(void) args;
