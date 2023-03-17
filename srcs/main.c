@@ -18,14 +18,15 @@ int	main(int ac, char **argv, char **env)
 	(void) env;
 	(void) ac;
 	char    *line;
-	pid_t	child_pid;
+	//pid_t	child_pid;
 
 	signal_handler();
 	while(42)
 	{
 		line = readline("$ ");
 		add_history(line);
-		child_pid = fork();
+		lexer(line);
+		/*child_pid = fork();
 		if (child_pid == -1)
 		{
 			perror("fork");
@@ -38,7 +39,7 @@ int	main(int ac, char **argv, char **env)
 		else
 		{
 			wait(0);
-		}
+		}*/
 	}
 	return (0);
 }

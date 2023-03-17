@@ -15,6 +15,7 @@
 typedef struct s_data
 {
 	int	nb_instuction;
+	int	last_fd;
 }   t_data;
 
 typedef struct pipe
@@ -35,7 +36,7 @@ typedef struct s_redirect
 //REDIRECTION.C
 int		string_has_right_redirection(char *str);
 int		string_has_left_redirection(char *str);
-t_pipe	manage_redirection(char *str);
+void	manage_redirection(char *str, t_pipe	*pipe);
 
 //SIGNAL.C
 
@@ -49,4 +50,7 @@ void    parsing(char **args);
 char	**lexer(char *str);
 char	**ft_split_lexer(char const *str, char c);
 int		count_chr(const char *str, char c);
+
+//UTILS.C
+char *extract_command_name(const char *full_path);
 #endif

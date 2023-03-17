@@ -12,28 +12,21 @@
 
 #include "../includes/header.h"
 
-
-
-
-
-
-void    parsing(char **args)
+void    parsing(char **args)//ACUTALLY NOT A PARSING AT ALL
 {
 	int		i;
 	t_pipe	pipe;
-
 	i = 0;
 
 	while (args[i])
 	{
 		printf("args[i] = %s\n", args[i]);
-		pipe = manage_redirection(args[i]);
-		(void) pipe;
+		manage_redirection(args[i], &pipe);
 		if (i != 0)
 		{
-			//call pipe
+			pipe->cmd2 = args[i + 1][0]; //QUAND L'INPUT EST BONNE
+			//PIPE
 		}
-			
 		i++;
 	}
 	(void) args;

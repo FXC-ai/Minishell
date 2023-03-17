@@ -32,66 +32,54 @@ void handle_right_redirection(t_redirect	redirection, t_pipe	*pipe)
 {
 	char **result;
 	int fd;
-
 	result = ft_split_lexer(redirection.left_str, ' ');
+	result[0] = extract_command_name(result[0]);
+	if (result[0] == NULL)
+		return;
+	pipe->cmd1 = result;
+	pipe->cmd2 = NULL; //PAS DE DEUXIEME COMMANDE
 	int	i = 0;
 	while (result[i])
 	{
 		printf("Result %s\n", result[i++]);
 	}
-	fd = open(redirection.right_str, O_CREAT | O_WRONLY | O_TRUNC, 0666);
-	pipe->fdin = fd;
-	if (fd == -1)
-	{
-		perror("open");
-		exit(EXIT_FAILURE);
-	}
+	fd = open(redirection.right_str, O_CREAT | O_WRONLY , 0666);
+	if (pipe->fdout)
+		pipe->fdin = pipe->fdout;
+	else
+		pipe->fdin = 1;
+	pipe->fdout = fd;
 
-	if (dup2(fd, STDOUT_FILENO) == -1)
-	{
-		perror("dup2");
-		exit(EXIT_FAILURE);
-	}
-
-	pipe->cmd1 = result;
-	if (execvp(result[0], result) == -1)
-	{
-		perror("execvp");
-		exit(EXIT_FAILURE);
-	}
-	close(fd);
+	//close(fd);
 	free(result);
 }
 
 
-t_pipe	manage_redirection(char *str)
+void	manage_redirection(char *str, t_pipe	*pipe)
 {
-	int     right;
-	int     left;
-	char    **result;
-	int     i;
-	t_pipe	pipe;
-	t_redirect redirection;
+	int     	right;
+	int     	left;
+	char    	**result;
+	int     	i;
+	
+	t_redirect	redirection;
 
 	i = 0;
 	right = string_has_right_redirection(str);
 	left = string_has_left_redirection(str);
-
 	printf("Right %d, left %d\n", right, left);
-	if (!right && !left)
-		return pipe;
 	while (right--)
 	{
 		result = ft_split_lexer(str, '>');
 		redirection.left_str = result[i];
 		redirection.right_str = result[i + 1];
 
-		handle_right_redirection(redirection, &pipe);
+		handle_right_redirection(redirection, pipe);
+		//CALL PIPE HERE BUT CMD2 IS NULL. EX echo "HELLO" > a 
 		free(result[i]);
 		free(result[i + 1]);
 		i++;
 	}
-	return (pipe);
 	/*i = 0;
 	while (left--)
 	{
