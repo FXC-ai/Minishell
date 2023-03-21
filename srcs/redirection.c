@@ -6,88 +6,80 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 17:36:30 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/15 17:57:41 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/21 14:47:16 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
 
-int		string_has_right_redirection(char *str)
+void	execute_command(char **parsed_args, int in_fd, int out_fd)
 {
-	int	count;
-
-	count = count_chr(str, '>');
-	return (count - 1);
+    if (fork() == 0)
+	{
+        if (in_fd != STDIN_FILENO)
+		{
+            dup2(in_fd, STDIN_FILENO);
+            close(in_fd);
+        }
+        if (out_fd != STDOUT_FILENO)
+		{
+            dup2(out_fd, STDOUT_FILENO);
+            close(out_fd);
+        }
+        execvp(parsed_args[0], parsed_args);
+        perror(parsed_args[0]);
+        exit(1);
+    }
 }
 
-int		string_has_left_redirection(char *str)
+int	process_redirection(char *str)
 {
-	int	count;
+	int in_fd = STDIN_FILENO;
+	int out_fd = STDOUT_FILENO;
+	char	**parsed_args;
 
-	count = count_chr(str, '<');
-	return (count - 1);
-}
-
-void handle_right_redirection(t_redirect	redirection, t_pipe	*pipe)
-{
-	char **result;
-	int fd;
-	result = ft_split_lexer(redirection.left_str, ' ');
-	result[0] = extract_command_name(result[0]);
-	if (result[0] == NULL)
-		return;
-	pipe->cmd1 = result;
-	pipe->cmd2 = NULL; //PAS DE DEUXIEME COMMANDE
-	int	i = 0;
-	while (result[i])
+	parsed_args = ft_split_lexer(str, ' ');
+	/*printf("args[0] %s\n", parsed_args[0]);
+	printf("args[1] %s\n", parsed_args[1]);
+	printf("args[2] %s\n", parsed_args[2]);
+	printf("args[3] %s\n", parsed_args[3]);*/
+    char **current_command = parsed_args;
+    while (*parsed_args)
 	{
-		printf("Result %s\n", result[i++]);
-	}
-	fd = open(redirection.right_str, O_CREAT | O_WRONLY , 0666);
-	if (pipe->fdout)
-		pipe->fdin = pipe->fdout;
-	else
-		pipe->fdin = 1;
-	pipe->fdout = fd;
+        if (strcmp(*parsed_args, ">") == 0)
+		{
+            *parsed_args = NULL;
+            out_fd = open(*(parsed_args + 1), O_WRONLY | O_CREAT | O_TRUNC, 0644);
 
-	//close(fd);
-	free(result);
-}
+            if (out_fd == -1) {
+                perror("open");
+                exit(1);
+            }
+        }
+		else if (strcmp(*parsed_args, "<") == 0)
+		{
+            *parsed_args = NULL;
+            in_fd = open(*(parsed_args + 1), O_RDONLY | O_CREAT);
 
+            if (in_fd == -1)
+			{
+                perror("open");
+                exit(1);
+            }
+        }
+        parsed_args++;
+    }
+    execute_command(current_command, in_fd, out_fd);
 
-void	manage_redirection(char *str, t_pipe	*pipe)
-{
-	int     	right;
-	int     	left;
-	char    	**result;
-	int     	i;
-	
-	t_redirect	redirection;
-
-	i = 0;
-	right = string_has_right_redirection(str);
-	left = string_has_left_redirection(str);
-	printf("Right %d, left %d\n", right, left);
-	while (right--)
+    if (in_fd != STDIN_FILENO)
 	{
-		result = ft_split_lexer(str, '>');
-		redirection.left_str = result[i];
-		redirection.right_str = result[i + 1];
-
-		handle_right_redirection(redirection, pipe);
-		//CALL PIPE HERE BUT CMD2 IS NULL. EX echo "HELLO" > a 
-		free(result[i]);
-		free(result[i + 1]);
-		i++;
-	}
-	/*i = 0;
-	while (left--)
+        close(in_fd);
+    }
+    if (out_fd != STDOUT_FILENO)
 	{
-		result = ft_split_lexer(str, '<');
-		redirection.left_str = result[i];
-		redirection.right_str = result[i + 1];
-
-		free(result[i]);
-		free(result[i + 1]);
-	}*/
+        close(out_fd);
+    }
+    wait(NULL);
+    printf("Out fd %d\n", out_fd);
+	return (out_fd);
 }

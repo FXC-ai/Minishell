@@ -22,22 +22,12 @@ void execute_command(char **parsed_args, int in_fd, int out_fd) {
     }
 }
 
-void process_pipe_redirections(char **parsed_args) {
+void proces_redirections(char **parsed_args) {
     int fds[2], in_fd = STDIN_FILENO, out_fd = STDOUT_FILENO;
     char **current_command = parsed_args;
 
     while (*parsed_args) {
-        if (strcmp(*parsed_args, "|") == 0) {
-            *parsed_args = NULL;
-            pipe(fds);
-            out_fd = fds[1];
-
-            execute_command(current_command, in_fd, out_fd);
-
-            close(out_fd);
-            in_fd = fds[0];
-            current_command = parsed_args + 1;
-        } else if (strcmp(*parsed_args, ">") == 0) {
+        if (strcmp(*parsed_args, ">") == 0) {
             *parsed_args = NULL;
             out_fd = open(*(parsed_args + 1), O_WRONLY | O_CREAT | O_TRUNC, 0644);
 
@@ -47,7 +37,7 @@ void process_pipe_redirections(char **parsed_args) {
             }
         } else if (strcmp(*parsed_args, "<") == 0) {
             *parsed_args = NULL;
-            in_fd = open(*(parsed_args + 1), O_RDONLY);
+            in_fd = open(*(parsed_args + 1), O_RDONLY | O_CREAT);
 
             if (in_fd == -1) {
                 perror("open");
@@ -65,13 +55,16 @@ void process_pipe_redirections(char **parsed_args) {
     if (out_fd != STDOUT_FILENO) {
         close(out_fd);
     }
-
     wait(NULL);
+    printf("Out fd %d\n", out_fd);
 }
 
 int main() {
-   
-    int fds = open("test", O_WRONLY | O_CREAT | O_TRUNC, 0644);//fd[0] == read, fd[1] == write
+    //printf("%d\n", strcmp(">", ">"));
+    char *str[7] = {"echo", "Hello", ">", "hellofile.txt", ">", "hellofile2.txt", NULL};
+    char *str2[4] = {"cat", "<", "tests", NULL};
+    proces_redirections(str);
+    /*int fds = open("test", O_WRONLY | O_CREAT | O_TRUNC, 0644);//fd[0] == read, fd[1] == write
     int id = fork();
     if (id == -1)
     {
@@ -95,6 +88,6 @@ int main() {
         read(fds, &y, sizeof(char));
         close(fds);
         printf("Got from Child process %c\n", y);
-    }
+    }*/
     return 0;
 }
