@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:58:03 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/15 17:34:05 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/21 14:31:17 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,10 @@ int count_chr(const char *str, char c)
     int in_quote;
     char quote;
 
-
-
     count = 0;
     i = 0;
     in_quote = 0;
     quote = '\0';
-
     while (str[i] != '\0')
     {
         if (str[i] == c && in_quote == 0)
@@ -98,7 +95,6 @@ static int process(char const *s, char **result, char c)
     char quote_char = '\0';
 
     words_count = count_chr(s, c);
-    //printf("count %d\n", words_count);
     while (s[i])
     {
         

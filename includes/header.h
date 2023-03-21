@@ -11,6 +11,7 @@
 # include <readline/history.h>
 # include <sys/stat.h>
 # include <fcntl.h>
+#include <termios.h>
 
 typedef struct s_data
 {
@@ -32,11 +33,11 @@ typedef struct s_redirect
 	char	*right_str;
 }	t_redirect;
 
+void	wait_for_input();
 
 //REDIRECTION.C
-int		string_has_right_redirection(char *str);
-int		string_has_left_redirection(char *str);
-void	manage_redirection(char *str, t_pipe	*pipe);
+void	execute_command(char **parsed_args, int in_fd, int out_fd);
+int 	process_redirection(char *str);
 
 //SIGNAL.C
 
