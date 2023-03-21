@@ -33,7 +33,7 @@ typedef struct s_redirect
 	char	*right_str;
 }	t_redirect;
 
-void	wait_for_input();
+void	wait_for_input(char *env[]);
 
 //REDIRECTION.C
 void	execute_command(char **parsed_args, int in_fd, int out_fd);
@@ -45,13 +45,19 @@ void    signal_handler();
 
 //PARSE_ARGS.C
 
-void    parsing(char **args);
+void    parsing(char **args, char *env[]);
 
 //LEXER.C
-char	**lexer(char *str);
+char	**lexer(char *str, char *env[]);
 char	**ft_split_lexer(char const *str, char c);
 int		count_chr(const char *str, char c);
 
 //UTILS.C
 char *extract_command_name(const char *full_path);
+char	*cmd_exists(char *cmd, char *env[]);
+
+
+//MS_PIPE.C
+void ms_pipe(char *tab_cmd[2], char *env[]);
+
 #endif

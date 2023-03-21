@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 12:15:22 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/21 16:07:01 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/21 16:48:39 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ static void handler(int sig)
     {
         if (sig == SIGINT)
         {
-            rl_on_new_line();
+           /* rl_on_new_line();
             rl_replace_line("", 0);
-            rl_redisplay();
+            rl_redisplay();*/
             //write(STDOUT_FILENO, "\n$ ", 3);
         }
         if (sig == SIGQUIT)
@@ -40,7 +40,8 @@ static void handler(int sig)
     
 }
 
-void signal_handler() {
+void signal_handler() 
+{
     struct sigaction sa;
 
     sigemptyset(&sa.sa_mask);
@@ -48,7 +49,7 @@ void signal_handler() {
     sigaddset(&sa.sa_mask, SIGQUIT);
 
     sa.sa_handler = handler;
-    sa.sa_flags = SA_RESTART;
+    //sa.sa_flags = SA_RESTART;
 
     sigaction(SIGINT, &sa, NULL);
     sigaction(SIGQUIT, &sa, NULL);

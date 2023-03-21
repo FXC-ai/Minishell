@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 11:39:22 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/21 16:08:36 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/21 17:04:31 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	check_entry(char *line)
 	return (1);
 }
 
-void	wait_for_input()
+void	wait_for_input(char *env[])
 {
 	char    *line;
 	while(42)
@@ -50,19 +50,19 @@ void	wait_for_input()
         }
 		if (check_entry(line))
 		{
-			lexer(line);
+			lexer(line, env);
 		}
 	}
 }
 
-int	main(int ac, char **argv, char **env)
+char **e;
+int	main(int ac, char **argv, char *env[])
 {
 	(void) argv;
-	(void) env;
 	(void) ac;
-	
+	e = env;
 	//disable_ctrl_chars();
 	signal_handler();
-	wait_for_input();
+	wait_for_input(env);
 	return (0);
 }
