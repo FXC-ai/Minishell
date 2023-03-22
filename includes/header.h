@@ -54,7 +54,12 @@ int		count_chr(const char *str, char c);
 
 //UTILS.C
 char *extract_command_name(const char *full_path);
+void	ft_free_tabs(char **tab, int h);
+int	size_tab(char **tab);
+char	**create_tab_paths(char *env[]);
+char	*create_path_cmd(char *path, char *cmd);
 char	*cmd_exists(char *cmd, char *env[]);
+char *normalize_cmd(char* str, char *env[]);
 
 
 //MS_PIPE.C

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 17:36:30 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/21 14:47:16 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/22 14:49:23 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,6 @@ int	process_redirection(char *str)
         close(out_fd);
     }
     wait(NULL);
-    printf("Out fd %d\n", out_fd);
+    //printf("Out fd %d\n", out_fd);
 	return (out_fd);
 }
