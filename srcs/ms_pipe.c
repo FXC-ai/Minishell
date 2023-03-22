@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_pipe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 16:25:50 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/22 12:19:45 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/03/22 12:26:32 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void ms_pipe(char *tab_cmd[2], char *env[])
                 
                 cmd = ft_split(tab_cmd[i], ' ');
                 
-                if (execve(cmd_exists(, env), cmd, env) == -1)
+                if (execve(cmd_exists(cmd[0], env), cmd, env) == -1)
                 {
                     freemalloc(cmd, size_tab(cmd));
                     error_exit(EXIT_FAILURE);

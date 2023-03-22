@@ -13,6 +13,9 @@
 # include <fcntl.h>
 #include <termios.h>
 
+
+void	rl_replace_line (const char *text, int clear_undo);
+
 typedef struct s_data
 {
 	int	nb_instuction;
