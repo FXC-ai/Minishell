@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_pipe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 16:25:50 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/21 18:32:05 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/22 12:19:45 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void ms_pipe(char *tab_cmd[2], char *env[])
     char **cmd;
 
     pipe_status = pipe(pipefd);
-    if (pipe_status == -1)
+    if (pipe(pipefd) == -1)
     {
         error_exit(EXIT_FAILURE);
     }

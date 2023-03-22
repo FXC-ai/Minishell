@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 17:35:07 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/21 18:40:53 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/22 12:21:14 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,16 +116,23 @@ char *normalize_cmd(char* str, char *env[])
 {	
 	char *result;
 
+
+	// Cas ou la commande est envoyée sous forme de chemin
 	if (ft_strchr(str, '/') != NULL)
 	{
 		result = extract_command_name(str);
+		if (result == NULL)
+		{
+			return (NULL);
+		}
 		return cmd_exists(result, env);
 	}
 	
+	// Cas ou la commande est envoyée sans chemin
 	return cmd_exists(str, env);
 }
 
-
+/*
 int main(int argc, char const *argv[], char *env[])
 {
 
@@ -133,11 +140,19 @@ int main(int argc, char const *argv[], char *env[])
 	char *str1 = "ls";
 	char *str2 = "/bin/ls -la";
 
-	char *r = normalize_cmd(str, env);
+	char **tab_cmd = ft_split(str, ' ');
+
+	//char *test_extract_line = extract_command_name(str2);
+	//char *test_cmd_exists = cmd_exists(str2, env);
+
+	char *r = normalize_cmd(tab_cmd[0], env);
 
 
 	printf("R= %s\n", r);
 
+	ft_free_tabs(tab_cmd, size_tab(tab_cmd));
+
+
 	return 0;
-}
+}*/
 
