@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/21 16:25:50 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/22 18:29:12 by fcoindre         ###   ########.fr       */
+/*   Created: 2023/03/22 18:32:05 by fcoindre          #+#    #+#             */
+/*   Updated: 2023/03/22 18:35:15 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../includes/header.h"
 
@@ -107,7 +108,7 @@ void delete_from_chevron(char **tab_cmd_path)
 }
 
 */
-
+/*
 char **duplicate_tab(char **tab, int i)
 {
     int size;
@@ -117,7 +118,7 @@ char **duplicate_tab(char **tab, int i)
 
 
 }
-
+*/
 
 void ms_pipe(char *tab_cmd[2], char *env[]) 
 {
@@ -204,8 +205,13 @@ void ms_pipe(char *tab_cmd[2], char *env[])
                 {
                     dup2(pipefd[0],0);
                 }
- 
+
                 if (execve(normalize_cmd(tab_cmd_path[0], env), tab_cmd_path, env) == -1)
+
+                
+                tab_cmd_path = ft_split(tab_cmd[i], ' ');
+                
+                if (execve(cmd_exists(tab_cmd_path[0], env), tab_cmd_path, env) == -1)
                 {
                     freemalloc(tab_cmd_path, size_tab(tab_cmd_path));
                     error_exit(EXIT_FAILURE);

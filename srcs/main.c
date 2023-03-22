@@ -6,23 +6,23 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 11:39:22 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/21 17:04:31 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/22 15:28:49 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
 
-void disable_ctrl_chars() {
-    struct termios term_attrs;
+int is_interactive = 0;
 
-    // Récupérer les attributs actuels du terminal
-    tcgetattr(STDIN_FILENO, &term_attrs);
+void disable_ctrl_chars()
+{
+    struct termios attributes;
 
-    // Désactiver l'affichage des caractères de contrôle pour Ctrl+C, Ctrl+D et Ctrl+ '\'
-    //term_attrs.c_lflag &= ECHOCTL;
 
-    // Appliquer les nouveaux attributs au terminal
-    tcsetattr(STDIN_FILENO, TCSANOW, &term_attrs);
+
+    tcgetattr(STDIN_FILENO, &attributes);
+    attributes.c_lflag &= ~ ECHO;
+    tcsetattr(STDIN_FILENO, TCSAFLUSH, &attributes);
 }
 
 int	check_entry(char *line)
@@ -40,29 +40,36 @@ int	check_entry(char *line)
 void	wait_for_input(char *env[])
 {
 	char    *line;
+	signal_handler();
 	while(42)
 	{
 		line = readline("$ ");
+		//disable_ctrl_chars();
 		if (line == NULL)
 		{
-			printf("exit\n");
+			write(1, "exit\n", 5);
             break;
         }
+		is_interactive = 1;
 		if (check_entry(line))
 		{
 			lexer(line, env);
 		}
+		is_interactive = 0;
 	}
 }
 
-char **e;
 int	main(int ac, char **argv, char *env[])
 {
+	struct termios		tm;
 	(void) argv;
 	(void) ac;
-	e = env;
-	//disable_ctrl_chars();
-	signal_handler();
+	
+	if (tcgetattr(STDIN_FILENO, &tm) == -1)
+		return (-1);
+	tm.c_lflag &= ~ECHOCTL;
+	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &tm) == -1)
+		return (-1);
 	wait_for_input(env);
 	return (0);
 }

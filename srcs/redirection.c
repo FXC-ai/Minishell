@@ -5,12 +5,27 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/15 17:36:30 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/22 14:49:23 by fcoindre         ###   ########.fr       */
+/*   Created: 2023/03/22 18:31:55 by fcoindre          #+#    #+#             */
+/*   Updated: 2023/03/22 18:35:28 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+
 #include "../includes/header.h"
+
+static int delimiter_parse(char *str)
+{
+    int i;
+
+    i = 0;
+    while (str[i])
+    {
+        if (str[i] == '<' && str[i + 1] == '<')
+            return (1);
+        i++;
+    }
+    return (0);
+}
 
 void	execute_command(char **parsed_args, int in_fd, int out_fd)
 {
@@ -32,6 +47,31 @@ void	execute_command(char **parsed_args, int in_fd, int out_fd)
     }
 }
 
+static int process_delimiter(char *delimiter)
+{
+    int pipe_fd[2];
+    char buffer[1024];
+    (void ) delimiter;
+    ssize_t num_read;
+
+    if (pipe(pipe_fd) == -1)
+    {
+        perror("pipe");
+        exit(1);
+    }
+    while (1)
+    {
+        num_read = read(STDIN_FILENO, buffer, sizeof(buffer) - 1);
+        printf("Buffer %s\n", buffer);
+        if (num_read <= 0)
+        {
+            break;
+        }
+    }
+    close(pipe_fd[1]);
+    return pipe_fd[0];
+}
+
 int	process_redirection(char *str)
 {
 	int in_fd = STDIN_FILENO;
@@ -39,22 +79,22 @@ int	process_redirection(char *str)
 	char	**parsed_args;
 
 	parsed_args = ft_split_lexer(str, ' ');
-	/*printf("args[0] %s\n", parsed_args[0]);
-	printf("args[1] %s\n", parsed_args[1]);
-	printf("args[2] %s\n", parsed_args[2]);
-	printf("args[3] %s\n", parsed_args[3]);*/
     char **current_command = parsed_args;
     while (*parsed_args)
 	{
         if (strcmp(*parsed_args, ">") == 0)
 		{
             *parsed_args = NULL;
-            out_fd = open(*(parsed_args + 1), O_WRONLY | O_CREAT | O_TRUNC, 0644);
+            out_fd = open(*(parsed_args + 1), O_WRONLY | O_CREAT | O_TRUNC, 0777);
 
             if (out_fd == -1) {
                 perror("open");
                 exit(1);
             }
+        }
+        else if (strcmp(*parsed_args, ">>") == 0)
+        {
+            out_fd = open(*(parsed_args + 1), O_WRONLY | O_CREAT | O_APPEND, 0777);
         }
 		else if (strcmp(*parsed_args, "<") == 0)
 		{
@@ -66,6 +106,10 @@ int	process_redirection(char *str)
                 perror("open");
                 exit(1);
             }
+        }
+        else if (delimiter_parse(*parsed_args) == 0)
+        {
+            in_fd = process_delimiter(*(parsed_args + 1));
         }
         parsed_args++;
     }
@@ -80,6 +124,7 @@ int	process_redirection(char *str)
         close(out_fd);
     }
     wait(NULL);
-    //printf("Out fd %d\n", out_fd);
+    wait(NULL);
+
 	return (out_fd);
 }
