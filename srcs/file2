@@ -1,1 +1,24 @@
-       0       0       0
+>
+a.out
+a.out.dSYM
+builtins
+exit
+file
+file2
+file3
+ft_split_lexer.c
+ft_split_lexer.o
+lexer.c
+lexer.o
+main.c
+main.o
+ms_pipe.c
+ms_pipe.o
+parse_args.c
+parse_args.o
+redirection.c
+redirection.o
+signal.c
+signal.o
+utils.c
+utils.o
