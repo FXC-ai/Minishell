@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/29 01:45:32 by victorgiord       #+#    #+#             */
-/*   Updated: 2022/11/04 14:10:53 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/23 11:57:37 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ int		ft_isprint(int c);
 int		ft_tolower(int c);
 int		ft_toupper(int c);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
+int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_strnstr(const char *s, const char *need, size_t len);
 
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);

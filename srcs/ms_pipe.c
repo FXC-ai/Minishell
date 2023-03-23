@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ms_pipe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:32:05 by fcoindre          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/03/23 16:21:47 by fcoindre         ###   ########.fr       */
+=======
+/*   Updated: 2023/03/23 12:47:13 by vgiordan         ###   ########.fr       */
+>>>>>>> de8169b7529572a52567bb8f5f0c596bdc93a972
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +27,21 @@ static void	error_exit(int code_error)
 	perror("minishell");
 	exit(code_error);
 }
+<<<<<<< HEAD
 /*
 static int exist_redirection(char *cmd)
 {
     return (ft_strchr(cmd, '>') != NULL || ft_strchr(cmd, '<') != NULL);
 }
 */
+=======
+
+/*static int exist_redirection(char *cmd)
+{
+    return (ft_strchr(cmd, '>') != NULL || ft_strchr(cmd, '<') != NULL);
+}*/
+
+>>>>>>> de8169b7529572a52567bb8f5f0c596bdc93a972
 static void	freemalloc(char **result, int j)
 {
 	while (j >= 0)
@@ -66,7 +79,11 @@ static void display_tab(char **tab, char *name)
 int find_ind_filename(char **tab_cmd_path)
 {
     int i;
+<<<<<<< HEAD
 
+=======
+    ///char *file_name;
+>>>>>>> de8169b7529572a52567bb8f5f0c596bdc93a972
 
     i = 0;
     while (tab_cmd_path[i] != NULL)
@@ -80,14 +97,18 @@ int find_ind_filename(char **tab_cmd_path)
     
     return (-1);
 }
-/*
+
 void delete_from_chevron(char **tab_cmd_path)
 {
 
     int i;
+<<<<<<< HEAD
     char *file_name;
     int size_tab_cmd_path;
 
+=======
+    //char *file_name;
+>>>>>>> de8169b7529572a52567bb8f5f0c596bdc93a972
 
     i = 0;
     while (tab_cmd_path[i] != NULL)
@@ -108,7 +129,7 @@ void delete_from_chevron(char **tab_cmd_path)
         //printf("df\n");
 }
 
-*/
+
 /*
 char **duplicate_tab(char **tab, int i)
 {
@@ -447,7 +468,7 @@ void ms_pipe2(char **tab_cmds, char *env[])
 
 }
 
-int main (int argc, char *argv[], char *env[])
+/*int main (int argc, char *argv[], char *env[])
 {
 
     char *tab_cmd_test1[5];
@@ -469,19 +490,4 @@ int main (int argc, char *argv[], char *env[])
 
     return 0;
 }
-
-    /*
-    char *tab_cmd_test2[4];
-
-    tab_cmd_test2[0] = "ls";
-    tab_cmd_test2[1] = "grep a > myfile";
-    tab_cmd_test2[2] = "wc";
-    tab_cmd_test2[3] = NULL;
-
-    char *tab_cmd_test3[4];
-
-    tab_cmd_test2[0] = "ls > myfile";
-    tab_cmd_test2[1] = "wc -w";
-    tab_cmd_test2[2] = "wc";
-    tab_cmd_test2[3] = NULL;
-    */
+*/

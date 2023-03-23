@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 11:39:22 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/22 15:28:49 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/23 10:57:30 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ int is_interactive = 0;
 void disable_ctrl_chars()
 {
     struct termios attributes;
-
-
 
     tcgetattr(STDIN_FILENO, &attributes);
     attributes.c_lflag &= ~ ECHO;
