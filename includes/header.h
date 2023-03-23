@@ -11,7 +11,9 @@
 # include <readline/history.h>
 # include <sys/stat.h>
 # include <fcntl.h>
-#include <termios.h>
+# include <termios.h>
+
+# define BUFFER_SIZE 1024 
 
 
 void	rl_replace_line (const char *text, int clear_undo);

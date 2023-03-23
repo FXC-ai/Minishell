@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_pipe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:32:05 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/03/22 18:35:15 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/03/23 10:51:15 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ static void	error_exit(int code_error)
 	exit(code_error);
 }
 
-static int exist_redirection(char *cmd)
+/*static int exist_redirection(char *cmd)
 {
     return (ft_strchr(cmd, '>') != NULL || ft_strchr(cmd, '<') != NULL);
-}
+}*/
 
 static void	freemalloc(char **result, int j)
 {
@@ -67,7 +67,7 @@ static void display_tab(char **tab, char *name)
 int find_ind_filename(char **tab_cmd_path)
 {
     int i;
-    char *file_name;
+    ///char *file_name;
 
     i = 0;
     while (tab_cmd_path[i] != NULL)
@@ -81,12 +81,12 @@ int find_ind_filename(char **tab_cmd_path)
     
     return (-1);
 }
-/*
+
 void delete_from_chevron(char **tab_cmd_path)
 {
 
     int i;
-    char *file_name;
+    //char *file_name;
 
     i = 0;
     while (tab_cmd_path[i] != NULL)
@@ -107,7 +107,7 @@ void delete_from_chevron(char **tab_cmd_path)
         //printf("df\n");
 }
 
-*/
+
 /*
 char **duplicate_tab(char **tab, int i)
 {
@@ -128,7 +128,7 @@ void ms_pipe(char *tab_cmd[2], char *env[])
     char **tab_cmd_path;
 
     int out_fd;
-    int in_fd;
+    //int in_fd;
 
     int ind_file_name;
 
@@ -236,7 +236,7 @@ void ms_pipe(char *tab_cmd[2], char *env[])
 
 
 
-int main (int argc, char *argv[], char *env[])
+/*int main (int argc, char *argv[], char *env[])
 {
 
     char *tab_cmd[3];
@@ -257,3 +257,4 @@ int main (int argc, char *argv[], char *env[])
 
     return 0;
 }
+*/

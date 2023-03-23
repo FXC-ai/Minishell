@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 12:36:34 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/22 14:06:40 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/23 12:16:40 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,12 @@ void    parsing(char **args, char *env[])//ACUTALLY NOT A PARSING AT ALL
 
 	char *tab[2];
 	
+	
 	tab[0] = args[0];
 	tab[1] = args[1];
-
-	ms_pipe(tab, env);
+	(void) env;
+	//ms_pipe(tab, env);
+	process_redirection(args[0]);
 	//printf("Done\n");
 
 
