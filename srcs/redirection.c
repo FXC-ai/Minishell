@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:31:55 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/03/23 14:17:12 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/23 18:38:47 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,11 +104,8 @@ static int process_delimiter(char *del)
 		write(fd, buffer, rdd);
 		rdd = read(STDIN_FILENO, buffer, sizeof(buffer) - 1);
 	}
-	close(fd);
-	//fd = open("TMPDOC",  O_RDONLY, 0777);
-	//dup2(fd, STDIN_FILENO);
-	//close(fd);
-	return STDOUT_FILENO;
+	// close(fd);
+	return fd;
 }
 
 int	process_redirection(char *str)
@@ -159,11 +156,11 @@ int	process_redirection(char *str)
 		{
 			printf("OK\n");
 			in_fd = process_delimiter(*(parsed_args + 1));
+			//Il faut probablement rm << de current command
 		}
 		parsed_args++;
 	}
 	execute_command(current_command, in_fd, out_fd);
-
 	if (in_fd != STDIN_FILENO)
 	{
 		close(in_fd);

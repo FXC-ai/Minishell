@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_pipe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:32:05 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/03/23 16:25:55 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/03/23 17:55:02 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -447,7 +447,7 @@ void ms_pipe2(char **tab_cmds, char *env[])
 
 }
 
-int main (int argc, char *argv[], char *env[])
+/*int main (int argc, char *argv[], char *env[])
 {
 
     char *tab_cmd_test1[5];
@@ -468,7 +468,7 @@ int main (int argc, char *argv[], char *env[])
 
 
     return 0;
-}
+}*/
 
     /*
     char *tab_cmd_test2[4];
