@@ -6,7 +6,11 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:32:05 by fcoindre          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/03/23 17:55:02 by vgiordan         ###   ########.fr       */
+=======
+/*   Updated: 2023/03/23 18:41:10 by fcoindre         ###   ########.fr       */
+>>>>>>> 8c0c26b0def52e16e34357ac64227326cd61c187
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -285,176 +289,112 @@ void ms_pipe2(char **tab_cmds, char *env[])
 */
 
 
+void execution (char *input_cmd, char *env[])
+{
+    char **tab_cmd;
+ 
+    tab_cmd = ft_split_lexer(input_cmd, ' ');
 
+    if (execve(normalize_cmd(tab_cmd[0], env), tab_cmd, env) == -1)
+    {
+        freemalloc(tab_cmd, size_tab(tab_cmd));
+        error_exit(EXIT_FAILURE);
+    }
+}
+
+
+void redirection (char *input_cmd, int *previous_pipe, int *next_pipe, char *env[])
+{
+    pid_t pid;
+
+    pid = fork();
+    if (pid == 0)
+    {
+        close(previous_pipe[1]);
+        close(next_pipe[0]);
+
+        dup2(previous_pipe[0],0);
+        dup2(next_pipe[1],1);
+
+        close(previous_pipe[0]);
+        close(next_pipe[1]);       
+
+        execution(input_cmd, env);
+    }  
+
+}
 
 
 void ms_pipe2(char **tab_cmds, char *env[])
 {
 
-    //int tab[2];
-    //int i;
-    /*char *cmd;
-    char **tab_cmd;
-    int pipe_fd[2];
-    int pid;*/
-    //int nbr_fct = ;
-
-    // char *test[2];
-    // test[0] = "ls";
-    // test[1] = NULL;
-    // execve("/bin/ls", test, env);
-
-    
-
-    
     int pipe_fd1[2];
     int pipe_fd2[2];
-    int pipe_fd3[2];
 
     pid_t pid;
 
-
     char **tab_cmd;
 
-    pipe(pipe_fd1);
-    pipe(pipe_fd2);
-    pipe(pipe_fd3);
-
     //PROCESSUS 1
+    pipe(pipe_fd1);
     pid = fork();
     if (pid == 0)
     {
-        tab_cmd = ft_split(tab_cmds[0], ' ');
-        display_tab(tab_cmd, "tab_cmd");
-
-        close(pipe_fd2[0]);
-        close(pipe_fd2[1]);
-        close(pipe_fd3[0]);
-        close(pipe_fd3[1]);
-
         close(pipe_fd1[0]);
         dup2(pipe_fd1[1],1);
         close(pipe_fd1[1]);
 
-        
-        if (execve(normalize_cmd(tab_cmd[0], env), tab_cmd, env) == -1)
-        {
-            freemalloc(tab_cmd, size_tab(tab_cmd));
-            error_exit(EXIT_FAILURE);
-        }
+        execution(tab_cmds[0], env);
     }
 
     //PROCESSUS 2
-    pid = fork();
-    if (pid == 0)
-    {
-        tab_cmd = ft_split(tab_cmds[1], ' ');
-        display_tab(tab_cmd, "tab_cmd");
+    pipe(pipe_fd2);
+    redirection(tab_cmds[1], pipe_fd1, pipe_fd2, env);
 
-        close(pipe_fd3[0]);
-        close(pipe_fd3[1]);
-
-        close(pipe_fd1[1]);
-        close(pipe_fd2[0]);
-
-        dup2(pipe_fd1[0],0);
-        dup2(pipe_fd2[1],1);
-
-        close(pipe_fd1[0]);
-        close(pipe_fd2[1]);       
-
-
-
-        if (execve(normalize_cmd(tab_cmd[0], env), tab_cmd, env) == -1)
-        {
-            freemalloc(tab_cmd, size_tab(tab_cmd));
-            error_exit(EXIT_FAILURE);
-        }
-    }  
+    close(pipe_fd1[0]);
+    close(pipe_fd1[1]);
     
-    //pipefd[0] : est le bout de lecture !!!!!!
-    //pipefd[1] : est le bout d'ecriture !!!!!!
-
     //PROCESSUS 3
-    pid = fork();
-    if (pid == 0)
-    {
-        tab_cmd = ft_split(tab_cmds[2], ' ');
-        display_tab(tab_cmd, "tab_cmd");
+    pipe(pipe_fd1);
+    redirection(tab_cmds[2], pipe_fd2, pipe_fd1, env);
 
-        close(pipe_fd1[0]);
-        close(pipe_fd1[1]);
 
-        close(pipe_fd2[1]);
-        close(pipe_fd3[0]);
-
-        dup2(pipe_fd2[0],0);
-        dup2(pipe_fd3[1],1);
-
-        close(pipe_fd2[0]);
-        close(pipe_fd3[1]);
-
-        if (execve(normalize_cmd(tab_cmd[0], env), tab_cmd, env) == -1)
-        {
-            freemalloc(tab_cmd, size_tab(tab_cmd));
-            error_exit(EXIT_FAILURE);
-        }
-
-    }
-
+    close(pipe_fd2[0]);
+    close(pipe_fd2[1]);
 
     //PROCESSUS 4
     pid = fork();
     if (pid == 0)
     {
-        tab_cmd = ft_split(tab_cmds[3], ' ');
-        display_tab(tab_cmd, "tab_cmd");
-
-        close(pipe_fd1[0]);
         close(pipe_fd1[1]);
+        dup2(pipe_fd1[0],0);
+        close(pipe_fd1[0]);
 
-        close(pipe_fd2[0]);
-        close(pipe_fd2[1]);
-
-        close(pipe_fd3[1]);
-
-        dup2(pipe_fd3[0],0);
-
-        close(pipe_fd3[0]);
-
-
-        if (execve(normalize_cmd(tab_cmd[0], env), tab_cmd, env) == -1)
-        {
-            freemalloc(tab_cmd, size_tab(tab_cmd));
-            error_exit(EXIT_FAILURE);
-        }
-
+        execution(tab_cmds[3], env);
     }
+    close(pipe_fd1[0]);
+    close(pipe_fd1[1]);  
 
     wait(0);
     //wait(0);
-    close(pipe_fd1[0]);
-    close(pipe_fd1[1]);
 
-    close(pipe_fd2[0]);
-    close(pipe_fd2[1]);  
 
-    close(pipe_fd3[0]);
-    close(pipe_fd3[1]);  
     
     //printf("nbr_func = %d, sizeof = %zu",nbr_fct, sizeof(*tab_pipe));
 
 
 }
 
-/*int main (int argc, char *argv[], char *env[])
+
+int main (int argc, char *argv[], char *env[])
+
 {
 
     char *tab_cmd_test1[5];
 
-    tab_cmd_test1[0] = "ls -la";
+    tab_cmd_test1[0] = "ls";
     tab_cmd_test1[1] = "grep utils";
-    tab_cmd_test1[2] = "wc -l";
+    tab_cmd_test1[2] = "wc";
     tab_cmd_test1[3] = "cat -e";
     tab_cmd_test1[4] = NULL;
 
@@ -468,7 +408,7 @@ void ms_pipe2(char **tab_cmds, char *env[])
 
 
     return 0;
-}*/
+}
 
     /*
     char *tab_cmd_test2[4];
