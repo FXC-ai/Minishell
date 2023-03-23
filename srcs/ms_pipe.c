@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:32:05 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/03/23 16:25:55 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/03/23 18:05:55 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -285,7 +285,18 @@ void ms_pipe2(char **tab_cmds, char *env[])
 */
 
 
+void execution (char **tab_cmds, int index,char *env[])
+{
+    char **tab_cmd;
+ 
+    tab_cmd = ft_split_lexer(tab_cmds[index], ' ');
 
+    if (execve(normalize_cmd(tab_cmd[0], env), tab_cmd, env) == -1)
+    {
+        freemalloc(tab_cmd, size_tab(tab_cmd));
+        error_exit(EXIT_FAILURE);
+    }
+}
 
 
 void ms_pipe2(char **tab_cmds, char *env[])
@@ -316,44 +327,24 @@ void ms_pipe2(char **tab_cmds, char *env[])
 
     char **tab_cmd;
 
-    pipe(pipe_fd1);
-    pipe(pipe_fd2);
-    pipe(pipe_fd3);
 
     //PROCESSUS 1
+    pipe(pipe_fd1);
     pid = fork();
     if (pid == 0)
     {
-        tab_cmd = ft_split(tab_cmds[0], ' ');
-        display_tab(tab_cmd, "tab_cmd");
-
-        close(pipe_fd2[0]);
-        close(pipe_fd2[1]);
-        close(pipe_fd3[0]);
-        close(pipe_fd3[1]);
-
         close(pipe_fd1[0]);
         dup2(pipe_fd1[1],1);
         close(pipe_fd1[1]);
 
-        
-        if (execve(normalize_cmd(tab_cmd[0], env), tab_cmd, env) == -1)
-        {
-            freemalloc(tab_cmd, size_tab(tab_cmd));
-            error_exit(EXIT_FAILURE);
-        }
+        execution(tab_cmds, 0, env);
     }
 
     //PROCESSUS 2
+    pipe(pipe_fd2);
     pid = fork();
     if (pid == 0)
     {
-        tab_cmd = ft_split(tab_cmds[1], ' ');
-        display_tab(tab_cmd, "tab_cmd");
-
-        close(pipe_fd3[0]);
-        close(pipe_fd3[1]);
-
         close(pipe_fd1[1]);
         close(pipe_fd2[0]);
 
@@ -363,24 +354,20 @@ void ms_pipe2(char **tab_cmds, char *env[])
         close(pipe_fd1[0]);
         close(pipe_fd2[1]);       
 
-
-
-        if (execve(normalize_cmd(tab_cmd[0], env), tab_cmd, env) == -1)
-        {
-            freemalloc(tab_cmd, size_tab(tab_cmd));
-            error_exit(EXIT_FAILURE);
-        }
+        execution(tab_cmds, 1, env);
     }  
     
     //pipefd[0] : est le bout de lecture !!!!!!
     //pipefd[1] : est le bout d'ecriture !!!!!!
 
+    //close(pipe_fd1[0]);
+    //close(pipe_fd1[1]);
+
     //PROCESSUS 3
+    pipe(pipe_fd3);
     pid = fork();
     if (pid == 0)
     {
-        tab_cmd = ft_split(tab_cmds[2], ' ');
-        display_tab(tab_cmd, "tab_cmd");
 
         close(pipe_fd1[0]);
         close(pipe_fd1[1]);
@@ -394,12 +381,7 @@ void ms_pipe2(char **tab_cmds, char *env[])
         close(pipe_fd2[0]);
         close(pipe_fd3[1]);
 
-        if (execve(normalize_cmd(tab_cmd[0], env), tab_cmd, env) == -1)
-        {
-            freemalloc(tab_cmd, size_tab(tab_cmd));
-            error_exit(EXIT_FAILURE);
-        }
-
+        execution(tab_cmds, 2, env);
     }
 
 
@@ -407,8 +389,7 @@ void ms_pipe2(char **tab_cmds, char *env[])
     pid = fork();
     if (pid == 0)
     {
-        tab_cmd = ft_split(tab_cmds[3], ' ');
-        display_tab(tab_cmd, "tab_cmd");
+
 
         close(pipe_fd1[0]);
         close(pipe_fd1[1]);
@@ -423,11 +404,7 @@ void ms_pipe2(char **tab_cmds, char *env[])
         close(pipe_fd3[0]);
 
 
-        if (execve(normalize_cmd(tab_cmd[0], env), tab_cmd, env) == -1)
-        {
-            freemalloc(tab_cmd, size_tab(tab_cmd));
-            error_exit(EXIT_FAILURE);
-        }
+        execution(tab_cmds, 3, env);
 
     }
 
@@ -452,9 +429,9 @@ int main (int argc, char *argv[], char *env[])
 
     char *tab_cmd_test1[5];
 
-    tab_cmd_test1[0] = "ls -la";
+    tab_cmd_test1[0] = "ls";
     tab_cmd_test1[1] = "grep utils";
-    tab_cmd_test1[2] = "wc -l";
+    tab_cmd_test1[2] = "wc";
     tab_cmd_test1[3] = "cat -e";
     tab_cmd_test1[4] = NULL;
 
