@@ -6,10 +6,9 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:32:05 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/03/24 12:23:19 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/24 16:11:21 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../includes/header.h"
 
@@ -299,9 +298,10 @@ void execution (char *input_cmd, char *env[])
 }
 
 
-void redirection (char *input_cmd, int *previous_pipe, int *next_pipe, char *env[])
+void redirection (char *input_cmd, int previous_pipe[2], int next_pipe[2], char *env[])
 {
     pid_t pid;
+    int status;
 
     pid = fork();
     if (pid == 0)
@@ -316,9 +316,62 @@ void redirection (char *input_cmd, int *previous_pipe, int *next_pipe, char *env
         close(next_pipe[1]);       
 
         execution(input_cmd, env);
-    }  
+    }
+    else
+    {
+        wait(0);
+
+    }
+
 
 }
+
+
+void execute_first_cmd(int pipe_fd[2], char **tab_cmds, char *env[])
+{
+    pid_t pid;
+    int status;
+
+    pid = fork();
+    if (pid == 0)
+    {
+        printf("Execution 1st cmd : %s\n", tab_cmds[0]);
+        close(pipe_fd[0]);
+        dup2(pipe_fd[1],1);
+        close(pipe_fd[1]);
+        execution(tab_cmds[0], env);
+    }    
+    else
+    {
+        wait(0);
+        //usleep(100);
+        //waitpid(pid, &status, 0);
+    }
+}
+
+
+void execute_last_cmd(int pipe_fd[2], char **tab_cmds, int nbr_cmds, char *env[])
+{
+    pid_t pid;
+    int status;
+
+    pid = fork();
+    if (pid == 0)
+    {
+        printf("Execution last cmd : %s\n", tab_cmds[nbr_cmds-1]);
+
+        close(pipe_fd[1]);
+        dup2(pipe_fd[0],0);
+        close(pipe_fd[0]);
+        execution(tab_cmds[nbr_cmds-1], env);
+    }
+    else
+    {
+        wait(0);
+    }
+}
+
+
 
 
 void ms_pipe2(char **tab_cmds, char *env[])
@@ -331,53 +384,97 @@ void ms_pipe2(char **tab_cmds, char *env[])
 
     //char **tab_cmd;
 
+    int nbr_cmds;
+
+    int i;
+
+    nbr_cmds = size_tab(tab_cmds);
+
+    printf("nbr_cmds = %d\n", nbr_cmds);
+
     //PROCESSUS 1
     pipe(pipe_fd1);
+    execute_first_cmd(pipe_fd1, tab_cmds, env);
+    
+    /*
     pid = fork();
     if (pid == 0)
     {
+        printf("Execution 1st cmd : %s\n", tab_cmds[0]);
         close(pipe_fd1[0]);
         dup2(pipe_fd1[1],1);
         close(pipe_fd1[1]);
-
         execution(tab_cmds[0], env);
+
     }
-
-    //PROCESSUS 2
-    pipe(pipe_fd2);
-    redirection(tab_cmds[1], pipe_fd1, pipe_fd2, env);
-
-    close(pipe_fd1[0]);
-    close(pipe_fd1[1]);
-    
-    //PROCESSUS 3
-    pipe(pipe_fd1);
-    redirection(tab_cmds[2], pipe_fd2, pipe_fd1, env);
-
-
-    close(pipe_fd2[0]);
-    close(pipe_fd2[1]);
-
-    //PROCESSUS 4
-    pid = fork();
-    if (pid == 0)
+    else
     {
-        close(pipe_fd1[1]);
-        dup2(pipe_fd1[0],0);
-        close(pipe_fd1[0]);
+        wait(0);
 
-        execution(tab_cmds[3], env);
-    }
-    close(pipe_fd1[0]);
-    close(pipe_fd1[1]);  
-
-    wait(0);
-    //wait(0);
-
+    }*/
+    //close(pipe_fd1[0]);
+    //close(pipe_fd1[1]); 
 
     
-    //printf("nbr_func = %d, sizeof = %zu",nbr_fct, sizeof(*tab_pipe));
+    i = 0;
+    while (i < nbr_cmds - 2)
+    {
+        if (i % 2 == 0)
+        {
+            printf("Execution cmd[%d] : %s\n", i+1,tab_cmds[i +1]);
+            pipe(pipe_fd2);
+            redirection(tab_cmds[i + 1], pipe_fd1, pipe_fd2, env);
+            //wait(0);
+            close(pipe_fd1[0]);
+            close(pipe_fd1[1]);          
+        }
+        else if (i % 2 == 1)
+        {
+            printf("Execution cmd[%d] : %s\n", i+1, tab_cmds[i +1]);
+            pipe(pipe_fd1);
+            redirection(tab_cmds[i + 1], pipe_fd2, pipe_fd1, env);
+            //wait(0);
+            close(pipe_fd2[0]);
+            close(pipe_fd2[1]);
+        }
+        i++;
+    }
+    
+    if (i % 2 == 1)
+    {
+        execute_last_cmd(pipe_fd2, tab_cmds, nbr_cmds, env);
+        // pid = fork();
+        // if (pid == 0)
+        // {
+        //     printf("Execution last cmd : %s\n", tab_cmds[nbr_cmds-1]);
 
+        //     close(pipe_fd2[1]);
+        //     dup2(pipe_fd2[0],0);
+        //     close(pipe_fd2[0]);
+        //     execution(tab_cmds[nbr_cmds-1], env);
+        // }
+        close(pipe_fd2[0]);
+        close(pipe_fd2[1]);  
+    }
+    else if (i % 2 == 0)
+    {
+        execute_last_cmd(pipe_fd1, tab_cmds, nbr_cmds, env);
+        // pid = fork();
+        // if (pid == 0)
+        // {
+        //     printf("Execution last cmd (2) : %s\n", tab_cmds[nbr_cmds-1]);
+
+
+        //     close(pipe_fd1[1]);
+        //     dup2(pipe_fd1[0],0);
+        //     close(pipe_fd1[0]);
+        //     execution(tab_cmds[nbr_cmds-1], env);
+        // }
+        close(pipe_fd1[0]);
+        close(pipe_fd1[1]);  
+    }
+
+    //wait(0);
 
 }
 
@@ -385,34 +482,35 @@ void ms_pipe2(char **tab_cmds, char *env[])
 /*int main (int argc, char *argv[], char *env[])
 
 {
-
-    char *tab_cmd_test1[5];
+    
+    char *tab_cmd_test1[6];
 
     tab_cmd_test1[0] = "ls";
-    tab_cmd_test1[1] = "grep utils";
-    tab_cmd_test1[2] = "wc";
-    tab_cmd_test1[3] = "cat -e";
-    tab_cmd_test1[4] = NULL;
+    tab_cmd_test1[1] = "grep a";
+    tab_cmd_test1[2] = "grep t";
+    tab_cmd_test1[3] = "wc";
+    tab_cmd_test1[4] = "cat -e";
+    tab_cmd_test1[5] = NULL;
 
     ms_pipe2(tab_cmd_test1, env);
+    
+    /*
+    char *tab_cmd_test2[4];
 
-    //int *(tab[2])[3];
+    tab_cmd_test2[0] = "ls";
+    tab_cmd_test2[1] = "grep a";
+    tab_cmd_test2[2] = "wc";
+    tab_cmd_test2[3] = NULL;
 
     
-
-
+    ms_pipe2(tab_cmd_test2, env);
+    */
 
 
     return 0;
 }*/
 
     /*
-    char *tab_cmd_test2[4];
-
-    tab_cmd_test2[0] = "ls";
-    tab_cmd_test2[1] = "grep a > myfile";
-    tab_cmd_test2[2] = "wc";
-    tab_cmd_test2[3] = NULL;
 
     char *tab_cmd_test3[4];
 
