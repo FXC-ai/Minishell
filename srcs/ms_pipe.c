@@ -3,10 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ms_pipe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:32:05 by fcoindre          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/03/24 15:59:11 by fcoindre         ###   ########.fr       */
+=======
+<<<<<<< HEAD
+/*   Updated: 2023/03/23 17:55:02 by vgiordan         ###   ########.fr       */
+=======
+/*   Updated: 2023/03/23 18:41:10 by fcoindre         ###   ########.fr       */
+>>>>>>> 8c0c26b0def52e16e34357ac64227326cd61c187
+>>>>>>> 00c749dca2b61cf87c80407664f8297caa5def45
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -479,11 +487,9 @@ void ms_pipe2(char **tab_cmds, char *env[])
 
 }
 
-    //pipefd[0] : est le bout de lecture !!!!!!
-    //pipefd[1] : est le bout d'ecriture !!!!!!
-
 
 int main (int argc, char *argv[], char *env[])
+
 {
     
     char *tab_cmd_test1[6];
