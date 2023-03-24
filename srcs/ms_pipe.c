@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:32:05 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/03/24 16:11:36 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/24 16:24:44 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -301,7 +301,7 @@ void execution (char *input_cmd, char *env[])
 void redirection (char *input_cmd, int previous_pipe[2], int next_pipe[2], char *env[])
 {
     pid_t pid;
-    int status;
+   // int status;
 
     pid = fork();
     if (pid == 0)
@@ -330,7 +330,7 @@ void redirection (char *input_cmd, int previous_pipe[2], int next_pipe[2], char 
 void execute_first_cmd(int pipe_fd[2], char **tab_cmds, char *env[])
 {
     pid_t pid;
-    int status;
+   // int status;
 
     pid = fork();
     if (pid == 0)
@@ -353,7 +353,7 @@ void execute_first_cmd(int pipe_fd[2], char **tab_cmds, char *env[])
 void execute_last_cmd(int pipe_fd[2], char **tab_cmds, int nbr_cmds, char *env[])
 {
     pid_t pid;
-    int status;
+   // int status;
 
     pid = fork();
     if (pid == 0)
@@ -380,7 +380,7 @@ void ms_pipe2(char **tab_cmds, char *env[])
     int pipe_fd1[2];
     int pipe_fd2[2];
 
-    pid_t pid;
+   // pid_t pid;
 
     //char **tab_cmd;
 
