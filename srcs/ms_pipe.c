@@ -6,11 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:32:05 by fcoindre          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/03/23 17:55:02 by vgiordan         ###   ########.fr       */
-=======
-/*   Updated: 2023/03/23 18:41:10 by fcoindre         ###   ########.fr       */
->>>>>>> 8c0c26b0def52e16e34357ac64227326cd61c187
+/*   Updated: 2023/03/24 12:23:19 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +49,7 @@ static void redirection (char **)
 }
 
 */
-static void display_tab(char **tab, char *name)
+/*static void display_tab(char **tab, char *name)
 {
     int i;
 
@@ -65,7 +61,7 @@ static void display_tab(char **tab, char *name)
         i++;
     }
     
-}
+}*/
 
 int find_ind_filename(char **tab_cmd_path)
 {
@@ -333,7 +329,7 @@ void ms_pipe2(char **tab_cmds, char *env[])
 
     pid_t pid;
 
-    char **tab_cmd;
+    //char **tab_cmd;
 
     //PROCESSUS 1
     pipe(pipe_fd1);
@@ -386,7 +382,7 @@ void ms_pipe2(char **tab_cmds, char *env[])
 }
 
 
-int main (int argc, char *argv[], char *env[])
+/*int main (int argc, char *argv[], char *env[])
 
 {
 
@@ -408,7 +404,7 @@ int main (int argc, char *argv[], char *env[])
 
 
     return 0;
-}
+}*/
 
     /*
     char *tab_cmd_test2[4];

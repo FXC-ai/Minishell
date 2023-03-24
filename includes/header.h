@@ -12,6 +12,7 @@
 # include <sys/stat.h>
 # include <fcntl.h>
 # include <termios.h>
+# include <errno.h>
 
 # define BUFFER_SIZE 1024 
 
@@ -42,7 +43,7 @@ void	wait_for_input(char *env[]);
 
 //REDIRECTION.C
 void	execute_command(char **parsed_args, int in_fd, int out_fd);
-int 	process_redirection(char *str);
+int		process_redirection(char *str, char *env[]);
 
 //SIGNAL.C
 
@@ -64,10 +65,17 @@ int	size_tab(char **tab);
 char	**create_tab_paths(char *env[]);
 char	*create_path_cmd(char *path, char *cmd);
 char	*cmd_exists(char *cmd, char *env[]);
-char *normalize_cmd(char* str, char *env[]);
+char	*normalize_cmd(char* str, char *env[]);
+int		is_builtins(char *str);
 
 
 //MS_PIPE.C
 void ms_pipe(char *tab_cmd[2], char *env[]);
+
+//BUILTINS
+void	echo_process(char **cmd);
+void	cd_process(char **current_command);
+void	pwd_process();
+void	export_process(char **current_command, char *env[]);
 
 #endif

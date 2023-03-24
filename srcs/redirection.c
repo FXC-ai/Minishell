@@ -6,14 +6,14 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:31:55 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/03/23 18:38:47 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/24 15:25:54 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../includes/header.h"
 
-static int delimiter_parse(char *str)
+/*static int delimiter_parse(char *str)
 {
 	int i;
 
@@ -27,7 +27,7 @@ static int delimiter_parse(char *str)
 	return (0);
 }
 
-
+*/
 /*static char *get_delimiter(char *str)
 {
 	int i;
@@ -78,6 +78,7 @@ void	execute_command(char **parsed_args, int in_fd, int out_fd)
 			dup2(out_fd, STDOUT_FILENO);
 			close(out_fd);
 		}
+		
 		execvp(parsed_args[0], parsed_args);
 		perror(parsed_args[0]);
 		exit(1);
@@ -86,91 +87,96 @@ void	execute_command(char **parsed_args, int in_fd, int out_fd)
 
 static int process_delimiter(char *del)
 {
-	char buffer[1024];
-	ssize_t rdd;
-	int     fd;
-	char *del_n = ft_strjoin(del, "\n");
-	free(del);
-	fd = open("TMPDOC", O_TRUNC | O_CREAT | O_WRONLY, 0777);
+    char buffer[1024];
+    ssize_t rdd;
+    int fd;
+    char *del_n = ft_strjoin(del, "\n");
+    free(del);
+    fd = open("TMPDOC", O_TRUNC | O_CREAT | O_WRONLY, 0777);
 
-	rdd = read(STDIN_FILENO, buffer, sizeof(buffer) - 1);
-	while (rdd > 0)
-	{
-		buffer[rdd] = '\0';
-		if (ft_strcmp(del_n, buffer) == 0)
-		{
-			break;
-		}
-		write(fd, buffer, rdd);
-		rdd = read(STDIN_FILENO, buffer, sizeof(buffer) - 1);
-	}
-	// close(fd);
-	return fd;
+    rdd = read(STDIN_FILENO, buffer, sizeof(buffer) - 1);
+    while (rdd > 0)
+    {
+        buffer[rdd] = '\0';
+        if (ft_strcmp(del_n, buffer) == 0)
+        {
+            break;
+        }
+        write(fd, buffer, rdd);
+        rdd = read(STDIN_FILENO, buffer, sizeof(buffer) - 1);
+    }
+    close(fd);
+    fd = open("TMPDOC", O_RDONLY);
+    unlink("TMPDOC");
+
+    return fd;
 }
 
-int	process_redirection(char *str)
+
+int process_redirection(char *str, char *env[])
 {
-	int in_fd = STDIN_FILENO;
-	int out_fd = STDOUT_FILENO;
-	char	**parsed_args;
+    int in_fd = STDIN_FILENO;
+    int out_fd = STDOUT_FILENO;
+    char **parsed_args;
+	int	r;
+    parsed_args = ft_split_lexer(str, ' ');
+    char **current_command = parsed_args;
+    int delimiter_processed = 0;
 
-	parsed_args = ft_split_lexer(str, ' ');
-	/*printf("parsed_args[0]: %s\n", parsed_args[0]);
-	printf("parsed_args[1]: %s\n", parsed_args[1]);
-	printf("parsed_args[2]: %s\n", parsed_args[2]);
-	printf("parsed_args[2]: %s\n", parsed_args[3]);
-	printf("parsed_args[2]: %s\n", parsed_args[4]);*/
-	char **current_command = parsed_args;
-	while (*parsed_args)
-	{
-		//printf("*parsed_args: %s\n", *parsed_args);
-		if (ft_strcmp(*parsed_args, ">") == 0)
-		{
-			printf("NOT ok\n");
-			*parsed_args = NULL;
-			out_fd = open(*(parsed_args + 1), O_WRONLY | O_CREAT | O_TRUNC, 0777);
+    while (*parsed_args)
+    {
+        if (ft_strcmp(*parsed_args, ">") == 0)
+        {
+            *parsed_args = NULL;
+            out_fd = open(*(parsed_args + 1), O_WRONLY | O_CREAT | O_TRUNC, 0777);
+            parsed_args++;
+        }
+        else if (ft_strcmp(*parsed_args, ">>") == 0)
+        {
+            *parsed_args = NULL;
+            out_fd = open(*(parsed_args + 1), O_WRONLY | O_CREAT | O_APPEND, 0777);
+            parsed_args++;
+        }
+        else if (ft_strcmp(*parsed_args, "<") == 0)
+        {
+            *parsed_args = NULL;
+            in_fd = open(*(parsed_args + 1), O_RDONLY | O_CREAT);
+            parsed_args++;
+        }
+        else if (ft_strcmp(*parsed_args, "<<") == 0)
+        {
+            delimiter_processed = 1;
+            *parsed_args = NULL;
+            in_fd = process_delimiter(*(parsed_args + 1));
+			printf("LINE %s\n", *(parsed_args + 1));
+            parsed_args += 2;
+        }
+        else
+        {
+            parsed_args++;
+        }
+    }
+	r = is_builtins(*current_command);
+	if (r == 1)
+		echo_process(current_command);
+	else if (r == 2)
+		cd_process(current_command);
+	else if (r == 3)
+		pwd_process(current_command);
+	else if (r == 4)
+		export_process(current_command, env);
+	else
+    	execute_command(current_command, in_fd, out_fd);
+    if (in_fd != STDIN_FILENO)
+    {
+        close(in_fd);
+    }
+    if (out_fd != STDOUT_FILENO)
+    {
+        close(out_fd);
+    }
+    wait(NULL);
+    wait(NULL);
 
-			if (out_fd == -1) {
-				perror("open");
-				exit(1);
-			}
-		}
-		else if (ft_strcmp(*parsed_args, ">>") == 0)
-		{
-			printf("NOT ok\n");
-			out_fd = open(*(parsed_args + 1), O_WRONLY | O_CREAT | O_APPEND, 0777);
-		}
-		else if (ft_strcmp(*parsed_args, "<") == 0)
-		{
-			printf("NOT ok\n");
-			*parsed_args = NULL;
-			in_fd = open(*(parsed_args + 1), O_RDONLY | O_CREAT);
-
-			if (in_fd == -1)
-			{
-				perror("open");
-				exit(1);
-			}
-		}
-		else if (delimiter_parse(*parsed_args) != 0 || ft_strcmp(*parsed_args, "<<") == 0)
-		{
-			printf("OK\n");
-			in_fd = process_delimiter(*(parsed_args + 1));
-			//Il faut probablement rm << de current command
-		}
-		parsed_args++;
-	}
-	execute_command(current_command, in_fd, out_fd);
-	if (in_fd != STDIN_FILENO)
-	{
-		close(in_fd);
-	}
-	if (out_fd != STDOUT_FILENO)
-	{
-		close(out_fd);
-	}
-	wait(NULL);
-	wait(NULL);
-
-	return (out_fd);
+    return (out_fd);
 }

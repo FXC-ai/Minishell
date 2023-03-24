@@ -3,16 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 17:35:07 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/22 12:21:14 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/03/24 14:18:26 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 
 #include "../includes/header.h"
+
+int	is_builtins(char *str)
+{
+	
+	if (ft_strncmp(str, "echo", 4) == 0)
+		return (1);
+	if (ft_strncmp(str, "cd", 2) == 0)
+		return (2);
+	if (ft_strncmp(str, "pwd", 3) == 0)
+		return (3);
+	if (ft_strncmp(str, "export", 6) == 0)
+		return (4);
+	if (ft_strncmp(str, "unset", 5) == 0)
+		return (5);
+	if (ft_strncmp(str, "env", 3) == 0)
+		return (6);
+	if (ft_strncmp(str, "exit", 4) == 0)
+		return (7);
+	return (0);
+}
 
 void	ft_free_tabs(char **tab, int h)
 {
