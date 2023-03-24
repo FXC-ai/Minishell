@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_pipe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:32:05 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/03/24 16:32:38 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/03/24 16:36:13 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -386,7 +386,7 @@ void ms_pipe2(char **tab_cmds, char *env[])
 
     nbr_cmds = size_tab(tab_cmds);
 
-    printf("nbr_cmds = %d\n", nbr_cmds);
+   // printf("nbr_cmds = %d\n", nbr_cmds);
 
     //PROCESSUS 1
     pipe(pipe_fd1);
@@ -474,8 +474,8 @@ void ms_pipe2(char **tab_cmds, char *env[])
 
 }
 
-/*
-int main (int argc, char *argv[], char *env[])
+
+/*int main (int argc, char *argv[], char *env[])
 
 {
     

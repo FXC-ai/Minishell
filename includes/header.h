@@ -71,11 +71,13 @@ int		is_builtins(char *str);
 
 //MS_PIPE.C
 void ms_pipe(char *tab_cmd[2], char *env[]);
+void ms_pipe2(char **tab_cmds, char *env[]);
 
 //BUILTINS
 void	echo_process(char **cmd);
 void	cd_process(char **current_command);
 void	pwd_process();
 void	export_process(char **current_command, char *env[]);
+void    exit_process();
 
 #endif
