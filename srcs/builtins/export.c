@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 14:32:31 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/24 15:40:46 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/24 16:26:14 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,8 @@ void export_process(char **current_command, char *env[])
 			i++;
 		}
 	}
-	/*else
+	else
 	{
-		// Sinon, ajouter ou modifier la variable d'environnement spécifiée
-		char *key = strtok(current_command[1], "=");
-		char *value = strtok(NULL, "=");
-
-		if (key == NULL || value == NULL) {
-			fprintf(stderr, "export: invalid format, use KEY=VALUE\n");
-			return;
-		}
-
-		if (setenv(key, value, 1) != 0) {
-			perror("setenv");
-		}
-	}*/
+		
+	}
 }
