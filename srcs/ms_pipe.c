@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:32:05 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/03/24 16:11:21 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/24 16:11:36 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -494,7 +494,7 @@ void ms_pipe2(char **tab_cmds, char *env[])
 
     ms_pipe2(tab_cmd_test1, env);
     
-    /*
+    
     char *tab_cmd_test2[4];
 
     tab_cmd_test2[0] = "ls";
@@ -504,7 +504,7 @@ void ms_pipe2(char **tab_cmds, char *env[])
 
     
     ms_pipe2(tab_cmd_test2, env);
-    */
+    
 
 
     return 0;
