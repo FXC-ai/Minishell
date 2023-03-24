@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_pipe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:32:05 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/03/24 16:24:44 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/24 16:32:38 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -317,11 +317,7 @@ void redirection (char *input_cmd, int previous_pipe[2], int next_pipe[2], char 
 
         execution(input_cmd, env);
     }
-    else
-    {
-        wait(0);
 
-    }
 
 
 }
@@ -335,7 +331,7 @@ void execute_first_cmd(int pipe_fd[2], char **tab_cmds, char *env[])
     pid = fork();
     if (pid == 0)
     {
-        printf("Execution 1st cmd : %s\n", tab_cmds[0]);
+        //printf("Execution 1st cmd : %s\n", tab_cmds[0]);
         close(pipe_fd[0]);
         dup2(pipe_fd[1],1);
         close(pipe_fd[1]);
@@ -358,7 +354,7 @@ void execute_last_cmd(int pipe_fd[2], char **tab_cmds, int nbr_cmds, char *env[]
     pid = fork();
     if (pid == 0)
     {
-        printf("Execution last cmd : %s\n", tab_cmds[nbr_cmds-1]);
+        //printf("Execution last cmd : %s\n", tab_cmds[nbr_cmds-1]);
 
         close(pipe_fd[1]);
         dup2(pipe_fd[0],0);
@@ -380,7 +376,7 @@ void ms_pipe2(char **tab_cmds, char *env[])
     int pipe_fd1[2];
     int pipe_fd2[2];
 
-   // pid_t pid;
+    pid_t pid;
 
     //char **tab_cmd;
 
@@ -421,7 +417,7 @@ void ms_pipe2(char **tab_cmds, char *env[])
     {
         if (i % 2 == 0)
         {
-            printf("Execution cmd[%d] : %s\n", i+1,tab_cmds[i +1]);
+            //printf("Execution cmd[%d] : %s\n", i+1,tab_cmds[i +1]);
             pipe(pipe_fd2);
             redirection(tab_cmds[i + 1], pipe_fd1, pipe_fd2, env);
             //wait(0);
@@ -430,7 +426,7 @@ void ms_pipe2(char **tab_cmds, char *env[])
         }
         else if (i % 2 == 1)
         {
-            printf("Execution cmd[%d] : %s\n", i+1, tab_cmds[i +1]);
+            //printf("Execution cmd[%d] : %s\n", i+1, tab_cmds[i +1]);
             pipe(pipe_fd1);
             redirection(tab_cmds[i + 1], pipe_fd2, pipe_fd1, env);
             //wait(0);
@@ -442,34 +438,34 @@ void ms_pipe2(char **tab_cmds, char *env[])
     
     if (i % 2 == 1)
     {
-        execute_last_cmd(pipe_fd2, tab_cmds, nbr_cmds, env);
-        // pid = fork();
-        // if (pid == 0)
-        // {
-        //     printf("Execution last cmd : %s\n", tab_cmds[nbr_cmds-1]);
+        //execute_last_cmd(pipe_fd2, tab_cmds, nbr_cmds, env);
+        pid = fork();
+        if (pid == 0)
+        {
+            //printf("Execution last cmd : %s\n", tab_cmds[nbr_cmds-1]);
 
-        //     close(pipe_fd2[1]);
-        //     dup2(pipe_fd2[0],0);
-        //     close(pipe_fd2[0]);
-        //     execution(tab_cmds[nbr_cmds-1], env);
-        // }
+            close(pipe_fd2[1]);
+            dup2(pipe_fd2[0],0);
+            close(pipe_fd2[0]);
+            execution(tab_cmds[nbr_cmds-1], env);
+        }
         close(pipe_fd2[0]);
         close(pipe_fd2[1]);  
     }
     else if (i % 2 == 0)
     {
-        execute_last_cmd(pipe_fd1, tab_cmds, nbr_cmds, env);
-        // pid = fork();
-        // if (pid == 0)
-        // {
-        //     printf("Execution last cmd (2) : %s\n", tab_cmds[nbr_cmds-1]);
+        //execute_last_cmd(pipe_fd1, tab_cmds, nbr_cmds, env);
+        pid = fork();
+        if (pid == 0)
+        {
+            //printf("Execution last cmd (2) : %s\n", tab_cmds[nbr_cmds-1]);
 
 
-        //     close(pipe_fd1[1]);
-        //     dup2(pipe_fd1[0],0);
-        //     close(pipe_fd1[0]);
-        //     execution(tab_cmds[nbr_cmds-1], env);
-        // }
+            close(pipe_fd1[1]);
+            dup2(pipe_fd1[0],0);
+            close(pipe_fd1[0]);
+            execution(tab_cmds[nbr_cmds-1], env);
+        }
         close(pipe_fd1[0]);
         close(pipe_fd1[1]);  
     }
@@ -478,8 +474,8 @@ void ms_pipe2(char **tab_cmds, char *env[])
 
 }
 
-
-/*int main (int argc, char *argv[], char *env[])
+/*
+int main (int argc, char *argv[], char *env[])
 
 {
     
