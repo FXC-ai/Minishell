@@ -1,22 +1,2 @@
 
-Pipe : lecture = 4 | ecriture = 5
 
-Processus parent 0
-   -> getpid = 13781
-   -> pid = 13782
-
-Processus enfant 1
-   -> getpid = 13782
-   -> pid = 0
-
-Pipe : lecture = 4 | ecriture = 5
-
-Processus parent 0
-   -> getpid = 13781
-   -> pid = 13783
-
-Pipe : lecture = 4 | ecriture = 5
-
-Processus enfant 2
-   -> getpid = 13783
-   -> pid = 0

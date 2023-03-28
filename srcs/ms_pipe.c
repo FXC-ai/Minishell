@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:32:05 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/03/25 18:24:25 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/03/28 10:04:36 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -281,7 +281,7 @@ void printMSG(char *msg, int index_process,int fd)
 
 }
 
-void ms_pipe2_v4(char **tab_cmds, char *env[])
+void ms_pipe2_dep(char **tab_cmds, char *env[])
 {
 
     int pipe_fd[2];
@@ -347,11 +347,11 @@ void ms_pipe2_v4(char **tab_cmds, char *env[])
         printPID(getpid(), "getpid = ", fd_debug2);
         printPID(pid, "pid = ", fd_debug2);
 
-
         //close(pipe_fd[1]);  
         //dup2(pipe_fd[0], 0); // le processus enfant suivant herite de cette redirection, il ne lira plus sur l'entree standard mais sur le bout de lecture du pipe
         waitpid(pid, NULL, 0);
 
+        ft_putstr_fd("JE meurs\n", 1);
 
     }
     else
@@ -392,9 +392,9 @@ int main (int argc, char *argv[], char *env[])
     tab_cmd_test1[5] = NULL;
 
     ms_pipe3(tab_cmd_test1, env);
-
+*/
     
-    
+    /*
     
 
     char *tab_cmd_test2[4];
@@ -405,7 +405,7 @@ int main (int argc, char *argv[], char *env[])
     tab_cmd_test2[3] = NULL;
 
     ms_pipe3(tab_cmd_test2, env);
-    */
+    
 
     
     char *tab_cmd_test3[3];
@@ -415,6 +415,9 @@ int main (int argc, char *argv[], char *env[])
     tab_cmd_test3[2] = NULL;
 
     ms_pipe2(tab_cmd_test3, env);
+    */
+
+    int **M = 
     
     return 0;
 }
