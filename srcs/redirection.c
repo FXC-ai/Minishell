@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:31:55 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/03/29 17:36:06 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/29 18:31:46 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ printf("STR %s\n", str);
 
 void	execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
 {
-	if (fork() == 0)
-	{
+	int	r;
+	
 		if (in_fd != STDIN_FILENO)
 		{
 			dup2(in_fd, STDIN_FILENO);
@@ -79,18 +79,39 @@ void	execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
 			close(out_fd);
 		}
 		(void) env;
+		r = is_builtins(*parsed_args);
+		if (r == 1)
+			echo_process(parsed_args);
+		else if (r == 2)
+			cd_process(parsed_args);
+		else if (r == 3)
+			pwd_process(parsed_args);
+		else if (r == 4)
+			export_process(parsed_args, env);
+		else if (r == 5)
+			export_process(parsed_args, env);
+		else if (r == 6)
+			export_process(parsed_args, env);
+		else if (r == 7)
+			exit_process();
+		else
+		{
+			if (fork() == 0)
+			{
+				execve(normalize_cmd(parsed_args[0], env), parsed_args, env);
+				perror(parsed_args[0]);
 		
+				exit(1);
+			}
+		}
 		//print_tab(parsed_args);
 		//printf("parsed_args[0]%s\n", parsed_args[0]);
-		execve(normalize_cmd(parsed_args[0], env), parsed_args, env);
-		//execvp(parsed_args[0], parsed_args);
-		perror(parsed_args[0]);
-		exit(1);
-	}
 }
 
 void	execute_command_2(char **parsed_args, int in_fd, int out_fd, char *env[])
 {
+	int	r;
+
 	if (in_fd != STDIN_FILENO)
 	{
 		dup2(in_fd, STDIN_FILENO);
@@ -101,9 +122,29 @@ void	execute_command_2(char **parsed_args, int in_fd, int out_fd, char *env[])
 		dup2(out_fd, STDOUT_FILENO);
 		close(out_fd);
 	}
-	execve(normalize_cmd(parsed_args[0], env), parsed_args, env);
-	perror(parsed_args[0]);
-	exit(1);
+	
+	r = is_builtins(*parsed_args);
+	if (r == 1)
+		echo_process(parsed_args);
+	else if (r == 2)
+		cd_process(parsed_args);
+	else if (r == 3)
+		pwd_process(parsed_args);
+	else if (r == 4)
+		export_process(parsed_args, env);
+	else if (r == 5)
+		export_process(parsed_args, env);
+	else if (r == 6)
+		export_process(parsed_args, env);
+	else if (r == 7)
+		exit_process();
+	else
+	{
+		execve(normalize_cmd(parsed_args[0], env), parsed_args, env);
+		perror(parsed_args[0]);
+		exit(1);
+	}
+		
 }
 
 static int process_delimiter(char *del)
@@ -142,7 +183,6 @@ int process_redirection(char *str, char *env[], int mode)
     int in_fd = STDIN_FILENO;
     int out_fd = STDOUT_FILENO;
     char **parsed_args;
-	int	r;
     parsed_args = ft_split_lexer(str, ' ');
 	
     char **current_command = parsed_args;
@@ -187,42 +227,29 @@ int process_redirection(char *str, char *env[], int mode)
         else if (ft_strcmp(*parsed_args, "<<") == 0)
         {
 			//print_tab(parsed_args);
-
+			print_tab((current_command));
             *parsed_args = NULL;
-			//print_tab((parsed_args + 1));
+			print_tab((current_command));
+
             in_fd = process_delimiter(*(parsed_args + 1));
 			//current_command++;
 			//printf("LINE %s\n", *(parsed_args + 1));
             parsed_args += 2;
+			current_command += 2;
         }
         else
         {
             parsed_args++;
         }
     }
-	r = is_builtins(*current_command);
-	if (r == 1)
-		echo_process(current_command);
-	else if (r == 2)
-		cd_process(current_command);
-	else if (r == 3)
-		pwd_process(current_command);
-	else if (r == 4)
-		export_process(current_command, env);
-	else if (r == 5)
-		export_process(current_command, env);
-	else if (r == 6)
-		export_process(current_command, env);
-	else if (r == 7)
-		exit_process();
+	
+
+	//print_tab(current_command);
+	if (mode)
+		execute_command(current_command, in_fd, out_fd, env);
 	else
-	{
-		print_tab(current_command);
-		if (mode)
-			execute_command(current_command, in_fd, out_fd, env);
-		else
-			execute_command_2(current_command, in_fd, out_fd, env);
-	}
+		execute_command_2(current_command, in_fd, out_fd, env);
+	
     	
     if (in_fd != STDIN_FILENO)
     {
