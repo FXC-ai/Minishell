@@ -13,115 +13,70 @@
 
 #include "../includes/header.h"
 
-/*static int delimiter_parse(char *str)
-{
-	int i;
 
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '<' && str[i + 1] == '<')
-			return (1);
-		i++;
-	}
-	return (0);
+void execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
+{
+    int r;
+
+    pid_t child_pid = fork();
+    if (child_pid == 0)
+    {
+        if (in_fd != STDIN_FILENO)
+        {
+            dup2(in_fd, STDIN_FILENO);
+            close(in_fd);
+        }
+        if (out_fd != STDOUT_FILENO)
+        {
+            dup2(out_fd, STDOUT_FILENO);
+            close(out_fd);
+        }
+
+        r = is_builtins(*parsed_args);
+        if (r == 1)
+            echo_process(parsed_args);
+        else if (r == 2)
+            cd_process(parsed_args);
+        else if (r == 3)
+            pwd_process(parsed_args);
+        else if (r == 4)
+            export_process(parsed_args, env);
+        else if (r == 5)
+            export_process(parsed_args, env);
+        else if (r == 6)
+            export_process(parsed_args, env);
+        else if (r == 7)
+            exit_process();
+        else
+        {
+            execve(normalize_cmd(parsed_args[0], env), parsed_args, env);
+            perror(parsed_args[0]);
+
+            exit(1);
+        }
+        exit(0);
+    }
+    else
+    {
+        waitpid(child_pid, NULL, 0);
+    }
 }
 
-*/
-/*static char *get_delimiter(char *str)
-{
-	int i;
-	char    *result;
-	int	tmp;
-
-printf("STR %s\n", str);
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '<' && str[i + 1] == '<')
-		{
-			
-			i += 2;
-			printf("STR %c", str[i]);
-			while (str[i] && str[i] == ' ')
-				i++;
-			tmp = i;
-			while (str[i] && str[i] != ' ')
-				i++;
-			result = malloc(i - tmp + 2);
-			printf("%d\n", i - tmp + 1);
-			i = tmp;
-			tmp = 0;
-			while (str[i] && str[i] != ' ')
-				result[tmp++] = str[i++];
-			result[tmp] = '\n';
-			result[tmp + 1] = '\0';
-			printf("RESULTdel[0] %s\n", result);
-			return (result);
-		}
-		i++;
-	}
-	return (NULL);
-}*/
-
-void	execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
-{
-	int	r;
-	
-		if (in_fd != STDIN_FILENO)
-		{
-			dup2(in_fd, STDIN_FILENO);
-			close(in_fd);
-		}
-		if (out_fd != STDOUT_FILENO)
-		{
-			dup2(out_fd, STDOUT_FILENO);
-			close(out_fd);
-		}
-		(void) env;
-		r = is_builtins(*parsed_args);
-		if (r == 1)
-			echo_process(parsed_args);
-		else if (r == 2)
-			cd_process(parsed_args);
-		else if (r == 3)
-			pwd_process(parsed_args);
-		else if (r == 4)
-			export_process(parsed_args, env);
-		else if (r == 5)
-			export_process(parsed_args, env);
-		else if (r == 6)
-			export_process(parsed_args, env);
-		else if (r == 7)
-			exit_process();
-		else
-		{
-			if (fork() == 0)
-			{
-				execve(normalize_cmd(parsed_args[0], env), parsed_args, env);
-				perror(parsed_args[0]);
-		
-				exit(1);
-			}
-		}
-		//print_tab(parsed_args);
-		//printf("parsed_args[0]%s\n", parsed_args[0]);
-}
 
 void	execute_command_2(char **parsed_args, int in_fd, int out_fd, char *env[])
 {
 	int	r;
 
 	if (in_fd != STDIN_FILENO)
-	{
-		dup2(in_fd, STDIN_FILENO);
-		close(in_fd);
-	}
-	if (out_fd != STDOUT_FILENO)
-	{
-		dup2(out_fd, STDOUT_FILENO);
-		close(out_fd);
-	}
+    {
+        dup2(in_fd, STDIN_FILENO);
+        close(in_fd);
+    }
+    if (out_fd != STDOUT_FILENO)
+    {
+        dup2(out_fd, STDOUT_FILENO);
+        close(out_fd);
+    }
 	
 	r = is_builtins(*parsed_args);
 	if (r == 1)
@@ -186,7 +141,7 @@ int process_redirection(char *str, char *env[], int mode)
     parsed_args = ft_split_lexer(str, ' ');
 	
     char **current_command = parsed_args;
-	print_tab(current_command);
+	//print_tab(current_command);
     while (*parsed_args)
     {
 		//printf("%s\n", *parsed_args);
@@ -259,6 +214,5 @@ int process_redirection(char *str, char *env[], int mode)
     {
         close(out_fd);
     }
-    wait(NULL);
     return (out_fd);
 }

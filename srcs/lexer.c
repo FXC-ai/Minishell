@@ -58,9 +58,10 @@ void	my_error()
 char **lexer(char *str, char *env[])
 {
 	char	**result;
-	int		i;
+	//int		i;
 	char	c = '|';
-	i = 0;
+	
+	//i = 0;
 	result = ft_split_lexer(str, c);
 	normalize_with_space(result);
 	if (result[1] == NULL)

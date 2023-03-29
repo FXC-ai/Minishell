@@ -204,7 +204,7 @@ void ms_pipe2(char **tab_cmds, char *env[])
         close(pipe_fd1[0]);
         close(pipe_fd1[1]);  
     }
-    for (i = 0; i < nbr_cmds +1; i++)
+    for (i = 0; i < nbr_cmds; i++)
     {
         waitpid(-1, NULL, 0);
     }
