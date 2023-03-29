@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_pipe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:32:05 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/03/28 10:04:36 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/03/29 10:31:25 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -379,9 +379,8 @@ void ms_pipe2_dep(char **tab_cmds, char *env[])
 }
 
 
-int main (int argc, char *argv[], char *env[])
+/*int main (int argc, char *argv[], char *env[])
 {
-    /*
     char *tab_cmd_test1[6];
 
     tab_cmd_test1[0] = "ls";
@@ -392,9 +391,7 @@ int main (int argc, char *argv[], char *env[])
     tab_cmd_test1[5] = NULL;
 
     ms_pipe3(tab_cmd_test1, env);
-*/
     
-    /*
     
 
     char *tab_cmd_test2[4];
@@ -415,9 +412,9 @@ int main (int argc, char *argv[], char *env[])
     tab_cmd_test3[2] = NULL;
 
     ms_pipe2(tab_cmd_test3, env);
-    */
+    
 
     int **M = 
     
     return 0;
-}
+}*/

@@ -6,19 +6,74 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 14:32:31 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/24 16:26:14 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/29 11:45:06 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/header.h"
 
+
+int	key_already_exist(char *key, char *value, char *env[])
+{
+	int		i;
+	int		j;
+	(void) value;
+
+	i = 0;
+	while (env[i])
+	{
+		j = 0;
+		while ((env[i][j]) == key[j])
+		{
+			printf("env[j][i] %c, key[i] %c", env[i][j], key[j]);
+			j++;
+		}
+		if (j == (int) ft_strlen(key))
+		{
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
+void add_to_env(char *key, char *value, char *env[])
+{
+   	int key_len = strlen(key);
+    int value_len = strlen(value);
+	char *result;
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	if (key_already_exist(key, value, env) == 1)
+		return ;
+	result = malloc(value_len + key_len + 2);
+	while (i < key_len && key[i] != '=')
+		result[j++] = key[i++];
+	result[j++] = '=';
+	i = 0;
+	while (i < value_len)
+	{
+		result[j++] = value[i++];
+	}
+	result[j] = '\0';
+	i = 0;
+	while (env[i])
+		i++;
+	env[i] = result;
+	env[i + 1] = NULL;
+}
+
 void export_process(char **current_command, char *env[])
 {
 	int i;
+	char *equal_sign;
+	char *value;
+	char *key;
 
 	i = 0;
-	(void) current_command;
-	(void) env;
 	if (current_command[1] == NULL)
 	{
 		while (env[i])
@@ -29,6 +84,14 @@ void export_process(char **current_command, char *env[])
 	}
 	else
 	{
-		
+		equal_sign = strchr(current_command[1], '=');
+        if (equal_sign == NULL) {
+            fprintf(stderr, "export: invalid format, use KEY=VALUE\n");
+            return;
+        }
+        key = current_command[1];
+        value = ++equal_sign;
+
+        add_to_env(key, value, env);
 	}
 }
