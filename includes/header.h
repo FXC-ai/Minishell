@@ -67,6 +67,7 @@ char	*create_path_cmd(char *path, char *cmd);
 char	*cmd_exists(char *cmd, char *env[]);
 char	*normalize_cmd(char* str, char *env[]);
 int		is_builtins(char *str);
+void	print_tab(char **tab);
 
 
 //MS_PIPE.C

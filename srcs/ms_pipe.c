@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 12:35:43 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/29 13:53:36 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/29 16:18:06 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ void redirection (char *input_cmd, int previous_pipe[2], int next_pipe[2], char 
         close(previous_pipe[0]);
         close(next_pipe[1]);       
 
-        process_redirection(input_cmd, env);
-        execution(input_cmd, env);
+        process_redirection(input_cmd, env, 0);
+        //execution(input_cmd, env);
     }
 
 
@@ -85,8 +85,9 @@ void execute_first_cmd(int pipe_fd[2], char **tab_cmds, char *env[])
         close(pipe_fd[0]);
         dup2(pipe_fd[1],1);
         close(pipe_fd[1]);
-
-        execution(tab_cmds[0], env);
+        process_redirection(tab_cmds[0], env, 0);
+        //redirection();
+        //execution(tab_cmds[0], env);
     }    
     else
     {
@@ -110,7 +111,8 @@ void execute_last_cmd(int pipe_fd[2], char **tab_cmds, int nbr_cmds, char *env[]
         close(pipe_fd[1]);
         dup2(pipe_fd[0],0);
         close(pipe_fd[0]);
-        execution(tab_cmds[nbr_cmds-1], env);
+        process_redirection(tab_cmds[nbr_cmds - 1], env, 0);
+        //execution(tab_cmds[nbr_cmds-1], env);
     }
 }
 
@@ -173,7 +175,10 @@ void ms_pipe2(char **tab_cmds, char *env[])
             close(pipe_fd2[1]);
             dup2(pipe_fd2[0],0);
             close(pipe_fd2[0]);
-            execution(tab_cmds[nbr_cmds-1], env);
+            //execution(tab_cmds[nbr_cmds - 1], env);
+            process_redirection(tab_cmds[nbr_cmds-1], env, 0); 
+            
+            //redirection(tab_cmds[nbr_cmds-1], pipe_fd2, pipe_fd1, env);
         }
         close(pipe_fd2[0]);
         close(pipe_fd2[1]);  
@@ -190,12 +195,16 @@ void ms_pipe2(char **tab_cmds, char *env[])
             close(pipe_fd1[1]);
             dup2(pipe_fd1[0],0);
             close(pipe_fd1[0]);
-            execution(tab_cmds[nbr_cmds-1], env);
+            //execution(tab_cmds[nbr_cmds - 1], env); 
+            process_redirection(tab_cmds[nbr_cmds-1], env, 0); 
+            
+            //redirection(tab_cmds[nbr_cmds-1], pipe_fd2, pipe_fd1, env);
+
         }
         close(pipe_fd1[0]);
         close(pipe_fd1[1]);  
     }
-    for (i = 0; i < nbr_cmds; i++)
+    for (i = 0; i < nbr_cmds +1; i++)
     {
         waitpid(-1, NULL, 0);
     }

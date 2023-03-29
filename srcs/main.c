@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 11:39:22 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/29 14:36:13 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/29 15:08:16 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,16 +63,6 @@ int	main(int ac, char **argv, char *env[])
 	(void) argv;
 	(void) ac;
 	
-	
-	
-	int fd = open("debug2.log", O_WRONLY | O_APPEND);
-	//ft_putstr_fd("gekjgekgfjkgfkfgjkhdfsjkhdfjdfsj\n", fd_debug);
-
-	close(fd);
-
-
-
-
 	if (tcgetattr(STDIN_FILENO, &tm) == -1)
 		return (-1);
 	tm.c_lflag &= ~ECHOCTL;

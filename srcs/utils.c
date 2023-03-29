@@ -6,13 +6,26 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 17:35:07 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/24 14:18:26 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/29 17:18:57 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 
 #include "../includes/header.h"
+
+
+void	print_tab(char **tab)
+{
+	int i;
+
+	i = 0;
+	printf("--------------TAB------------\n");
+	while (tab[i])
+	{
+		printf("%s\n", tab[i++]);
+	}
+}
 
 int	is_builtins(char *str)
 {
@@ -128,7 +141,7 @@ char *extract_command_name(const char *full_path)
 	{
 		return strdup(last_slash + 1);
 	}
-	//FAUDRA FREE LE RESULT
+	//faudra free result
 }
 
 
@@ -136,7 +149,8 @@ char *normalize_cmd(char* str, char *env[])
 {	
 	char *result;
 
-
+	if (str == NULL || str[0] == '\0')
+		return str;
 	// Cas ou la commande est envoyée sous forme de chemin
 	if (ft_strchr(str, '/') != NULL)
 	{

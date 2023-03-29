@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:31:55 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/03/29 14:32:49 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/29 17:36:06 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,12 @@ void	execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
 			dup2(out_fd, STDOUT_FILENO);
 			close(out_fd);
 		}
+		(void) env;
 		
-		
+		//print_tab(parsed_args);
+		//printf("parsed_args[0]%s\n", parsed_args[0]);
 		execve(normalize_cmd(parsed_args[0], env), parsed_args, env);
+		//execvp(parsed_args[0], parsed_args);
 		perror(parsed_args[0]);
 		exit(1);
 	}
@@ -88,9 +91,6 @@ void	execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
 
 void	execute_command_2(char **parsed_args, int in_fd, int out_fd, char *env[])
 {
-	
-
-
 	if (in_fd != STDIN_FILENO)
 	{
 		dup2(in_fd, STDIN_FILENO);
@@ -101,13 +101,9 @@ void	execute_command_2(char **parsed_args, int in_fd, int out_fd, char *env[])
 		dup2(out_fd, STDOUT_FILENO);
 		close(out_fd);
 	}
-	
-
-
 	execve(normalize_cmd(parsed_args[0], env), parsed_args, env);
 	perror(parsed_args[0]);
 	exit(1);
-
 }
 
 static int process_delimiter(char *del)
@@ -116,6 +112,7 @@ static int process_delimiter(char *del)
     ssize_t rdd;
     int fd;
     char *del_n = ft_strjoin(del, "\n");
+
     free(del);
     fd = open("TMPDOC", O_TRUNC | O_CREAT | O_WRONLY, 0777);
 
@@ -123,8 +120,10 @@ static int process_delimiter(char *del)
     while (rdd > 0)
     {
         buffer[rdd] = '\0';
+		//printf("OK\n");
         if (ft_strcmp(del_n, buffer) == 0)
         {
+			//printf("OK!\n");
             break;
         }
         write(fd, buffer, rdd);
@@ -145,9 +144,9 @@ int process_redirection(char *str, char *env[], int mode)
     char **parsed_args;
 	int	r;
     parsed_args = ft_split_lexer(str, ' ');
+	
     char **current_command = parsed_args;
-    int delimiter_processed = 0;
-
+	print_tab(current_command);
     while (*parsed_args)
     {
 		//printf("%s\n", *parsed_args);
@@ -155,26 +154,45 @@ int process_redirection(char *str, char *env[], int mode)
         {
             *parsed_args = NULL;
             out_fd = open(*(parsed_args + 1), O_WRONLY | O_CREAT | O_TRUNC, 0777);
+			if (in_fd == -1)
+			{
+				perror("open");
+				return -1;
+			}
             parsed_args++;
         }
         else if (ft_strcmp(*parsed_args, ">>") == 0)
         {
             *parsed_args = NULL;
             out_fd = open(*(parsed_args + 1), O_WRONLY | O_CREAT | O_APPEND, 0777);
+			if (in_fd == -1)
+			{
+				perror("open");
+				return -1;
+			}
             parsed_args++;
         }
         else if (ft_strcmp(*parsed_args, "<") == 0)
         {
             *parsed_args = NULL;
-            in_fd = open(*(parsed_args + 1), O_RDONLY | O_CREAT);
+            in_fd = open(*(parsed_args + 1), O_RDONLY);
+			
+			if (in_fd == -1)
+			{
+				perror("open");
+				return -1;
+			}
             parsed_args++;
         }
         else if (ft_strcmp(*parsed_args, "<<") == 0)
         {
-            delimiter_processed = 1;
+			//print_tab(parsed_args);
+
             *parsed_args = NULL;
+			//print_tab((parsed_args + 1));
             in_fd = process_delimiter(*(parsed_args + 1));
-			printf("LINE %s\n", *(parsed_args + 1));
+			//current_command++;
+			//printf("LINE %s\n", *(parsed_args + 1));
             parsed_args += 2;
         }
         else
@@ -199,9 +217,7 @@ int process_redirection(char *str, char *env[], int mode)
 		exit_process();
 	else
 	{
-		
-
-
+		print_tab(current_command);
 		if (mode)
 			execute_command(current_command, in_fd, out_fd, env);
 		else
