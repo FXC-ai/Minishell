@@ -5,12 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/22 18:32:05 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/03/29 11:54:56 by vgiordan         ###   ########.fr       */
+/*   Created: 2023/03/29 12:35:43 by vgiordan          #+#    #+#             */
+/*   Updated: 2023/03/29 13:53:36 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
+#include "../includes/header.h"
 
 
 static void	error_exit(int code_error)
@@ -30,6 +30,9 @@ static void	freemalloc(char **result, int j)
 	free(result);
 }
 
+
+
+
 void execution (char *input_cmd, char *env[])
 {
     char **tab_cmd;
@@ -43,82 +46,160 @@ void execution (char *input_cmd, char *env[])
     }
 }
 
-void boucle_executor (char *tab_cmd, int (*pipe_fd)[2], int (*former_pipe)[2], char *env[])
-{
-    int pid;
 
-    pipe(*pipe_fd);
+void redirection (char *input_cmd, int previous_pipe[2], int next_pipe[2], char *env[])
+{
+    pid_t pid;
+   // int status;
+
     pid = fork();
-    if (pid)
+    if (pid == 0)
     {
-        (*pipe_fd)[0] = (*former_pipe)[1];
-        (*former_pipe)[0] = (*pipe_fd)[0];
-        (*former_pipe)[1] = (*pipe_fd)[1];
-        close((*pipe_fd)[1]);
-        dup2((*pipe_fd)[0], 0);
-        //waitpid(pid, NULL, 0);
+        close(previous_pipe[1]);
+        close(next_pipe[0]);
+
+        dup2(previous_pipe[0],0);
+        dup2(next_pipe[1],1);
+
+        close(previous_pipe[0]);
+        close(next_pipe[1]);       
+
+        process_redirection(input_cmd, env);
+        execution(input_cmd, env);
     }
-    else
-    {
-        close((*pipe_fd)[0]);
-        dup2((*pipe_fd)[1], 1);
-        execution(tab_cmd, env);
-    }
+
+
+
 
 }
+
+void execute_first_cmd(int pipe_fd[2], char **tab_cmds, char *env[])
+{
+    pid_t pid;
+   // int status;
+
+    pid = fork();
+    if (pid == 0)
+    {
+        //printf("Execution 1st cmd : %s\n", tab_cmds[0]);
+        close(pipe_fd[0]);
+        dup2(pipe_fd[1],1);
+        close(pipe_fd[1]);
+
+        execution(tab_cmds[0], env);
+    }    
+    else
+    {
+
+        //usleep(100);
+        //waitpid(pid, &status, 0);
+    }
+}
+
+
+void execute_last_cmd(int pipe_fd[2], char **tab_cmds, int nbr_cmds, char *env[])
+{
+    pid_t pid;
+   // int status;
+
+    pid = fork();
+    if (pid == 0)
+    {
+        //printf("Execution last cmd : %s\n", tab_cmds[nbr_cmds-1]);
+
+        close(pipe_fd[1]);
+        dup2(pipe_fd[0],0);
+        close(pipe_fd[0]);
+        execution(tab_cmds[nbr_cmds-1], env);
+    }
+}
+
 
 void ms_pipe2(char **tab_cmds, char *env[])
 {
 
-    int pipe_fd[2];
-    int former_pipe[2];
+    int pipe_fd1[2];
+    int pipe_fd2[2];
 
     pid_t pid;
 
-    int process_num;
+    //char **tab_cmd;
+
+    int nbr_cmds;
+
     int i;
 
-    process_num = size_tab(tab_cmds);
+    nbr_cmds = size_tab(tab_cmds);
 
-    pipe(pipe_fd);
-    pid = fork();
-    if (pid)
-    {
-        former_pipe[0] = pipe_fd[0];
-        former_pipe[1] = pipe_fd[1];
-        close(pipe_fd[1]);
-        dup2(pipe_fd[0], 0);
-        //waitpid(pid, NULL, 0);
-    }
-    else
-    {
-        close(pipe_fd[0]);
-        dup2(pipe_fd[1], 1);
-        execution(tab_cmds[0], env);
-    }
+
+
+    //PROCESSUS 1
+    pipe(pipe_fd1);
+    execute_first_cmd(pipe_fd1, tab_cmds, env);
+    
 
     i = 0;
-    while (i < process_num - 2)
+    while (i < nbr_cmds - 2)
     {
-        boucle_executor(tab_cmds[i+1], &pipe_fd, &former_pipe, env);
+        if (i % 2 == 0)
+        {
+
+            pipe(pipe_fd2);
+            redirection(tab_cmds[i + 1], pipe_fd1, pipe_fd2, env);
+
+            close(pipe_fd1[0]);
+            close(pipe_fd1[1]);          
+        }
+        else if (i % 2 == 1)
+        {
+
+            pipe(pipe_fd1);
+            redirection(tab_cmds[i + 1], pipe_fd2, pipe_fd1, env);
+
+            close(pipe_fd2[0]);
+            close(pipe_fd2[1]);
+        }
         i++;
     }
-
-    pid = fork();
-    if (pid)
-    {        
-        waitpid(pid, NULL, 0);
-    }
-    else
-    {
-        execution(tab_cmds[process_num-1], env);
-    }
     
-    while(process_num > 0)
+    if (i % 2 == 1)
     {
-        wait(NULL);
-        process_num--;
+        //execute_last_cmd(pipe_fd2, tab_cmds, nbr_cmds, env);
+        pid = fork();
+        if (pid == 0)
+        {
+            //printf("Execution last cmd : %s\n", tab_cmds[nbr_cmds-1]);
+
+            close(pipe_fd2[1]);
+            dup2(pipe_fd2[0],0);
+            close(pipe_fd2[0]);
+            execution(tab_cmds[nbr_cmds-1], env);
+        }
+        close(pipe_fd2[0]);
+        close(pipe_fd2[1]);  
     }
+    else if (i % 2 == 0)
+    {
+        //execute_last_cmd(pipe_fd1, tab_cmds, nbr_cmds, env);
+        pid = fork();
+        if (pid == 0)
+        {
+            //printf("Execution last cmd (2) : %s\n", tab_cmds[nbr_cmds-1]);
+
+
+            close(pipe_fd1[1]);
+            dup2(pipe_fd1[0],0);
+            close(pipe_fd1[0]);
+            execution(tab_cmds[nbr_cmds-1], env);
+        }
+        close(pipe_fd1[0]);
+        close(pipe_fd1[1]);  
+    }
+    for (i = 0; i < nbr_cmds; i++)
+    {
+        waitpid(-1, NULL, 0);
+    }
+
+    //wait(0);
 
 }
-

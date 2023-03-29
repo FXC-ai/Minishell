@@ -42,8 +42,8 @@ typedef struct s_redirect
 void	wait_for_input(char *env[]);
 
 //REDIRECTION.C
-void	execute_command(char **parsed_args, int in_fd, int out_fd);
-int		process_redirection(char *str, char *env[]);
+void	execute_command(char **parsed_args, int in_fd, int out_fd, char *env[]);
+int		process_redirection(char *str, char *env[], int mode);
 
 //SIGNAL.C
 

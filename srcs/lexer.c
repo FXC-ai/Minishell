@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:32:28 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/24 15:36:40 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/29 13:58:12 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ char **lexer(char *str, char *env[])
 	normalize_with_space(result);
 	if (result[1] == NULL)
 	{
-		process_redirection(result[0], env);
+		process_redirection(result[0], env, 1);
 		return (0);
 	}
 	/*while (result[i])
@@ -73,6 +73,6 @@ char **lexer(char *str, char *env[])
 		//printf("str %d = [%s]\n", i, result[i]);
 		i++;
 	}*/
-	parsing(result, env);
+	ms_pipe2(result,env);
 	return (result);
 }

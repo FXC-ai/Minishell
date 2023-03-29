@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:31:55 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/03/24 16:32:10 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/29 14:32:49 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ printf("STR %s\n", str);
 	return (NULL);
 }*/
 
-void	execute_command(char **parsed_args, int in_fd, int out_fd)
+void	execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
 {
 	if (fork() == 0)
 	{
@@ -79,10 +79,35 @@ void	execute_command(char **parsed_args, int in_fd, int out_fd)
 			close(out_fd);
 		}
 		
-		execvp(parsed_args[0], parsed_args);
+		
+		execve(normalize_cmd(parsed_args[0], env), parsed_args, env);
 		perror(parsed_args[0]);
 		exit(1);
 	}
+}
+
+void	execute_command_2(char **parsed_args, int in_fd, int out_fd, char *env[])
+{
+	
+
+
+	if (in_fd != STDIN_FILENO)
+	{
+		dup2(in_fd, STDIN_FILENO);
+		close(in_fd);
+	}
+	if (out_fd != STDOUT_FILENO)
+	{
+		dup2(out_fd, STDOUT_FILENO);
+		close(out_fd);
+	}
+	
+
+
+	execve(normalize_cmd(parsed_args[0], env), parsed_args, env);
+	perror(parsed_args[0]);
+	exit(1);
+
 }
 
 static int process_delimiter(char *del)
@@ -113,7 +138,7 @@ static int process_delimiter(char *del)
 }
 
 
-int process_redirection(char *str, char *env[])
+int process_redirection(char *str, char *env[], int mode)
 {
     int in_fd = STDIN_FILENO;
     int out_fd = STDOUT_FILENO;
@@ -125,6 +150,7 @@ int process_redirection(char *str, char *env[])
 
     while (*parsed_args)
     {
+		//printf("%s\n", *parsed_args);
         if (ft_strcmp(*parsed_args, ">") == 0)
         {
             *parsed_args = NULL;
@@ -172,7 +198,16 @@ int process_redirection(char *str, char *env[])
 	else if (r == 7)
 		exit_process();
 	else
-    	execute_command(current_command, in_fd, out_fd);
+	{
+		
+
+
+		if (mode)
+			execute_command(current_command, in_fd, out_fd, env);
+		else
+			execute_command_2(current_command, in_fd, out_fd, env);
+	}
+    	
     if (in_fd != STDIN_FILENO)
     {
         close(in_fd);
@@ -182,7 +217,5 @@ int process_redirection(char *str, char *env[])
         close(out_fd);
     }
     wait(NULL);
-    wait(NULL);
-
     return (out_fd);
 }
