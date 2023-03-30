@@ -6,11 +6,11 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:31:55 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/03/30 16:24:00 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/30 16:26:12 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
+#include "../includes/header.h"
 
 void execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
 {

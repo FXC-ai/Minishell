@@ -6,10 +6,11 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 14:11:00 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/30 16:24:53 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/30 16:26:41 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../includes/header.h"
 
 void echo_process(char **current_command)
 {
