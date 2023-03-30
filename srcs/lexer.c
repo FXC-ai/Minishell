@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:32:28 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/30 18:27:16 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/03/30 18:39:34 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ char *ft_strndup(char *str, size_t n)
 
 
 
-char **parse_dollar(char **result_split)
+char **parse_dollar(char **result_split, char *env[])
 {
 
 	char *trimmed_command;
@@ -118,9 +118,28 @@ char **parse_dollar(char **result_split)
 			}
 			tmp = ft_strndup(trimmed_command+1, j);
 			
+			printf("result = %s\n", tmp);
+
+			j = 0;
+			while (env[i] != NULL)
+			{
+				if (ft_strncmp(env[i], tmp, ft_strlen(tmp)) == 0 && env[i][ft_strlen(tmp)] == '=')
+				{
+					found = 1;
+					while (env[i] != NULL)
+					{
+						env[i] = env[i + 1];
+						i++;
+					}
+					break;
+				}
+				i++;
+			}
 			
 
-			//printf("result[%d] = %s\n", i, result[i]);
+			
+
+			
 		}
 		else
 		{
@@ -144,7 +163,6 @@ char **lexer(char *str, char *env[])
 	result = ft_split_lexer(str, c);
 	if (result == NULL)
 		return (0);
-
 
 
 	normalize_with_space(result);
