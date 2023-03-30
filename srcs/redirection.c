@@ -6,10 +6,9 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:31:55 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/03/30 11:41:19 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/30 13:22:29 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../includes/header.h"
 
@@ -18,67 +17,53 @@ void execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
 {
     int r;
 
-    pid_t child_pid = fork();
-    if (child_pid == 0)
+    
+    if (in_fd != STDIN_FILENO)
     {
-        if (in_fd != STDIN_FILENO)
+        printf("REDIRECTION IN\n");
+        dup2(in_fd, STDIN_FILENO);
+        close(in_fd);
+    }
+    if (out_fd != STDOUT_FILENO)
+    {
+        printf("REDIRECTION OUT\n");
+        dup2(out_fd, STDOUT_FILENO);
+        ft_putstr_fd("CA marche \n", 2);
+        close(out_fd);
+        ft_putstr_fd("CA marche 2\n", 2);
+    }
+
+    r = is_builtins(*parsed_args);
+    if (r == 1)
+        echo_process(parsed_args);
+    else if (r == 2)
+        cd_process(parsed_args);
+    else if (r == 3)
+        pwd_process(parsed_args);
+    else if (r == 4)
+        export_process(parsed_args, env);
+    else if (r == 5)
+        export_process(parsed_args, env);
+    else if (r == 6)
+        export_process(parsed_args, env);
+    else if (r == 7)
+        exit_process();
+    else
+    {
+        pid_t child_pid = fork();
+        if (child_pid == 0)
         {
-            if (dup2(in_fd, STDIN_FILENO) == -1)
-            {
-                perror("dup2");
-                exit(1);
-            }
-            if (close(in_fd) == -1)
-            {
-                perror("close");
-                exit(1);
-            }   
-        }
-        if (out_fd != STDOUT_FILENO)
-        {
-            if (dup2(out_fd, STDOUT_FILENO) == -1)
-            {
-                perror("dup2");
-                exit(1);
-            }
-            if (close(out_fd) == -1)
-            {
-                perror("close");
-                exit(1);
-            }   
-        }
-        r = is_builtins(*parsed_args);
-        if (r == 1)
-            echo_process(parsed_args);
-        else if (r == 2)
-            cd_process(parsed_args);
-        else if (r == 3)
-            pwd_process(parsed_args);
-        else if (r == 4)
-            export_process(parsed_args, env);
-        else if (r == 5)
-            export_process(parsed_args, env);
-        else if (r == 6)
-            export_process(parsed_args, env);
-        else if (r == 7)
-            exit_process();
-        else
-        {
+    
             execve(normalize_cmd(parsed_args[0], env), parsed_args, env);
             perror(parsed_args[0]);
             exit(0);
         }
-        exit(0);
-    }
-    else if (child_pid == -1)
-    {
-        perror("fork");
-        return ;
-    }
-    else
-    {
-        waitpid(child_pid, NULL, 0);
-    }
+        else
+        {
+            waitpid(child_pid, NULL, 0);
+        }
+    }    
+
 }
 
 
@@ -224,11 +209,14 @@ int process_redirection(char *str, char *env[], int mode)
     	
     if (in_fd != STDIN_FILENO)
     {
+         ft_putstr_fd("FINAL IN\n", 2);
         close(in_fd);
     }
     if (out_fd != STDOUT_FILENO)
     {
+         ft_putstr_fd("FINAL OUT\n", 2);
         close(out_fd);
     }
+    ft_putstr_fd("CA marche 22\n", 2);
     return (out_fd);
 }
