@@ -6,18 +6,16 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 14:32:31 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/30 17:12:54 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/30 18:12:58 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/header.h"
 
-
-int	key_already_exist(char *key, char *value, char *env[])
+int	key_already_exist(char *key, char *env[])
 {
 	int		i;
 	int		j;
-	(void) value;
 
 	i = 0;
 	while (env[i])
@@ -25,7 +23,7 @@ int	key_already_exist(char *key, char *value, char *env[])
 		j = 0;
 		while ((env[i][j]) == key[j])
 		{
-			printf("env[j][i] %c, key[i] %c", env[i][j], key[j]);
+			//printf("env[j][i] %c, key[i] %c", env[i][j], key[j]);
 			j++;
 		}
 		if (j == (int) ft_strlen(key))
@@ -37,21 +35,25 @@ int	key_already_exist(char *key, char *value, char *env[])
 	return (0);
 }
 
-void add_to_env(char *key, char *value, char *env[])
+void add_to_env(char *ligne, char *value, char *env[])
 {
-   	int key_len = strlen(key);
-    int value_len = strlen(value);
+   	int key_len = ft_strlen(ligne);
+    int value_len = ft_strlen(value);
 	char *result;
 	int	i;
 	int	j;
+	char **s_result;
 
+	s_result = ft_split(ligne, '=');
+	unset_process_str(s_result[0], env);
 	i = 0;
 	j = 0;
-	if (key_already_exist(key, value, env) == 1)
-		return ;
 	result = malloc(value_len + key_len + 2);
-	while (i < key_len && key[i] != '=')
-		result[j++] = key[i++];
+
+	
+
+	while (i < key_len && ligne[i] != '=')
+		result[j++] = ligne[i++];
 	result[j++] = '=';
 	i = 0;
 	while (i < value_len)

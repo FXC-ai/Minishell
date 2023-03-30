@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:31:55 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/03/30 16:58:31 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/30 17:56:10 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ void execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
     }
     else if (r == BUILTIN_EXPORT)
         export_process(parsed_args, env);
+     else if (r == BUILTIN_UNSET)
+            unset_process(parsed_args, env);
 
     pid_t child_pid = fork();
     if (child_pid == 0)
@@ -46,10 +48,8 @@ void execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
             echo_process(parsed_args);
         else if (r == BUILTIN_PWD)
             pwd_process(parsed_args);
-        else if (r == 5)
-            export_process(parsed_args, env);
         else if (r == 6)
-            export_process(parsed_args, env);
+            env_process(parsed_args, env);
         else if (r == 7)
             exit_process();
         else if (r == 0)
