@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:31:55 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/03/30 13:22:29 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/30 14:09:45 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,53 +17,47 @@ void execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
 {
     int r;
 
-    
-    if (in_fd != STDIN_FILENO)
+    pid_t child_pid = fork();
+    if (child_pid == 0)
     {
-        printf("REDIRECTION IN\n");
-        dup2(in_fd, STDIN_FILENO);
-        close(in_fd);
-    }
-    if (out_fd != STDOUT_FILENO)
-    {
-        printf("REDIRECTION OUT\n");
-        dup2(out_fd, STDOUT_FILENO);
-        ft_putstr_fd("CA marche \n", 2);
-        close(out_fd);
-        ft_putstr_fd("CA marche 2\n", 2);
-    }
-
-    r = is_builtins(*parsed_args);
-    if (r == 1)
-        echo_process(parsed_args);
-    else if (r == 2)
-        cd_process(parsed_args);
-    else if (r == 3)
-        pwd_process(parsed_args);
-    else if (r == 4)
-        export_process(parsed_args, env);
-    else if (r == 5)
-        export_process(parsed_args, env);
-    else if (r == 6)
-        export_process(parsed_args, env);
-    else if (r == 7)
-        exit_process();
-    else
-    {
-        pid_t child_pid = fork();
-        if (child_pid == 0)
+        if (in_fd != STDIN_FILENO)
         {
-    
+            dup2(in_fd, STDIN_FILENO);
+            close(in_fd);
+        }
+        if (out_fd != STDOUT_FILENO)
+        {
+            dup2(out_fd, STDOUT_FILENO);
+            close(out_fd);
+        }
+
+        r = is_builtins(*parsed_args);
+        if (r == 1)
+            echo_process(parsed_args);
+        else if (r == 2)
+            cd_process(parsed_args);
+        else if (r == 3)
+            pwd_process(parsed_args);
+        else if (r == 4)
+            export_process(parsed_args, env);
+        else if (r == 5)
+            export_process(parsed_args, env);
+        else if (r == 6)
+            export_process(parsed_args, env);
+        else if (r == 7)
+            exit_process();
+        else
+        {
             execve(normalize_cmd(parsed_args[0], env), parsed_args, env);
             perror(parsed_args[0]);
             exit(0);
         }
-        else
-        {
-            waitpid(child_pid, NULL, 0);
-        }
-    }    
-
+        exit(0);
+    }
+    else
+    {
+        waitpid(child_pid, NULL, 0);
+    }
 }
 
 
@@ -102,6 +96,7 @@ void	execute_command_2(char **parsed_args, int in_fd, int out_fd, char *env[])
 		perror(parsed_args[0]);
 		exit(1);
 	}
+    exit(0);
 }
 
 static int process_delimiter(char *del)
