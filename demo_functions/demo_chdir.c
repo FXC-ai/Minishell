@@ -1,35 +1,25 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 
-int main() 
+int cd(char *path) {
+    int status = chdir(path);
+    if (status != 0) {
+        perror("cd");
+        return EXIT_FAILURE;
+    }
+    return EXIT_SUCCESS;
+}
+
+
+int main(int argc, char *argv[]) 
 {
-    char cwd[1024];
-    char *new_directory = "../";
-    
-    if (getcwd(cwd, sizeof(cwd)) != NULL) 
-    {
-        printf("Le répertoire de travail actuel est : %s\n", cwd);
-    } 
-    else 
-    {
-        perror("getcwd() a échoué");
-        return 1;
+    if (argc != 2) {
+        printf("Usage: %s directory\n", argv[0]);
+        return EXIT_FAILURE;
     }
 
-    if (chdir(new_directory) != 0) {
-        perror("chdir() a échoué");
-        return 1;
-    }
-
-    if (getcwd(cwd, sizeof(cwd)) != NULL) 
-    {
-        printf("Le répertoire de travail actuel est : %s\n", cwd);
-    } 
-    else 
-    {
-        perror("getcwd() a échoué");
-        return 1;
-    }
+    chdir("dossierTest/");
 
     return 0;
 }

@@ -6,18 +6,29 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:31:55 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/03/30 15:55:19 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/30 16:24:00 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/header.h"
 
 
 void execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
 {
     int r;
+    r = is_builtins(*parsed_args);
+
+
+    if (r == 2)
+    {
+        cd_process(parsed_args);
+    }
 
     pid_t child_pid = fork();
+    
+
+    
+    //chdir("..");
+
     if (child_pid == 0)
     {
         if (in_fd != STDIN_FILENO)
@@ -31,11 +42,9 @@ void execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
             close(out_fd);
         }
 
-        r = is_builtins(*parsed_args);
+        
         if (r == 1)
             echo_process(parsed_args);
-        else if (r == 2)
-            cd_process(parsed_args);
         else if (r == 3)
             pwd_process(parsed_args);
         else if (r == 4)
@@ -46,7 +55,7 @@ void execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
             export_process(parsed_args, env);
         else if (r == 7)
             exit_process();
-        else
+        else if (r == 0)
         {
             execve(normalize_cmd(parsed_args[0], env), parsed_args, env);
             perror(parsed_args[0]);
@@ -179,9 +188,9 @@ int process_redirection(char *str, char *env[], int mode)
         else if (ft_strcmp(*parsed_args, "<<") == 0)
         {
 			//print_tab(parsed_args);
-			print_tab((current_command));
+			//print_tab((current_command));
             *parsed_args = NULL;
-			print_tab((current_command));
+			//print_tab((current_command));
 
             in_fd = process_delimiter(*(parsed_args + 1));
 			//current_command++;
