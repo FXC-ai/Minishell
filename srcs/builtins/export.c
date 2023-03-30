@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 14:32:31 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/30 14:04:31 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/30 17:12:11 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	key_already_exist(char *key, char *value, char *env[])
 		j = 0;
 		while ((env[i][j]) == key[j])
 		{
-			printf("env[j][i] %c, key[i] %c", env[i][j], key[j]);
+			//printf("env[j][i] %c, key[i] %c", env[i][j], key[j]);
 			j++;
 		}
 		if (j == (int) ft_strlen(key))
