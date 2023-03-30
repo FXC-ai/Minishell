@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 17:35:07 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/29 17:18:57 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/30 10:54:29 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,22 +27,36 @@ void	print_tab(char **tab)
 	}
 }
 
+
+int	get_max_length(char *str1, char *str2)
+{
+	int	a;
+	int	b;
+
+	a = ft_strlen(str1);
+	b = ft_strlen(str2);
+	if (a >= b)
+		return (a);
+	else
+		return (b);
+}
+
 int	is_builtins(char *str)
 {
 	
-	if (ft_strncmp(str, "echo", 4) == 0)
+	if (ft_strncmp(str, "echo", get_max_length(str, "echo")) == 0)
 		return (1);
-	if (ft_strncmp(str, "cd", 2) == 0)
+	if (ft_strncmp(str, "cd", get_max_length(str, "cd")) == 0)
 		return (2);
-	if (ft_strncmp(str, "pwd", 3) == 0)
+	if (ft_strncmp(str, "pwd", get_max_length(str, "pwd")) == 0)
 		return (3);
-	if (ft_strncmp(str, "export", 6) == 0)
+	if (ft_strncmp(str, "export", get_max_length(str, "export")) == 0)
 		return (4);
-	if (ft_strncmp(str, "unset", 5) == 0)
+	if (ft_strncmp(str, "unset", get_max_length(str, "unset")) == 0)
 		return (5);
-	if (ft_strncmp(str, "env", 3) == 0)
+	if (ft_strncmp(str, "env", get_max_length(str, "env")) == 0)
 		return (6);
-	if (ft_strncmp(str, "exit", 4) == 0)
+	if (ft_strncmp(str, "exit", get_max_length(str, "exit")) == 0)
 		return (7);
 	return (0);
 }
