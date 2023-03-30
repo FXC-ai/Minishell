@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 12:35:43 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/30 15:51:07 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/30 17:10:33 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,37 +163,26 @@ void ms_pipe2(char **tab_cmds, char *env[])
 	
 	if (i % 2 == 1)
 	{
-		//execute_last_cmd(pipe_fd2, tab_cmds, nbr_cmds, env);
 		pid = fork();
 		if (pid == 0)
 		{
-			//printf("Execution last cmd : %s\n", tab_cmds[nbr_cmds-1]);
-
 			close(pipe_fd2[1]);
 			dup2(pipe_fd2[0],0);
 			close(pipe_fd2[0]);
-			//execution(tab_cmds[nbr_cmds - 1], env);
-			process_redirection(tab_cmds[nbr_cmds-1], env, 0); 
-			
-			//redirection(tab_cmds[nbr_cmds-1], pipe_fd2, pipe_fd1, env);
+			process_redirection(tab_cmds[nbr_cmds-1], env, 0);
 		}
+		close(pipe_fd2[1]);
 		close(pipe_fd2[0]);
-		close(pipe_fd2[1]);  
 	}
 	else if (i % 2 == 0)
 	{
-		//execute_last_cmd(pipe_fd1, tab_cmds, nbr_cmds, env);
 		pid = fork();
 		if (pid == 0)
 		{
-			//printf("Execution last cmd (2) : %s\n", tab_cmds[nbr_cmds-1]);
 			close(pipe_fd1[1]);
 			dup2(pipe_fd1[0],0);
 			close(pipe_fd1[0]);
-			//execution(tab_cmds[nbr_cmds - 1], env); 
 			process_redirection(tab_cmds[nbr_cmds-1], env, 0);
-			//redirection(tab_cmds[nbr_cmds-1], pipe_fd2, pipe_fd1, env);
-
 		}
 		close(pipe_fd1[0]);
 		close(pipe_fd1[1]);  
