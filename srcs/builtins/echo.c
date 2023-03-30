@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 14:11:00 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/30 12:58:43 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/03/30 15:14:24 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void echo_process(char **current_command)
 	int	i;
 	int has_flag;
 
-	ft_putstr_fd("CA marche 3\n", 2);
 	i = 1;
 	has_flag = 0;
 	if (ft_strcmp(current_command[i], "-n") == 0)
@@ -27,8 +26,7 @@ void echo_process(char **current_command)
 	}
     while (current_command[i])
 	{
-		ft_putstr_fd("CA marche 4\n", 2);
-		printf("%s", current_command[i]);
+		printf("%s ", current_command[i]);
 		i++;
     }
     if (has_flag == 0) 

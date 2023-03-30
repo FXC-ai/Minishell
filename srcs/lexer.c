@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:32:28 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/29 16:44:18 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/30 15:13:26 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,12 @@ void normalize_with_space(char **str)
 		else if (quote == '\0' && (*p == '<' || *p == '>'))
 		{
             if (prev != NULL && !is_space(*prev) && *prev != '\'' && *prev != '\"' && *prev != '<') {
-                ft_memmove(p+1, p, strlen(p)+1);
+                ft_memmove(p+1, p, ft_strlen(p)+1);
                 *p = ' ';
                 prev = p;
             }
             if (*(p+1) != '\0' && !is_space(*(p+1)) && *(p+1) != '\'' && *(p+1) != '\"' && *(p+1) != '<') {
-                ft_memmove(p+2, p+1, strlen(p+1)+1);
+                ft_memmove(p+2, p+1, ft_strlen(p+1)+1);
                 *(p+1) = ' ';
             }
         }
@@ -63,6 +63,8 @@ char **lexer(char *str, char *env[])
 	
 	//i = 0;
 	result = ft_split_lexer(str, c);
+	if (result == NULL)
+		return (0);
 	normalize_with_space(result);
 	if (result[1] == NULL)
 	{

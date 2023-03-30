@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:31:55 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/03/30 14:09:45 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/30 15:55:19 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
     {
         if (in_fd != STDIN_FILENO)
         {
-            dup2(in_fd, STDIN_FILENO);
+            dup2(in_fd, STDIN_FILENO);  
             close(in_fd);
         }
         if (out_fd != STDOUT_FILENO)
@@ -135,7 +135,7 @@ int process_redirection(char *str, char *env[], int mode)
     int in_fd = STDIN_FILENO;
     int out_fd = STDOUT_FILENO;
     char **parsed_args;
-    parsed_args = ft_split_lexer(str, ' ');
+    parsed_args = ft_lexer_no_quote(str, ' ');
 	
     char **current_command = parsed_args;
 	//print_tab(current_command);
@@ -204,14 +204,11 @@ int process_redirection(char *str, char *env[], int mode)
     	
     if (in_fd != STDIN_FILENO)
     {
-         ft_putstr_fd("FINAL IN\n", 2);
         close(in_fd);
     }
     if (out_fd != STDOUT_FILENO)
     {
-         ft_putstr_fd("FINAL OUT\n", 2);
         close(out_fd);
     }
-    ft_putstr_fd("CA marche 22\n", 2);
     return (out_fd);
 }

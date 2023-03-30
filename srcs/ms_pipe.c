@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 12:35:43 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/30 11:23:39 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/30 15:51:07 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,6 @@ static void	freemalloc(char **result, int j)
 	}
 	free(result);
 }
-
-
-
 
 void execution (char *input_cmd, char *env[])
 {

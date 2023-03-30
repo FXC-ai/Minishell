@@ -64,6 +64,8 @@ char	**lexer(char *str, char *env[]);
 char	**ft_split_lexer(char const *str, char c);
 int		count_chr(const char *str, char c);
 
+char	**ft_lexer_no_quote(char const *str, char c);
+
 //UTILS.C
 char *extract_command_name(const char *full_path);
 void	ft_free_tabs(char **tab, int h);
