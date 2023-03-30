@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:32:28 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/30 15:13:26 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/30 18:27:16 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,27 +55,117 @@ void	my_error()
 	exit(EXIT_FAILURE);
 }
 
+
+char *ft_strndup(char *str, size_t n)
+{
+    
+    char    	*result;
+    size_t     i;
+
+    if (str == NULL)
+        return NULL;
+
+    
+    if (ft_strlen(str) <= n)
+    {
+        return ft_strdup(str);
+    }
+    
+    result = malloc(sizeof(char) * (n + 1));
+    if (result == NULL)
+        return NULL;
+
+    i = 0;
+    while(i < n)
+    {
+        result[i] = str[i];
+        i++;
+    }
+    result[n] = '\0';
+
+    return result;
+}
+
+
+
+
+char **parse_dollar(char **result_split)
+{
+
+	char *trimmed_command;
+	int i;
+	int j;
+	int sizetab;
+	char **result;
+	char *tmp;
+
+	sizetab = size_tab(result_split);
+
+	result = malloc(sizeof(char *) * sizetab);
+	if (result == NULL)
+		return (NULL);
+
+	i = 0;
+	while(result_split[i] != NULL)
+	{
+		trimmed_command = ft_strchr(result_split[i], '$');
+		if (trimmed_command != NULL)
+		{
+			j = 0;
+			while (is_space(trimmed_command[j]) != 1)
+			{
+				j++;
+			}
+			tmp = ft_strndup(trimmed_command+1, j);
+			
+			
+
+			//printf("result[%d] = %s\n", i, result[i]);
+		}
+		else
+		{
+			result[i] = ft_strdup(result_split[i]);
+
+		}
+		i++;
+	}
+
+	return result;
+
+
+}
+
 char **lexer(char *str, char *env[])
 {
 	char	**result;
-	//int		i;
 	char	c = '|';
 	
-	//i = 0;
+
 	result = ft_split_lexer(str, c);
 	if (result == NULL)
 		return (0);
+
+
+
 	normalize_with_space(result);
+	
+	parse_dollar(result);
+
+	(void) env;
+
+
+	
+	//print_tab(result);
+
+
+	/*/.,/.,
 	if (result[1] == NULL)
 	{
 		process_redirection(result[0], env, 1);
 		return (0);
 	}
-	/*while (result[i])
-	{
-		//printf("str %d = [%s]\n", i, result[i]);
-		i++;
-	}*/
+
 	ms_pipe2(result,env);
+	*/
 	return (result);
 }
