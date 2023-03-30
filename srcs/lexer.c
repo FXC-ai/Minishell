@@ -5,12 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/14 15:32:28 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/30 18:39:34 by fcoindre         ###   ########.fr       */
+/*   Created: 2023/03/30 18:39:34 by fcoindre          #+#    #+#             */
+/*   Updated: 2023/03/30 18:40:28 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/header.h"
 
 int is_space(char c)
 {
@@ -167,7 +166,7 @@ char **lexer(char *str, char *env[])
 
 	normalize_with_space(result);
 	
-	parse_dollar(result);
+	//parse_dollar(result);
 
 	(void) env;
 
@@ -176,7 +175,7 @@ char **lexer(char *str, char *env[])
 	//print_tab(result);
 
 
-	/*/.,/.,
+
 	if (result[1] == NULL)
 	{
 		process_redirection(result[0], env, 1);
@@ -184,6 +183,6 @@ char **lexer(char *str, char *env[])
 	}
 
 	ms_pipe2(result,env);
-	*/
+	
 	return (result);
 }
