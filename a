@@ -1,1 +1,14 @@
-hello
+total 144
+drwxr-xr-x  12 vgiordan  2022_lausanne    408 Mar 30 10:25 Bazar
+-rw-r--r--   1 vgiordan  2022_lausanne    761 Mar 30 10:25 Makefile
+-rw-r--r--   1 vgiordan  2022_lausanne     12 Mar 30 10:25 README.md
+-rwxr-xr-x   1 vgiordan  2022_lausanne      0 Mar 30 11:30 a
+-rwxr-xr-x   1 vgiordan  2022_lausanne    104 Mar 30 10:25 aa
+drwxr-xr-x  12 vgiordan  2022_lausanne    408 Mar 30 10:25 demo_functions
+-rw-r--r--   1 vgiordan  2022_lausanne      0 Mar 30 10:25 export.c
+-rw-r--r--   1 vgiordan  2022_lausanne    112 Mar 30 10:45 fichier
+drwxr-xr-x   3 vgiordan  2022_lausanne    102 Mar 30 10:25 includes
+drwxr-xr-x  73 vgiordan  2022_lausanne   2482 Mar 30 10:28 libft
+-rwxr-xr-x   1 vgiordan  2022_lausanne  53856 Mar 30 11:30 minishell
+drwxr-xr-x   7 vgiordan  2022_lausanne    238 Mar 30 10:25 pipe_work_directory
+drwxr-xr-x  27 vgiordan  2022_lausanne    918 Mar 30 11:30 srcs

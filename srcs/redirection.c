@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:31:55 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/03/30 11:19:28 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/30 11:41:19 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,30 @@ void execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
     {
         if (in_fd != STDIN_FILENO)
         {
-            dup2(in_fd, STDIN_FILENO);
-            close(in_fd);
+            if (dup2(in_fd, STDIN_FILENO) == -1)
+            {
+                perror("dup2");
+                exit(1);
+            }
+            if (close(in_fd) == -1)
+            {
+                perror("close");
+                exit(1);
+            }   
         }
         if (out_fd != STDOUT_FILENO)
         {
-            dup2(out_fd, STDOUT_FILENO);
-            close(out_fd);
+            if (dup2(out_fd, STDOUT_FILENO) == -1)
+            {
+                perror("dup2");
+                exit(1);
+            }
+            if (close(out_fd) == -1)
+            {
+                perror("close");
+                exit(1);
+            }   
         }
-
         r = is_builtins(*parsed_args);
         if (r == 1)
             echo_process(parsed_args);
@@ -55,6 +70,11 @@ void execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
         }
         exit(0);
     }
+    else if (child_pid == -1)
+    {
+        perror("fork");
+        return ;
+    }
     else
     {
         waitpid(child_pid, NULL, 0);
@@ -76,21 +96,20 @@ void	execute_command_2(char **parsed_args, int in_fd, int out_fd, char *env[])
         dup2(out_fd, STDOUT_FILENO);
         close(out_fd);
     }
-	
 	r = is_builtins(*parsed_args);
-	if (r == 1)
+	if (r == BUILTIN_ECHO)
 		echo_process(parsed_args);
-	else if (r == 2)
+	else if (r == BUILTIN_CD)
 		cd_process(parsed_args);
-	else if (r == 3)
+	else if (r == BUILTIN_PWD)
 		pwd_process(parsed_args);
-	else if (r == 4)
+	else if (r == BUILTIN_EXPORT)
 		export_process(parsed_args, env);
 	else if (r == 5)
 		export_process(parsed_args, env);
 	else if (r == 6)
 		export_process(parsed_args, env);
-	else if (r == 7)
+	else if (r == BUILTIN_EXIT)
 		exit_process();
 	else
 	{
@@ -98,7 +117,6 @@ void	execute_command_2(char **parsed_args, int in_fd, int out_fd, char *env[])
 		perror(parsed_args[0]);
 		exit(1);
 	}
-		
 }
 
 static int process_delimiter(char *del)

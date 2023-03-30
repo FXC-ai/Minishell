@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 12:35:43 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/30 11:09:28 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/30 11:23:39 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,14 +190,11 @@ void ms_pipe2(char **tab_cmds, char *env[])
 		if (pid == 0)
 		{
 			//printf("Execution last cmd (2) : %s\n", tab_cmds[nbr_cmds-1]);
-
-
 			close(pipe_fd1[1]);
 			dup2(pipe_fd1[0],0);
 			close(pipe_fd1[0]);
 			//execution(tab_cmds[nbr_cmds - 1], env); 
-			process_redirection(tab_cmds[nbr_cmds-1], env, 0); 
-			
+			process_redirection(tab_cmds[nbr_cmds-1], env, 0);
 			//redirection(tab_cmds[nbr_cmds-1], pipe_fd2, pipe_fd1, env);
 
 		}

@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 14:32:31 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/29 11:45:06 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/30 12:04:52 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,10 @@ void export_process(char **current_command, char *env[])
 	else
 	{
 		equal_sign = strchr(current_command[1], '=');
-        if (equal_sign == NULL) {
+       /*if (equal_sign == NULL) {
             fprintf(stderr, "export: invalid format, use KEY=VALUE\n");
             return;
-        }
+        }*/
         key = current_command[1];
         value = ++equal_sign;
 

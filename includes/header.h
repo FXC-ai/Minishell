@@ -14,7 +14,13 @@
 # include <termios.h>
 # include <errno.h>
 
-# define BUFFER_SIZE 1024 
+# define BUFFER_SIZE 1024
+
+#define BUILTIN_ECHO 1
+#define BUILTIN_CD 2
+#define BUILTIN_PWD 3
+#define BUILTIN_EXPORT 4
+#define BUILTIN_EXIT 7
 
 
 void	rl_replace_line (const char *text, int clear_undo);
