@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 17:35:07 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/30 10:54:29 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/30 15:01:36 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ void	print_tab(char **tab)
 	{
 		printf("%s\n", tab[i++]);
 	}
+	printf("-----------------------------\n");
 }
-
 
 int	get_max_length(char *str1, char *str2)
 {
@@ -157,7 +157,6 @@ char *extract_command_name(const char *full_path)
 	}
 	//faudra free result
 }
-
 
 char *normalize_cmd(char* str, char *env[])
 {	

@@ -3,38 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:31:55 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/03/30 16:03:45 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/03/30 17:56:10 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
 
-
 void execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
 {
     int r;
+    
+
     r = is_builtins(*parsed_args);
 
 
-    if (r == 2)
+    if (r == BUILTIN_CD)
     {
         cd_process(parsed_args);
     }
+    else if (r == BUILTIN_EXPORT)
+        export_process(parsed_args, env);
+     else if (r == BUILTIN_UNSET)
+            unset_process(parsed_args, env);
 
     pid_t child_pid = fork();
-    
-
-    
-    //chdir("..");
-
     if (child_pid == 0)
     {
         if (in_fd != STDIN_FILENO)
         {
-            dup2(in_fd, STDIN_FILENO);
+            dup2(in_fd, STDIN_FILENO);  
             close(in_fd);
         }
         if (out_fd != STDOUT_FILENO)
@@ -44,16 +44,12 @@ void execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
         }
 
         
-        if (r == 1)
+        if (r == BUILTIN_ECHO)
             echo_process(parsed_args);
-        else if (r == 3)
+        else if (r == BUILTIN_PWD)
             pwd_process(parsed_args);
-        else if (r == 4)
-            export_process(parsed_args, env);
-        else if (r == 5)
-            export_process(parsed_args, env);
         else if (r == 6)
-            export_process(parsed_args, env);
+            env_process(parsed_args, env);
         else if (r == 7)
             exit_process();
         else if (r == 0)
@@ -74,7 +70,8 @@ void execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
 void	execute_command_2(char **parsed_args, int in_fd, int out_fd, char *env[])
 {
 	int	r;
-
+//int copy_infd = dup(STDIN_FILENO);
+//int copy_outfd = dup(STDOUT_FILENO);
 	if (in_fd != STDIN_FILENO)
     {
         dup2(in_fd, STDIN_FILENO);
@@ -106,7 +103,10 @@ void	execute_command_2(char **parsed_args, int in_fd, int out_fd, char *env[])
 		perror(parsed_args[0]);
 		exit(1);
 	}
+
     exit(0);
+
+    
 }
 
 static int process_delimiter(char *del)
@@ -145,7 +145,7 @@ int process_redirection(char *str, char *env[], int mode)
     int in_fd = STDIN_FILENO;
     int out_fd = STDOUT_FILENO;
     char **parsed_args;
-    parsed_args = ft_split_lexer(str, ' ');
+    parsed_args = ft_lexer_no_quote(str, ' ');
 	
     char **current_command = parsed_args;
 	//print_tab(current_command);
@@ -220,6 +220,5 @@ int process_redirection(char *str, char *env[], int mode)
     {
         close(out_fd);
     }
-
     return (out_fd);
 }

@@ -4,6 +4,8 @@
         "termios.h": "c",
         "history.h": "c",
         "readline.h": "c",
-        "header.h": "c"
+        "header.h": "c",
+        "typeinfo": "c",
+        "__node_handle": "c"
     }
 }
