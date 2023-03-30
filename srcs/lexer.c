@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:32:28 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/30 18:27:16 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/03/30 18:28:37 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ char **lexer(char *str, char *env[])
 
 	normalize_with_space(result);
 	
-	parse_dollar(result);
+	//parse_dollar(result);
 
 	(void) env;
 
@@ -158,7 +158,7 @@ char **lexer(char *str, char *env[])
 	//print_tab(result);
 
 
-	/*/.,/.,
+
 	if (result[1] == NULL)
 	{
 		process_redirection(result[0], env, 1);
@@ -166,6 +166,6 @@ char **lexer(char *str, char *env[])
 	}
 
 	ms_pipe2(result,env);
-	*/
+	
 	return (result);
 }
