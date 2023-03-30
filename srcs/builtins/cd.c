@@ -3,21 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 14:14:50 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/24 14:29:36 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/03/30 12:41:53 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/header.h"
 
 void cd_process(char **current_command) {
-    if (current_command[1] == NULL) {
+
+    print_tab(current_command);
+    chdir("/Users/fcoindre");
+    exit(1);
+    if (current_command[1] == NULL) 
+    {
         return;
     }
-    else {
-        if (chdir(current_command[1]) != 0) {
+    else 
+    {
+        if (chdir(current_command[1]) != 0) 
+        {
             perror("cd");
             return;
         }
