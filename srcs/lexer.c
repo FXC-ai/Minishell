@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../includes/header.h"
 
 int is_space(char c)
 {
@@ -124,7 +125,6 @@ char **parse_dollar(char **result_split, char *env[])
 			{
 				if (ft_strncmp(env[i], tmp, ft_strlen(tmp)) == 0 && env[i][ft_strlen(tmp)] == '=')
 				{
-					found = 1;
 					while (env[i] != NULL)
 					{
 						env[i] = env[i + 1];
