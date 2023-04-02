@@ -56,6 +56,7 @@ void	my_error()
 }
 
 
+
 char *ft_strndup(char *str, size_t n)
 {
     
@@ -86,71 +87,71 @@ char *ft_strndup(char *str, size_t n)
     return result;
 }
 
-
-
-
-char **parse_dollar(char **result_split, char *env[])
+char *find_env_variable (char *var_name, char *env[])
 {
+	int i = 0;
 
-	char *trimmed_command;
-	int i;
-	int j;
-	int sizetab;
-	char **result;
-	char *tmp;
-
-	sizetab = size_tab(result_split);
-
-	result = malloc(sizeof(char *) * sizetab);
-	if (result == NULL)
-		return (NULL);
-
-	i = 0;
-	while(result_split[i] != NULL)
+	while (env[i] != NULL)
 	{
-		trimmed_command = ft_strchr(result_split[i], '$');
-		if (trimmed_command != NULL)
+		if (ft_strncmp(env[i], var_name, ft_strlen(var_name)) == 0 && env[i][ft_strlen(var_name)] == '=')
 		{
-			j = 0;
-			while (is_space(trimmed_command[j]) != 1)
-			{
-				j++;
-			}
-			tmp = ft_strndup(trimmed_command+1, j);
-			
-			printf("result = %s\n", tmp);
-
-			j = 0;
-			while (env[i] != NULL)
-			{
-				if (ft_strncmp(env[i], tmp, ft_strlen(tmp)) == 0 && env[i][ft_strlen(tmp)] == '=')
-				{
-					while (env[i] != NULL)
-					{
-						env[i] = env[i + 1];
-						i++;
-					}
-					break;
-				}
-				i++;
-			}
-			
-
-			
-
-			
-		}
-		else
-		{
-			result[i] = ft_strdup(result_split[i]);
-
+            return &env[i][ft_strlen(var_name) + 1];
 		}
 		i++;
 	}
+    return NULL;
 
-	return result;
+}
 
 
+void parse_dollar(char **tab_cmds, char *env[])
+{
+    int i;
+    int j;
+    char *trimmed_command;
+    char *env_variable;
+    char *key;
+    char *tmp;
+    char *str1;
+    char *str2;
+
+
+    i = 0;
+    while (tab_cmds[i] != NULL)
+    {
+        trimmed_command = ft_strchr(tab_cmds[i], '$');
+        while (trimmed_command != NULL)
+        {
+            j = 0;
+            while (is_space(trimmed_command[j]) != 1 && trimmed_command[j] != '\0')
+                j++;
+            key = ft_strndup(trimmed_command+1, j-1);
+            env_variable = find_env_variable(key, env);
+            if (env_variable != NULL)
+            {
+
+
+                tmp = ft_strndup(tab_cmds[i], ft_strlen(tab_cmds[i]) - ft_strlen(trimmed_command));
+                str1 = ft_strjoin(tmp, env_variable);
+                str2 = ft_strndup(trimmed_command + j, ft_strlen(trimmed_command + j));
+                free(tab_cmds[i]);
+                tab_cmds[i] = NULL;
+                tab_cmds[i] = ft_strjoin(str1, str2);
+                free(key);
+                free(tmp);
+                free(str1);
+                free(str2);
+
+                trimmed_command = ft_strchr(tab_cmds[i], '$');
+            }
+            else
+            {   
+                trimmed_command = ft_strchr(trimmed_command+1, '$');
+                free(key);
+            }
+        }
+        i++;
+    }
 }
 
 char **lexer(char *str, char *env[])
@@ -166,14 +167,7 @@ char **lexer(char *str, char *env[])
 
 	normalize_with_space(result);
 	
-	//parse_dollar(result);
-
-	(void) env;
-
-
-	
-	//print_tab(result);
-
+	parse_dollar(result);
 
 
 	if (result[1] == NULL)
