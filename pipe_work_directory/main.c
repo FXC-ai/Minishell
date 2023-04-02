@@ -50,131 +50,87 @@ char *ft_strndup(char *str, size_t n)
 
 
 
-char **parse_dollar_dep(char **result_split, char *env[])
+
+
+
+static char *replace_dollar (char *tab_cmd, char *env_variable, char *trimmed_command, int j)
 {
+    char *key;
+    char *tmp;
+    char *str1;
+    char *str2;
+    char *str;
 
-	char *trimmed_command;
-	int i;
-	int j;
-	int sizetab;
-	char **result;
-	char *tmp;
+    //printf("Dans replace_dollar = %p\n", tab_cmd);
 
-	sizetab = size_tab(result_split);
+    tmp = ft_strndup(tab_cmd, ft_strlen(tab_cmd) - ft_strlen(trimmed_command));
+    str1 = ft_strjoin(tmp, env_variable);
+    str2 = ft_strndup(trimmed_command + j, ft_strlen(trimmed_command + j));
 
-	result = malloc(sizeof(char *) * sizetab);
-	if (result == NULL)
-		return (NULL);
+    str = ft_strjoin(str1, str2);
+    free(key);
+    key = NULL;
+    free(tmp);
+    tmp = NULL;
+    free(str1);
+    str1 = NULL;
+    free(str2);
+    str2 = NULL;
+    
+    return str;
+    //printf("Dans replace_dollar apres = %p\n", tab_cmd);
 
-	i = 0;
-	while(result_split[i] != NULL)
-	{
-		trimmed_command = ft_strchr(result_split[i], '$');
-		if (trimmed_command != NULL)
-		{
-			j = 0;
-			while (is_space(trimmed_command[j]) != 1)
-			{
-				j++;
-			}
-			tmp = ft_strndup(trimmed_command+1, j);
-			
-			printf("result = %s\n", tmp);
-
-			j = 0;
-			while (env[i] != NULL)
-			{
-				if (ft_strncmp(env[i], tmp, ft_strlen(tmp)) == 0 && env[i][ft_strlen(tmp)] == '=')
-				{
-					while (env[i] != NULL)
-					{
-						env[i] = env[i + 1];
-						i++;
-					}
-					break;
-				}
-				i++;
-			}
-
-		}
-		else
-		{
-			result[i] = ft_strdup(result_split[i]);
-
-		}
-		i++;
-	}
-
-	return result;
 }
-
-
-
 
 
 void parse_dollar(char **tab_cmds, char *env[])
 {
-
     int i;
     int j;
     char *trimmed_command;
     char *env_variable;
     char *key;
-    char *tmp2;
+    char *tmp;
     char *str1;
     char *str2;
-    int size_str1;
 
-
-    char *debug_var;
 
     i = 0;
     while (tab_cmds[i] != NULL)
     {
-    
         trimmed_command = ft_strchr(tab_cmds[i], '$');
         while (trimmed_command != NULL)
         {
-            
-            j =0;
+            j = 0;
             while (is_space(trimmed_command[j]) != 1 && trimmed_command[j] != '\0')
-            {
                 j++;
-            }
             key = ft_strndup(trimmed_command+1, j-1);
-                
             env_variable = find_env_variable(key, env);
             if (env_variable != NULL)
             {
-                size_str1 = ft_strlen(tab_cmds[i]) - ft_strlen(trimmed_command);
-                str1 = ft_strndup(tab_cmds[i], size_str1);
-                tmp2 = ft_strjoin(str1, env_variable);
 
-                //Le calcule de la taille de str2 est pas juste
+
+                tmp = ft_strndup(tab_cmds[i], ft_strlen(tab_cmds[i]) - ft_strlen(trimmed_command));
+                str1 = ft_strjoin(tmp, env_variable);
                 str2 = ft_strndup(trimmed_command + j, ft_strlen(trimmed_command + j));
-
                 free(tab_cmds[i]);
                 tab_cmds[i] = NULL;
-                tab_cmds[i] = ft_strjoin(tmp2, str2);
-                debug_var = tab_cmds[i];
-
-                trimmed_command = ft_strchr(tab_cmds[i], '$');
+                tab_cmds[i] = ft_strjoin(str1, str2);
                 free(key);
-                free(tmp2);
+                free(tmp);
                 free(str1);
                 free(str2);
 
+                trimmed_command = ft_strchr(tab_cmds[i], '$');
             }
             else
             {   
                 trimmed_command = ft_strchr(trimmed_command+1, '$');
-
+                free(key);
             }
         }
-        printf("tab_cmds[%d] : %s\n",i, tab_cmds[i]);
         i++;
     }
-
 }
 
 void	print_tab(char **tab)
@@ -224,26 +180,19 @@ char *find_env_variable (char *var_name, char *env[])
 int main (int argc, char *argv[], char *env[])
 {
 
-    char **testeur = malloc(sizeof(char *) * 5);
+    char **testeur = malloc(sizeof(char *) * 2);
 
 
-    testeur[0] = ft_strdup("echo $USER $USER $er $USER");
-    testeur[1] = ft_strdup("echo $HOME $ LOGNAME $er $LOGNAME");
-    testeur[2] = ft_strdup("echo $USR $ USER $er $USER     ");
-    testeur[3] = ft_strdup("echo         $USER $SHELL SHELL $  USER $USER $er $USER");
-    testeur[4] = NULL;
+    testeur[0] = ft_strdup("echo         $USER $SHELL SHELL $  USER $USER $er $USER");
+    testeur[1] = NULL;
 
 
+    print_tab(testeur);
     parse_dollar(testeur, env);
-    //print_tab(testeur);
-
-    //printf("%s\n",find_env_variable("PATH", env));
+    print_tab(testeur);
 
 
-
-
-
-    ft_free_tabs(testeur, size_tab(testeur));
+    //ft_free_tabs(testeur, size_tab(testeur));
 
     return 0;
 }
