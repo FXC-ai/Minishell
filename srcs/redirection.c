@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:31:55 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/04 15:59:20 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/04 18:43:50 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
 
     if (r == BUILTIN_CD)
     {
-        cd_process(parsed_args);
+        cd_process(parsed_args, env);
     }
     else if (r == BUILTIN_EXPORT)
         export_process(parsed_args, env);
@@ -94,7 +94,7 @@ void	execute_command_2(char **parsed_args, int in_fd, int out_fd, char *env[])
 	if (r == BUILTIN_ECHO)
 		echo_process(parsed_args);
 	else if (r == BUILTIN_CD)
-		cd_process(parsed_args);
+		cd_process(parsed_args, env);
 	else if (r == BUILTIN_PWD)
 		pwd_process(parsed_args);
 	else if (r == BUILTIN_EXPORT)

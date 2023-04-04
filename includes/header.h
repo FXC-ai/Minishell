@@ -87,11 +87,12 @@ int ms_pipe3(int process_num, char **tab_cmds, char *env[]);
 
 //BUILTINS
 void	echo_process(char **cmd);
-void	cd_process(char **current_command);
+void	cd_process(char **current_command, char *env[]);
 void	pwd_process();
 int		unset_process(char **parsed_args, char *env[]);
 void	env_process(char **parsed_args, char *env[]);
 void	export_process(char **current_command, char *env[]);
+void add_to_env(char *ligne, char *value, char *env[]);
 void    exit_process();
 int		unset_process_str(char *key, char *env[]);
 

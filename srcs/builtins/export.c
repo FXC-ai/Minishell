@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 14:32:31 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/30 18:40:44 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/04 19:12:13 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ void add_to_env(char *ligne, char *value, char *env[])
 	i = 0;
 	j = 0;
 	result = malloc(value_len + key_len + 2);
-
-	
 
 	while (i < key_len && ligne[i] != '=')
 		result[j++] = ligne[i++];

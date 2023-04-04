@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 14:27:27 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/24 14:30:58 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/04 18:24:20 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@ void pwd_process()
     if (getcwd(cwd, sizeof(cwd)) != NULL)
 	{
         printf("%s\n", cwd);
-    } else {
+    } 
+    else 
+    {
         perror("getcwd");
     }
 }
