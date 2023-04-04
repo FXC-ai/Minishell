@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 18:39:34 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/03/30 18:40:28 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/04 10:24:30 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,7 @@ char **lexer(char *str, char *env[])
 
 	normalize_with_space(result);
 	
-	parse_dollar(result);
+	parse_dollar(result, env);
 
 
 	if (result[1] == NULL)
