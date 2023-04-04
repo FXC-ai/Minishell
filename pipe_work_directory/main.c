@@ -49,10 +49,6 @@ char *ft_strndup(char *str, size_t n)
 
 
 
-
-
-
-
 static char *replace_dollar (char *tab_cmd, char *env_variable, char *trimmed_command, int j)
 {
     char *key;
@@ -183,7 +179,7 @@ int main (int argc, char *argv[], char *env[])
     char **testeur = malloc(sizeof(char *) * 2);
 
 
-    testeur[0] = ft_strdup("echo         $USER $SHELL SHELL $  USER $USER $er $USER");
+    testeur[0] = ft_strdup("echo $ ");
     testeur[1] = NULL;
 
 

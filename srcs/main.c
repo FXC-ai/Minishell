@@ -6,13 +6,13 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 11:39:22 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/04 11:53:55 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/04 14:27:50 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
 
-
+int ms_errno;
 
 void disable_ctrl_chars()
 {
@@ -41,7 +41,7 @@ void	wait_for_input(char *env[])
 	signal_handler();
 	while(42)
 	{
-		line = readline("$ ");
+		line = readline("minishell$ ");
 		//disable_ctrl_chars();
 		if (line == NULL)
 		{
