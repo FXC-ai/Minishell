@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 18:39:34 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/04 15:56:48 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/04 17:01:32 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,12 +134,15 @@ void parse_dollar(char **tab_cmds, char *env[])
         while (trimmed_command != NULL)
         {
             j = 0;
-            while (is_space(trimmed_command[j]) != 1 && trimmed_command[j] != '\0')
+            while (is_space(trimmed_command[j]) != 1 
+                    && trimmed_command[j] != '\0' 
+                    && trimmed_command[j] != '\"'
+                    && trimmed_command[j] != '\'')
                 j++;
 
             key = ft_strndup(trimmed_command+1, j-1);
 
-
+            printf ("key = %s\n", key);
             env_variable = find_env_variable(key, env);
             if (env_variable != NULL)
             {
@@ -158,15 +161,9 @@ void parse_dollar(char **tab_cmds, char *env[])
             else
             {
                 if (trimmed_command[1] == '?')
-                {
-                    //printf("ms_errno = %d\n", ms_errno);
                     env_variable = ft_itoa(ms_errno);
-                }
                 else
-                {
                     env_variable = "";
-                }
-
 
                 tmp = ft_strndup(tab_cmds[i], ft_strlen(tab_cmds[i]) - ft_strlen(trimmed_command));
                 str1 = ft_strjoin(tmp, env_variable);
@@ -183,6 +180,9 @@ void parse_dollar(char **tab_cmds, char *env[])
         }
         i++;
     }
+
+    print_tab(tab_cmds);
+
 }
 
 char **lexer(char *str, char *env[])
