@@ -1,74 +1,57 @@
-#include <stdio.h>
 #include <unistd.h>
-#include <stdlib.h>
 #include <sys/wait.h>
+#include <stdlib.h>
+#include <stdio.h>
 
-int main(void) {
-    int pipe1[2], pipe2[2];
-    pid_t pid;
+// Définition d'une macro pour un statut de fin
+// particulier pour le fils (si on ne l'indique pas à la compilation
+// avec -D CHILD_EXIT_CODE=[nombre], par défaut elle sera à 42 :
+#ifndef CHILD_EXIT_CODE
+# define CHILD_EXIT_CODE 42
+#endif
 
-    if (pipe(pipe1) == -1) {
-        perror("Erreur lors de la création de pipe 1");
-        exit(EXIT_FAILURE);
-    }
+// Définition d'une macro pour le statut de fin
+// du fils auquel on s'attend
+#define EXPECTED_CODE 42
 
-    if (pipe(pipe2) == -1) {
-        perror("Erreur lors de la création de pipe 2");
-        exit(EXIT_FAILURE);
-    }
+// Routine du processus fils :
+void	routine_fils(pid_t pid)
+{
+	printf("\e[36mFils : Coucou! Je suis le fils. PID recu de fork = %d\e[0m\n", pid);
+	printf("\e[36mFils : Je sors avec le statut de fin %d.\e[0m\n", CHILD_EXIT_CODE);
+	exit(CHILD_EXIT_CODE);
+}
 
-    if ((pid = fork()) == -1) {
-        perror("Erreur lors de la création d'un nouveau processus");
-        exit(EXIT_FAILURE);
-    }
+// Routine du processus pere :
+void	routine_pere(pid_t pid)
+{
+	int	status;
 
-    if (pid == 0) { // Premier enfant
-        close(pipe1[0]); // Ferme la fin de lecture de pipe1
-        dup2(pipe1[1], STDOUT_FILENO); // Redirige la sortie standard vers pipe1
-        close(pipe1[1]); // Ferme la fin d'écriture de pipe1
+	printf("Pere : Je suis le pere. PID recu de fork = %d\n", pid);
+	printf("Pere : J'attends mon fils qui a le PID [%d].\n", pid);
+	waitpid(pid, &status, 0); // Attendre le fils
+// ou   wait(&status);
+	printf("Pere : Mon fils est sorti avec le statut %d\n", status);
+	if (WIFEXITED(status)) // Si le fils est sorti normalement
+	{
+		printf("Pere : Le statut de fin de mon fils est %d\n", WEXITSTATUS(status));
+		if (WEXITSTATUS(status) == EXPECTED_CODE)
+			printf("Pere : C'est le statut que j'attendais !\n");
+		else
+			printf("Pere : Je ne m'attendais pas a ce statut-la...\n");
+	}
+}
 
-        execlp("ls", "ls", "-al", NULL); // Exécute la commande ls -al
-        perror("Erreur lors de l'exécution de la commande ls"); // En cas d'erreur
-        exit(EXIT_FAILURE);
-    }
+int	main(void)
+{
+	pid_t	pid; // Stocke le retour de fork
 
-    if ((pid = fork()) == -1) {
-        perror("Erreur lors de la création d'un nouveau processus");
-        exit(EXIT_FAILURE);
-    }
-
-    if (pid == 0) { // Deuxième enfant
-        close(pipe1[1]); // Ferme la fin d'écriture de pipe1
-        dup2(pipe1[0], STDIN_FILENO); // Redirige l'entrée standard depuis pipe1
-        close(pipe1[0]); // Ferme la fin de lecture de pipe1
-
-        close(pipe2[0]); // Ferme la fin de lecture de pipe2
-        dup2(pipe2[1], STDOUT_FILENO); // Redirige la sortie standard vers pipe2
-        close(pipe2[1]); // Ferme la fin d'écriture de pipe2
-
-        execlp("grep", "grep", "test", NULL); // Exécute la commande grep test
-        perror("Erreur lors de l'exécution de la commande grep"); // En cas d'erreur
-        exit(EXIT_FAILURE);
-    }
-
-    if ((pid = fork()) == -1) {
-        perror("Erreur lors de la création d'un nouveau processus");
-        exit(EXIT_FAILURE);
-    }
-
-    if (pid == 0) { // Troisième enfant
-        close(pipe2[1]); // Ferme la fin d'écriture de pipe2
-        dup2(pipe2[0], STDIN_FILENO); // Redirige l'entrée standard depuis pipe2
-        close(pipe2[0]); // Ferme la fin de lecture de pipe2
-
-        execlp("wc", "wc", "-l", NULL); // Exécute la commande wc -l
-        perror("Erreur lors de l'exécution de la commande wc"); // En cas d'erreur
-        exit(EXIT_FAILURE);
-    }
-
-    // Processus parent
-    close(pipe1[0]); // Ferme la fin de lecture de pipe1
-    close(pipe1[1]); // Ferme la fin d'écriture de pipe1
-    close(pipe2[0]); // Ferme la fin de lecture de pipe2
-    close(pipe2[1]); // Ferme la fin d'éc
+	pid = fork(); // Création d'un processus fils
+	if (pid == -1)
+		return (EXIT_FAILURE);
+	else if (pid == 0) // Processus fils
+		routine_fils(pid);
+	else if (pid > 0) // Processus père
+		routine_pere(pid);
+	return (EXIT_SUCCESS);
 }

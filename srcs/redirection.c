@@ -6,15 +6,18 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:31:55 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/04 14:25:52 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/04 18:29:06 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
 
+extern int ms_errno;
+
 void execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
 {
     int r;
+    int status;
     
 
     r = is_builtins(*parsed_args);
@@ -26,8 +29,8 @@ void execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
     }
     else if (r == BUILTIN_EXPORT)
         export_process(parsed_args, env);
-     else if (r == BUILTIN_UNSET)
-            unset_process(parsed_args, env);
+    else if (r == BUILTIN_UNSET)
+        unset_process(parsed_args, env);
 
     pid_t child_pid = fork();
     if (child_pid == 0)
@@ -55,14 +58,20 @@ void execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
         else if (r == 0)
         {
             execve(normalize_cmd(parsed_args[0], env), parsed_args, env);
+            //ms_errno = errno;
+            //printf("redirection errno = %d ms_errno = %d\n", errno, ms_errno);
             perror(parsed_args[0]);
-            exit(0);
+            exit(errno);
         }
-        exit(0);
+        exit(errno);
     }
     else
     {
-        waitpid(child_pid, NULL, 0);
+        waitpid(child_pid, &status, 0);
+        if (WIFEXITED(status))
+        {
+            ms_errno = WEXITSTATUS(status);
+        }
     }
 }
 
@@ -70,8 +79,7 @@ void execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
 void	execute_command_2(char **parsed_args, int in_fd, int out_fd, char *env[])
 {
 	int	r;
-//int copy_infd = dup(STDIN_FILENO);
-//int copy_outfd = dup(STDOUT_FILENO);
+
 	if (in_fd != STDIN_FILENO)
     {
         dup2(in_fd, STDIN_FILENO);
@@ -101,7 +109,7 @@ void	execute_command_2(char **parsed_args, int in_fd, int out_fd, char *env[])
 	{
 		execve(normalize_cmd(parsed_args[0], env), parsed_args, env);
 		perror(parsed_args[0]);
-		exit(1);
+		exit(errno);
 	}
 
     exit(0);
