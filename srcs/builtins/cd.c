@@ -3,27 +3,43 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 14:14:50 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/30 18:34:57 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/04 19:12:23 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/header.h"
 
-void cd_process(char **parsed_args)
+void cd_process(char **parsed_args, char *env[])
 {
+    char cwd[4096];
+    char *ligne;
+    (void) env;
+
     if (parsed_args[1] == NULL) 
     {
         return;
     }
     else 
     {
-        if (chdir(parsed_args[1]) != 0) 
+        if (chdir(parsed_args[1]) != 0)
         {
             perror("cd");
             return;
+        }
+        else
+        {
+            if (getcwd(cwd, sizeof(cwd)) != NULL)
+            {
+
+
+                ligne = ft_strjoin("PWD=", cwd);
+
+                add_to_env(ligne, cwd, env);
+                free(ligne);
+            }
         }
     }
 }
