@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ms_pipe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 12:35:43 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/30 17:10:33 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/04 16:14:55 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
 
+
+extern int ms_errno;
 
 static void	error_exit(int code_error)
 {
@@ -47,7 +49,6 @@ void execution (char *input_cmd, char *env[])
 void redirection (char *input_cmd, int previous_pipe[2], int next_pipe[2], char *env[])
 {
 	pid_t pid;
-   // int status;
 
 	pid = fork();
 	if (pid == 0)
@@ -62,54 +63,36 @@ void redirection (char *input_cmd, int previous_pipe[2], int next_pipe[2], char 
 		close(next_pipe[1]);       
 
 		process_redirection(input_cmd, env, 0);
-		//execution(input_cmd, env);
 	}
-
-
-
-
 }
 
 void execute_first_cmd(int pipe_fd[2], char **tab_cmds, char *env[])
 {
 	pid_t pid;
-   // int status;
 
 	pid = fork();
 	if (pid == 0)
 	{
-		//printf("Execution 1st cmd : %s\n", tab_cmds[0]);
 		close(pipe_fd[0]);
 		dup2(pipe_fd[1],1);
 		close(pipe_fd[1]);
 		process_redirection(tab_cmds[0], env, 0);
-		//redirection();
-		//execution(tab_cmds[0], env);
 	}    
-	else
-	{
 
-		//usleep(100);
-		//waitpid(pid, &status, 0);
-	}
 }
 
 
 void execute_last_cmd(int pipe_fd[2], char **tab_cmds, int nbr_cmds, char *env[])
 {
 	pid_t pid;
-   // int status;
 
 	pid = fork();
 	if (pid == 0)
 	{
-		//printf("Execution last cmd : %s\n", tab_cmds[nbr_cmds-1]);
-
 		close(pipe_fd[1]);
 		dup2(pipe_fd[0],0);
 		close(pipe_fd[0]);
 		process_redirection(tab_cmds[nbr_cmds - 1], env, 0);
-		//execution(tab_cmds[nbr_cmds-1], env);
 	}
 }
 
@@ -119,24 +102,15 @@ void ms_pipe2(char **tab_cmds, char *env[])
 
 	int pipe_fd1[2];
 	int pipe_fd2[2];
-
+	int status;
 	pid_t pid;
-
-	//char **tab_cmd;
-
 	int nbr_cmds;
-
 	int i;
 
 	nbr_cmds = size_tab(tab_cmds);
 
-
-
-	//PROCESSUS 1
 	pipe(pipe_fd1);
 	execute_first_cmd(pipe_fd1, tab_cmds, env);
-	
-
 	i = 0;
 	while (i < nbr_cmds - 2)
 	{
@@ -189,9 +163,11 @@ void ms_pipe2(char **tab_cmds, char *env[])
 	}
 	for (i = 0; i < nbr_cmds; i++)
 	{
-		waitpid(-1, NULL, 0);
+		waitpid(-1, &status, 0);
+		if (WIFEXITED(status))
+        {
+            ms_errno = WEXITSTATUS(status);
+        }
 	}
-
-	//wait(0);
 
 }

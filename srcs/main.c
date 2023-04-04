@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 11:39:22 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/04 14:27:50 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/04 16:09:18 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ int	main(int ac, char **argv, char *env[])
 	(void) argv;
 	(void) ac;
 	
+	ms_errno = 0;
 	if (tcgetattr(STDIN_FILENO, &tm) == -1)
 		return (-1);
 	tm.c_lflag &= ~ECHOCTL;

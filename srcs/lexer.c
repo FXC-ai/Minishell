@@ -3,18 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 18:39:34 by fcoindre          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/04/04 14:16:32 by fcoindre         ###   ########.fr       */
-=======
-/*   Updated: 2023/04/04 12:18:06 by vgiordan         ###   ########.fr       */
->>>>>>> c56a67f1e4c0da7e3f00fbf811614c6eaa29e351
+/*   Updated: 2023/04/04 15:56:48 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
+
+extern int ms_errno;
+
 
 int is_space(char c)
 {
@@ -125,6 +124,9 @@ void parse_dollar(char **tab_cmds, char *env[])
     char *str1;
     char *str2;
 
+
+    //printf("ms_errno = %d\n", ms_errno);
+
     i = 0;
     while (tab_cmds[i] != NULL)
     {
@@ -136,7 +138,6 @@ void parse_dollar(char **tab_cmds, char *env[])
                 j++;
 
             key = ft_strndup(trimmed_command+1, j-1);
-
 
 
             env_variable = find_env_variable(key, env);
@@ -155,8 +156,18 @@ void parse_dollar(char **tab_cmds, char *env[])
                 trimmed_command = ft_strchr(tab_cmds[i], '$');
             }
             else
-            {   
-                env_variable = "";
+            {
+                if (trimmed_command[1] == '?')
+                {
+                    //printf("ms_errno = %d\n", ms_errno);
+                    env_variable = ft_itoa(ms_errno);
+                }
+                else
+                {
+                    env_variable = "";
+                }
+
+
                 tmp = ft_strndup(tab_cmds[i], ft_strlen(tab_cmds[i]) - ft_strlen(trimmed_command));
                 str1 = ft_strjoin(tmp, env_variable);
                 str2 = ft_strndup(trimmed_command + j, ft_strlen(trimmed_command + j));
