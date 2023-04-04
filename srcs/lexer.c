@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 18:39:34 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/04 20:17:00 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/04 20:19:51 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,9 +231,9 @@ char **lexer(char *str, char *env[])
         i++;
     }
 	normalize_with_space(result);
-	print_tab(result);
+	//print_tab(result);
 	parse_dollar(result, env);
-    print_tab(result);
+    //print_tab(result);
 	if (result[1] == NULL)
 	{
 		process_redirection(result[0], env, 1);

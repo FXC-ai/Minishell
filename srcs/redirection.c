@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:31:55 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/04 19:34:27 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/04 20:21:41 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,10 +111,7 @@ void	execute_command_2(char **parsed_args, int in_fd, int out_fd, char *env[])
 		perror(parsed_args[0]);
 		exit(errno);
 	}
-
     exit(0);
-
-    
 }
 
 static int process_delimiter(char *del)
@@ -155,7 +152,7 @@ int process_redirection(char *str, char *env[], int mode)
     char **parsed_args;
     parsed_args = ft_lexer_no_quote(str, ' ');
 
-    print_tab(parsed_args);
+    //print_tab(parsed_args);
 	
     char **current_command = parsed_args;
 
