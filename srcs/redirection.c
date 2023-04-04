@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:31:55 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/04 14:05:40 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/04 14:25:52 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ int process_redirection(char *str, char *env[], int mode)
 	
     char **current_command = parsed_args;
 
-    //print_tab(parsed_args);
+    print_tab(parsed_args);
     while (*parsed_args)
     {
 		//printf("%s\n", *parsed_args);
@@ -187,9 +187,9 @@ int process_redirection(char *str, char *env[], int mode)
 			}
             parsed_args++;
         }
-        else if (ft_strcmp(*parsed_args, "<<") == 0)
+        else if (ft_strncmp(*parsed_args, "<<", 2) == 0)
         {
-			//print_tab(parsed_args);
+			print_tab(parsed_args);
 			//print_tab((current_command));
             *parsed_args = NULL;
 			//print_tab((current_command));
@@ -207,10 +207,14 @@ int process_redirection(char *str, char *env[], int mode)
     }
 	
 	//print_tab(current_command);
-	if (mode)
-		execute_command(current_command, in_fd, out_fd, env);
-	else
-	    execute_command_2(current_command, in_fd, out_fd, env);
+    if (*current_command)
+    {
+        if (mode)
+		    execute_command(current_command, in_fd, out_fd, env);
+        else
+            execute_command_2(current_command, in_fd, out_fd, env);
+    }
+	
 	
     	
     if (in_fd != STDIN_FILENO)
