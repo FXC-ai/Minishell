@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 18:39:34 by fcoindre          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/04/04 18:29:24 by fcoindre         ###   ########.fr       */
+=======
+/*   Updated: 2023/04/04 18:29:11 by vgiordan         ###   ########.fr       */
+>>>>>>> 2d9b247a138eb87cd34dcc00dfe3398ff32be023
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,37 +31,33 @@ void normalize_with_space(char **str)
     char quote = '\0';
 
     while (*p != '\0')
-	{
+    {
         if (quote != '\0' && *p == quote)
-		{
+        {
             quote = '\0';
         }
-		else if (quote == '\0' && (*p == '\'' || *p == '\"'))
-		{
+        else if (quote == '\0' && (*p == '\'' || *p == '\"'))
+        {
             quote = *p;
         }
-		else if (quote == '\0' && (*p == '<' || *p == '>'))
-		{
-            if ((*p == '<' && *(p + 1) != '<') || (*p == '>' && *(p + 1) != '>'))
-            {
-                if (prev != NULL && !is_space(*prev) && *prev != '\'' && *prev != '\"' && *prev != '<') {
-                ft_memmove(p+1, p, ft_strlen(p)+1);
+        else if (quote == '\0' && (*p == '<' || *p == '>'))
+        {
+            if (prev != NULL && !is_space(*prev) && *prev != '\'' && *prev != '\"' && *prev != *p) {
+                ft_memmove(p + 1, p, ft_strlen(p) + 1);
                 *p = ' ';
                 prev = p;
-                }
-                if (*(p+1) != '\0' && !is_space(*(p+1)) && *(p+1) != '\'' && *(p+1) != '\"' && *(p+1) != '<' && *(p + 1) != '>') {
-                    ft_memmove(p+2, p+1, ft_strlen(p+1)+1);
-                    *(p+1) = ' ';
-                }
+            }
+            if (*(p+1) != '\0' && !is_space(*(p+1)) && *(p+1) != '\'' && *(p+1) != '\"' && *(p+1) != *p) {
+                ft_memmove(p+2, p+1, ft_strlen(p+1)+1);
+                *(p+1) = ' ';
             }
             p++;
-
-            
         }
         prev = p;
         p++;
     }
 }
+
 
 void	my_error()
 {
