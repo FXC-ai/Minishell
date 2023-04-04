@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 11:39:22 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/29 15:08:16 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/04 11:53:55 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
 
-int is_interactive = 0;
+
 
 void disable_ctrl_chars()
 {
@@ -48,12 +48,10 @@ void	wait_for_input(char *env[])
 			write(1, "exit\n", 5);
             break;
         }
-		is_interactive = 1;
 		if (check_entry(line))
 		{
 			lexer(line, env);
 		}
-		is_interactive = 0;
 	}
 }
 
