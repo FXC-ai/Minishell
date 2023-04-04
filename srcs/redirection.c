@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:31:55 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/04 20:33:54 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/04 22:23:01 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,10 +99,10 @@ void	execute_command_2(char **parsed_args, int in_fd, int out_fd, char *env[])
 		pwd_process(parsed_args);
 	else if (r == BUILTIN_EXPORT)
 		export_process(parsed_args, env);
-	else if (r == 5)
-		export_process(parsed_args, env);
-	else if (r == 6)
-		export_process(parsed_args, env);
+	else if (r == BUILTIN_UNSET)
+		unset_process(parsed_args, env);
+	else if (r == BUILTIN_ENV)
+		env_process(parsed_args, env);
 	else if (r == BUILTIN_EXIT)
 		exit_process();
 	else
@@ -111,10 +111,7 @@ void	execute_command_2(char **parsed_args, int in_fd, int out_fd, char *env[])
 		perror(parsed_args[0]);
 		exit(errno);
 	}
-
     exit(0);
-
-    
 }
 
 static int process_delimiter(char *del)
@@ -154,10 +151,12 @@ int process_redirection(char *str, char *env[], int mode)
     int out_fd = STDOUT_FILENO;
     char **parsed_args;
     parsed_args = ft_lexer_no_quote(str, ' ');
+
+    //print_tab(parsed_args);
 	
     char **current_command = parsed_args;
 
-    while (*parsed_args)
+    //(parsed_args);
     {
 		//printf("%s\n", *parsed_args);
         if (ft_strcmp(*parsed_args, ">") == 0)
@@ -196,7 +195,7 @@ int process_redirection(char *str, char *env[], int mode)
         }
         else if (ft_strncmp(*parsed_args, "<<", 2) == 0)
         {
-			print_tab(parsed_args);
+			//print_tab(parsed_args);
 			//print_tab((current_command));
             *parsed_args = NULL;
 			//print_tab((current_command));

@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 14:11:00 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/30 16:26:41 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/04 19:31:58 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,10 @@ void echo_process(char **current_command)
 		has_flag = 1;
 		i++;
 	}
+	printf("%s", current_command[i++]);
     while (current_command[i])
 	{
-		printf("%s ", current_command[i]);
+		printf(" %s", current_command[i]);
 		i++;
     }
     if (has_flag == 0) 

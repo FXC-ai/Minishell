@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 18:39:34 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/04 21:16:18 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/04 22:22:38 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,46 @@
 
 extern int ms_errno;
 
-
 int is_space(char c)
 {
     return (c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '\f' || c == '\v');
+}
+
+void cut_end_space(char **str)
+{
+    int i;
+    int length;
+    char *copy_str;
+
+    length = 0;
+    i = 0;
+    while ((*str)[length])
+    {
+        length++;
+    }
+    copy_str = malloc(length + 1);
+    while ((*str)[i])
+    {
+        copy_str[i] = (*str)[i];
+        i++;
+    }
+    copy_str[i] = '\0';
+    length--;
+
+    while (copy_str[length] == ' ')
+    {
+        length--;
+    }
+    free(*str);
+    *str = malloc(length + 2);
+    i = 0;
+    while (i <= length)
+    {
+        (*str)[i] = copy_str[i];
+        i++;
+    }
+    (*str)[i] = '\0';
+    free(copy_str);
 }
 
 void normalize_with_space(char **str)
@@ -25,6 +61,7 @@ void normalize_with_space(char **str)
     char *p = *str;
     char *prev = NULL;
     char quote = '\0';
+
 
     while (*p != '\0')
     {
@@ -43,24 +80,24 @@ void normalize_with_space(char **str)
                 *p = ' ';
                 prev = p;
             }
-            if (*(p+1) != '\0' && !is_space(*(p+1)) && *(p+1) != '\'' && *(p+1) != '\"' && *(p+1) != *p) {
-                ft_memmove(p+2, p+1, ft_strlen(p+1)+1);
-                *(p+1) = ' ';
+            p++;
+            if (*(p) != '\0' && !is_space(*(p)) && *(p) != '\'' && *(p) != '\"' && *(p) != *(p - 1)) {
+                ft_memmove(p + 1, p, ft_strlen(p) + 1);
+                *p = ' ';
             }
+        }
+        else
+        {
+            prev = p;
             p++;
         }
-        prev = p;
-        p++;
     }
 }
-
 
 void	my_error()
 {
 	exit(EXIT_FAILURE);
 }
-
-
 
 char *ft_strndup(char *str, size_t n)
 {
@@ -240,21 +277,22 @@ char **lexer(char *str, char *env[])
 {
 	char	**result;
 	char	c = '|';
-	
+	int     i;
 
+    i = 0;
 	result = ft_split_lexer(str, c);
 	if (result == NULL)
 		return (0);
 
-
+    while (result[i])
+    {   
+        cut_end_space(&(result[i]));
+        i++;
+    }
 	normalize_with_space(result);
-	
-    //print_tab(result);
-
-
+	//print_tab(result);
 	parse_dollar(result, env);
-
-
+    //print_tab(result);
 	if (result[1] == NULL)
 	{
 		process_redirection(result[0], env, 1);
