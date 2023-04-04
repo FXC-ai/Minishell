@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:31:55 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/04 19:17:45 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/04 19:34:27 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,10 +154,12 @@ int process_redirection(char *str, char *env[], int mode)
     int out_fd = STDOUT_FILENO;
     char **parsed_args;
     parsed_args = ft_lexer_no_quote(str, ' ');
+
+    print_tab(parsed_args);
 	
     char **current_command = parsed_args;
 
-    print_tab(parsed_args);
+    //(parsed_args);
     while (*parsed_args)
     {
 		//printf("%s\n", *parsed_args);
@@ -197,7 +199,7 @@ int process_redirection(char *str, char *env[], int mode)
         }
         else if (ft_strncmp(*parsed_args, "<<", 2) == 0)
         {
-			print_tab(parsed_args);
+			//print_tab(parsed_args);
 			//print_tab((current_command));
             *parsed_args = NULL;
 			//print_tab((current_command));
