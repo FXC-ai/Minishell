@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:31:55 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/04 18:29:06 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/04 19:17:02 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,10 +99,10 @@ void	execute_command_2(char **parsed_args, int in_fd, int out_fd, char *env[])
 		pwd_process(parsed_args);
 	else if (r == BUILTIN_EXPORT)
 		export_process(parsed_args, env);
-	else if (r == 5)
-		export_process(parsed_args, env);
-	else if (r == 6)
-		export_process(parsed_args, env);
+	else if (r == BUILTIN_UNSET)
+		unset_process(parsed_args, env);
+	else if (r == BUILTIN_ENV)
+		env_process(parsed_args, env);
 	else if (r == BUILTIN_EXIT)
 		exit_process();
 	else

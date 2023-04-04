@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 18:39:34 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/04 18:29:11 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/04 18:46:19 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,20 @@ void normalize_with_space(char **str)
                 *p = ' ';
                 prev = p;
             }
-            if (*(p+1) != '\0' && !is_space(*(p+1)) && *(p+1) != '\'' && *(p+1) != '\"' && *(p+1) != *p) {
-                ft_memmove(p+2, p+1, ft_strlen(p+1)+1);
-                *(p+1) = ' ';
+            p++;
+            if (*(p) != '\0' && !is_space(*(p)) && *(p) != '\'' && *(p) != '\"' && *(p) != *(p - 1)) {
+                ft_memmove(p + 1, p, ft_strlen(p) + 1);
+                *p = ' ';
             }
+        }
+        else
+        {
+            prev = p;
             p++;
         }
-        prev = p;
-        p++;
     }
 }
+
 
 
 void	my_error()
