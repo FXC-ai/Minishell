@@ -6,7 +6,11 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:31:55 by fcoindre          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/04/04 14:27:35 by fcoindre         ###   ########.fr       */
+=======
+/*   Updated: 2023/04/04 14:05:40 by vgiordan         ###   ########.fr       */
+>>>>>>> c56a67f1e4c0da7e3f00fbf811614c6eaa29e351
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +152,8 @@ int process_redirection(char *str, char *env[], int mode)
     parsed_args = ft_lexer_no_quote(str, ' ');
 	
     char **current_command = parsed_args;
-	//print_tab(current_command);
+
+    //print_tab(parsed_args);
     while (*parsed_args)
     {
 		//printf("%s\n", *parsed_args);
