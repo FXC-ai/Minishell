@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:31:55 by fcoindre          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/04/04 18:43:50 by fcoindre         ###   ########.fr       */
-=======
-/*   Updated: 2023/04/04 18:29:06 by vgiordan         ###   ########.fr       */
->>>>>>> 2d9b247a138eb87cd34dcc00dfe3398ff32be023
+/*   Updated: 2023/04/04 20:33:54 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +157,6 @@ int process_redirection(char *str, char *env[], int mode)
 	
     char **current_command = parsed_args;
 
-    print_tab(parsed_args);
     while (*parsed_args)
     {
 		//printf("%s\n", *parsed_args);
