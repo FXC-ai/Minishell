@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:31:55 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/03/30 17:56:10 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/04 14:05:40 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,8 @@ int process_redirection(char *str, char *env[], int mode)
     parsed_args = ft_lexer_no_quote(str, ' ');
 	
     char **current_command = parsed_args;
-	//print_tab(current_command);
+
+    //print_tab(parsed_args);
     while (*parsed_args)
     {
 		//printf("%s\n", *parsed_args);
