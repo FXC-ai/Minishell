@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 11:39:22 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/05 16:20:56 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/05 16:36:20 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,7 @@ void	wait_for_input(char *env[])
 		
 		if (check_entry(line))
 		{
-			fork{
-				lexer(line, env);
-			}
-			
-			
-
+			lexer(line, env);	
 		}
 	}
 }
@@ -77,7 +72,6 @@ int	main(int ac, char **argv, char *env[])
 	(void) argv;
 	(void) ac;
 
-	
 	sig_init();
 	if (tcgetattr(STDIN_FILENO, &tm) == -1)
 		return (-1);

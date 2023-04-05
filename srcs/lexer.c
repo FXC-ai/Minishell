@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 18:39:34 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/05 15:43:37 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/05 18:21:35 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int is_space(char c)
     return (c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '\f' || c == '\v');
 }
 
-void cut_end_space(char **str)
+static void cut_end_space(char **str)
 {
     int i;
     int length;
@@ -93,10 +93,6 @@ void normalize_with_space(char **str)
     }
 }
 
-void	my_error()
-{
-	exit(EXIT_FAILURE);
-}
 
 char *ft_strndup(char *str, size_t n)
 {
@@ -145,7 +141,7 @@ char *find_env_variable (char *var_name, char *env[])
 }
 
 
-int check_simple_quote(char *cmd, char *trimmed_command)
+static int check_simple_quote(char *cmd, char *trimmed_command)
 {
     int size_cmd;
     int size_trimmed_cmd;

@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 17:35:07 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/04 12:38:30 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/05 18:12:22 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,17 @@ void	ft_free_tabs(char **tab, int h)
 		i++;
 	}
 	free(tab);
+}
+
+void	freemalloc(char **result, int j)
+{
+	while (j >= 0)
+	{
+		free(result[j]);
+		result[j] = NULL;
+		j--;
+	}
+	free(result);
 }
 
 int	size_tab(char **tab)
@@ -178,28 +189,4 @@ char *normalize_cmd(char* str, char *env[])
 	// Cas ou la commande est envoyée sans chemin
 	return cmd_exists(str, env);
 }
-
-/*
-int main(int argc, char const *argv[], char *env[])
-{
-
-	char *str = "/binkjhkjhjkh/ls -la";
-	char *str1 = "ls";
-	char *str2 = "/bin/ls -la";
-
-	char **tab_cmd = ft_split(str, ' ');
-
-	//char *test_extract_line = extract_command_name(str2);
-	//char *test_cmd_exists = cmd_exists(str2, env);
-
-	char *r = normalize_cmd(tab_cmd[0], env);
-
-
-	printf("R= %s\n", r);
-
-	ft_free_tabs(tab_cmd, size_tab(tab_cmd));
-
-
-	return 0;
-}*/
 

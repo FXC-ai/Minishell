@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:31:55 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/05 16:23:17 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/05 18:29:20 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ void execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
 		unset_process(parsed_args, env);
 	else if (r == BUILTIN_EXIT)
 		exit_process();
+
+		
 	global_sig.pid = fork();
 	if (global_sig.pid == 0)
 	{
@@ -104,7 +106,7 @@ void	execute_command_2(char **parsed_args, int in_fd, int out_fd, char *env[])
 	exit(0);
 }
 
-static int process_delimiter(char *del)
+int process_delimiter(char *del)
 {
 	char buffer[1024];
 	ssize_t rdd;
@@ -158,7 +160,7 @@ int process_redirection(char *str, char *env[], int mode)
 	out_fd = STDOUT_FILENO;
 	parsed_args = ft_lexer_no_quote(str, ' ');
 	current_command = parsed_args;
-	print_tab(current_command);
+	//print_tab(current_command);
 	while (*parsed_args)
 	{
 		if (ft_strcmp(*parsed_args, ">") == 0)
@@ -219,7 +221,7 @@ int process_redirection(char *str, char *env[], int mode)
 		}
 	}
 	
-	print_tab(current_command);
+	//print_tab(current_command);
 	if (*current_command)
 	{
 		if (mode)

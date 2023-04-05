@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_lexer_no_quote.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 14:59:24 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/30 15:20:53 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/05 18:06:42 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,6 @@ static char	*word_dup(const char *str, int start, int finish)
 	return (word);
 }
 
-static void	freemalloc(char **result, int j)
-{
-	while (j >= 0)
-	{
-		free(result[j]);
-		result[j] = NULL;
-		j--;
-	}
-	free(result);
-}
 
 static int process(char const *s, char **result, char c)
 {

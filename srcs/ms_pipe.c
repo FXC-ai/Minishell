@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_pipe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 12:35:43 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/05 15:18:05 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/05 18:08:12 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,6 @@ static void	error_exit(int code_error)
 	exit(code_error);
 }
 
-static void	freemalloc(char **result, int j)
-{
-	while (j >= 0)
-	{
-		free(result[j]);
-		result[j] = NULL;
-		j--;
-	}
-	free(result);
-}
 
 void execution (char *input_cmd, char *env[])
 {

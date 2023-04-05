@@ -56,10 +56,16 @@ typedef struct s_redirect
 	char	*right_str;
 }	t_redirect;
 
+//MAIN.C
+void	sig_init(void);
+void disable_ctrl_chars();
+int	check_entry(char *line);
 void	wait_for_input(char *env[]);
 
 //REDIRECTION.C
 void	execute_command(char **parsed_args, int in_fd, int out_fd, char *env[]);
+void	execute_command_2(char **parsed_args, int in_fd, int out_fd, char *env[]);
+int process_delimiter(char *del);
 int		process_redirection(char *str, char *env[], int mode);
 
 //SIGNAL.C
@@ -68,16 +74,24 @@ void    signal_handler();
 
 //PARSE_ARGS.C
 
-void    parsing(char **args, char *env[]);
+//void    parsing(char **args, char *env[]);
 
 //LEXER.C
+int is_space(char c);
 char	**lexer(char *str, char *env[]);
 char	**ft_split_lexer(char const *str, char c);
 int		count_chr(const char *str, char c);
+void parse_dollar(char **tab_cmds, char *env[]);
+char *find_env_variable (char *var_name, char *env[]);
+char *ft_strndup(char *str, size_t n);
+void normalize_with_space(char **str);
 
+//FT_LEXER_NO_QUOTE.C
 char	**ft_lexer_no_quote(char const *str, char c);
 
 //UTILS.C
+void	print_tab(char **tab);
+int	get_max_length(char *str1, char *str2);
 char *extract_command_name(const char *full_path);
 void	ft_free_tabs(char **tab, int h);
 int	size_tab(char **tab);
@@ -86,13 +100,16 @@ char	*create_path_cmd(char *path, char *cmd);
 char	*cmd_exists(char *cmd, char *env[]);
 char	*normalize_cmd(char* str, char *env[]);
 int		is_builtins(char *str);
-void	print_tab(char **tab);
+void	freemalloc(char **result, int j);
 
 
 //MS_PIPE.C
-void ms_pipe(char *tab_cmd[2], char *env[]);
+void execute_last_cmd(int pipe_fd[2], char **tab_cmds, int nbr_cmds, char *env[]);
+void execute_first_cmd(int pipe_fd[2], char **tab_cmds, char *env[]);
+void redirection (char *input_cmd, int previous_pipe[2], int next_pipe[2], char *env[]);
+void execution (char *input_cmd, char *env[]);
 void ms_pipe2(char **tab_cmds, char *env[]);
-int ms_pipe3(int process_num, char **tab_cmds, char *env[]);
+
 
 //BUILTINS
 void	echo_process(char **cmd);
