@@ -6,12 +6,11 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 18:39:34 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/05 14:25:44 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/05 14:42:56 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
-
 
 int is_space(char c)
 {
@@ -236,7 +235,7 @@ void parse_dollar(char **tab_cmds, char *env[])
                 else
                 {
                     if (trimmed_command[1] == '?')
-                        env_variable = ft_itoa(255);
+                        env_variable = ft_itoa(global_sig.ms_errno);
                     else
                         env_variable = "";
 

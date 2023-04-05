@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:31:55 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/05 14:37:53 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/05 14:42:48 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
 		waitpid(child_pid, &status, 0);
 		if (WIFEXITED(status))
 		{
+			global_sig.ms_errno = WEXITSTATUS(status);
 
 		}
 	}
