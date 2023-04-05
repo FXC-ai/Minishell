@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:31:55 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/05 13:58:28 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/05 14:35:18 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
 		waitpid(child_pid, &status, 0);
 		if (WIFEXITED(status))
 		{
-			ms_errno = WEXITSTATUS(status);
+			global_sig.ms_errno = WEXITSTATUS(status);
 		}
 	}
 }

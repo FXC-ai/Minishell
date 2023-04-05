@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 18:39:34 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/05 13:57:05 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/05 14:38:03 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
 
-extern int ms_errno;
 
 int is_space(char c)
 {
@@ -237,7 +236,7 @@ void parse_dollar(char **tab_cmds, char *env[])
                 else
                 {
                     if (trimmed_command[1] == '?')
-                        env_variable = ft_itoa(255);
+                        env_variable = ft_itoa(global_sig.ms_errno);
                     else
                         env_variable = "";
 
