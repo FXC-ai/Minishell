@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 18:39:34 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/04 22:22:38 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/05 13:14:03 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ void normalize_with_space(char **str)
         else if (quote == '\0' && (*p == '\'' || *p == '\"'))
         {
             quote = *p;
+            p++;
         }
         else if (quote == '\0' && (*p == '<' || *p == '>'))
         {
@@ -298,6 +299,7 @@ char **lexer(char *str, char *env[])
 		process_redirection(result[0], env, 1);
 		return (0);
 	}
+
 
 	ms_pipe2(result,env);
 	
