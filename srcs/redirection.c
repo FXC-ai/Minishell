@@ -6,13 +6,14 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:31:55 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/05 13:28:06 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/05 13:58:28 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
 
 extern int ms_errno;
+extern pid_t pid;
 
 void execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
 {

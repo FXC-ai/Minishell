@@ -24,6 +24,13 @@
 # define BUILTIN_ENV 6
 #define BUILTIN_EXIT 7
 
+typedef struct	s_sig
+{
+	int 			sig;
+	int				ms_errno;
+	pid_t			pid;
+} t_sig;
+
 
 void	rl_replace_line (const char *text, int clear_undo);
 
@@ -97,6 +104,6 @@ void    exit_process();
 int		unset_process_str(char *key, char *env[]);
 
 
-
+extern t_sig global_sig;
 
 #endif

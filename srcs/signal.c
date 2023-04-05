@@ -6,13 +6,11 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 12:15:22 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/05 13:41:06 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/05 14:20:16 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
-
-extern int is_interactive;
 
 static void handler(int sig)
 {
@@ -23,6 +21,7 @@ static void handler(int sig)
         rl_replace_line("", 0);
         rl_on_new_line();
         rl_redisplay();
+
     }
     if (sig == SIGQUIT) //Ctrl + '\'
     {
