@@ -120,19 +120,13 @@ void parse_dollar(char **tab_cmds, char *env[])
     char *str1;
     char *str2;
 
-    print_tab(tab_cmds);
-
     i = 0;
     while (tab_cmds[i] != NULL)
     {
         trimmed_command = ft_strchr(tab_cmds[i], '$');
-        printf("check = %d\n", check_simple_quote(tab_cmds[i], trimmed_command));
-        //sleep(1);
         
         while (trimmed_command != NULL && *trimmed_command != '\0')
         {
-            //printf("trimmed_commamd = %s\n", trimmed_command);
-            //sleep(1);
             j = 0;
             while (is_space(trimmed_command[j]) != 1 
                     && trimmed_command[j] != '\0'
@@ -183,8 +177,6 @@ void parse_dollar(char **tab_cmds, char *env[])
             else
             {
                 trimmed_command = ft_strchr(trimmed_command +1, '$');
-                printf("trimmed_commamd = %s\n", trimmed_command);
-                sleep(1);
             }
         }
         i++;
@@ -197,7 +189,8 @@ int main (int argc, char *argv[], char *env[])
 
     char *tab_cmds[2];
 
-    tab_cmds[0] = "echo '$USER' \"$USER\" ";
+
+    tab_cmds[0] = ft_strdup("echo '$USER' \"$USER\" $? \"$?\" '$' $qwerty    $HOME");
     tab_cmds[1] = NULL;
 
     print_tab(tab_cmds);

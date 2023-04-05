@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 18:39:34 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/05 13:30:48 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/05 13:39:06 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,19 +201,13 @@ void parse_dollar(char **tab_cmds, char *env[])
     char *str1;
     char *str2;
 
-    print_tab(tab_cmds);
-
     i = 0;
     while (tab_cmds[i] != NULL)
     {
         trimmed_command = ft_strchr(tab_cmds[i], '$');
-        printf("check = %d\n", check_simple_quote(tab_cmds[i], trimmed_command));
-        //sleep(1);
         
         while (trimmed_command != NULL && *trimmed_command != '\0')
         {
-            //printf("trimmed_commamd = %s\n", trimmed_command);
-            //sleep(1);
             j = 0;
             while (is_space(trimmed_command[j]) != 1 
                     && trimmed_command[j] != '\0'
@@ -231,7 +225,6 @@ void parse_dollar(char **tab_cmds, char *env[])
                     str1 = ft_strjoin(tmp, env_variable);
                     str2 = ft_strndup(trimmed_command + j, ft_strlen(trimmed_command + j));
 
-                    
                     free(tab_cmds[i]);
                     tab_cmds[i] = NULL;
                     tab_cmds[i] = ft_strjoin(str1, str2);
@@ -244,7 +237,7 @@ void parse_dollar(char **tab_cmds, char *env[])
                 else
                 {
                     if (trimmed_command[1] == '?')
-                        env_variable = ft_itoa(ms_errno);
+                        env_variable = ft_itoa(255);
                     else
                         env_variable = "";
 
@@ -263,9 +256,7 @@ void parse_dollar(char **tab_cmds, char *env[])
             }
             else
             {
-                trimmed_command = trimmed_command + j + 1;
-                printf("trimmed_commamd = %s\n", trimmed_command);
-                sleep(1);
+                trimmed_command = ft_strchr(trimmed_command +1, '$');
             }
         }
         i++;
