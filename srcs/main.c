@@ -6,13 +6,21 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 11:39:22 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/05 14:42:58 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/05 16:20:56 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
 
 t_sig	global_sig;
+
+void	sig_init(void)
+{
+	global_sig.sig_int = 0;
+	global_sig.sig_quit = 0;
+	global_sig.pid = 0;
+	global_sig.ms_errno = 0;
+}
 
 void disable_ctrl_chars()
 {
@@ -41,16 +49,24 @@ void	wait_for_input(char *env[])
 	signal_handler();
 	while(42)
 	{
+		global_sig.program_in_process = 0;
 		line = readline("minishell$ ");
+		global_sig.program_in_process = 1;
 		//disable_ctrl_chars();
 		if (line == NULL)
 		{
 			write(1, "exit\n", 5);
             break;
         }
+		
 		if (check_entry(line))
 		{
-			lexer(line, env);
+			fork{
+				lexer(line, env);
+			}
+			
+			
+
 		}
 	}
 }
@@ -62,7 +78,7 @@ int	main(int ac, char **argv, char *env[])
 	(void) ac;
 
 	
-	global_sig.ms_errno = 0;
+	sig_init();
 	if (tcgetattr(STDIN_FILENO, &tm) == -1)
 		return (-1);
 	tm.c_lflag &= ~ECHOCTL;

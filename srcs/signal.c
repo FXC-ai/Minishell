@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 12:15:22 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/05 14:20:16 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/05 15:51:05 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,17 @@ static void handler(int sig)
        // sleep(1);
         ft_putstr_fd("\n", 1);
         rl_replace_line("", 0);
-        rl_on_new_line();
+        if (global_sig.program_in_process == 0)
+            rl_on_new_line();
         rl_redisplay();
+        global_sig.sig_int = 1;
 
     }
     if (sig == SIGQUIT) //Ctrl + '\'
     {
         rl_on_new_line();
         rl_redisplay();
+        global_sig.sig_quit = 1;
         //write(1, "NEpasquit\n", 10);
         //exit(EXIT_FAILURE);
     }

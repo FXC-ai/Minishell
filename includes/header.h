@@ -26,9 +26,11 @@
 
 typedef struct	s_sig
 {
-	int 			sig;
-	int				ms_errno;
-	pid_t			pid;
+	int 	sig_int;
+	int		sig_quit;
+	int		ms_errno;
+	int		program_in_process;
+	pid_t	pid;
 } t_sig;
 
 

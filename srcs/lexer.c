@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 18:39:34 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/05 14:42:56 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/05 15:43:37 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,7 +187,6 @@ int check_simple_quote(char *cmd, char *trimmed_command)
     return result;
 }
 
-
 void parse_dollar(char **tab_cmds, char *env[])
 {
     int i;
@@ -268,6 +267,7 @@ char **lexer(char *str, char *env[])
 	int     i;
 
     i = 0;
+
 	result = ft_split_lexer(str, c);
 	if (result == NULL)
 		return (0);

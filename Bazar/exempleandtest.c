@@ -65,9 +65,9 @@ void proces_redirections(char **parsed_args) {
 int main() {
 
     //printf("%d\n", strcmp(">", ">"));
-    char *str[7] = {"echo", "Hello", ">", "hellofile.txt", ">", "hellofile2.txt", NULL};
+   /* char *str[7] = {"echo", "Hello", ">", "hellofile.txt", ">", "hellofile2.txt", NULL};
     char *str2[4] = {"cat", "<", "tests", NULL};
-    proces_redirections(str);
+    proces_redirections(str);*/
     /*int fds = open("test", O_WRONLY | O_CREAT | O_TRUNC, 0644);//fd[0] == read, fd[1] == write
     int id = fork();
     if (id == -1)

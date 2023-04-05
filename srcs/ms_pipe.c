@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 12:35:43 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/05 14:43:03 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/05 15:18:05 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,6 @@ void ms_pipe2(char **tab_cmds, char *env[])
 	int pipe_fd1[2];
 	int pipe_fd2[2];
 	int status;
-	pid_t pid;
 	int nbr_cmds;
 	int i;
 
@@ -134,8 +133,8 @@ void ms_pipe2(char **tab_cmds, char *env[])
 	
 	if (i % 2 == 1)
 	{
-		pid = fork();
-		if (pid == 0)
+		global_sig.pid = fork();
+		if (global_sig.pid == 0)
 		{
 			close(pipe_fd2[1]);
 			dup2(pipe_fd2[0],0);
@@ -147,8 +146,8 @@ void ms_pipe2(char **tab_cmds, char *env[])
 	}
 	else if (i % 2 == 0)
 	{
-		pid = fork();
-		if (pid == 0)
+		global_sig.pid = fork();
+		if (global_sig.pid == 0)
 		{
 			close(pipe_fd1[1]);
 			dup2(pipe_fd1[0],0);

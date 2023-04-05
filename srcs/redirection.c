@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:31:55 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/05 14:42:48 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/05 16:23:17 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
 {
 	int r;
 	int status;
-	pid_t child_pid;
 	
 	r = is_builtins(*parsed_args);
 	if (r == BUILTIN_CD)
@@ -27,8 +26,8 @@ void execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
 		unset_process(parsed_args, env);
 	else if (r == BUILTIN_EXIT)
 		exit_process();
-	child_pid = fork();
-	if (child_pid == 0)
+	global_sig.pid = fork();
+	if (global_sig.pid == 0)
 	{
 		if (in_fd != STDIN_FILENO)
 		{
@@ -60,7 +59,7 @@ void execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
 	}
 	else
 	{
-		waitpid(child_pid, &status, 0);
+		waitpid(global_sig.pid, &status, 0);
 		if (WIFEXITED(status))
 		{
 			global_sig.ms_errno = WEXITSTATUS(status);
@@ -118,13 +117,29 @@ static int process_delimiter(char *del)
 	rdd = read(STDIN_FILENO, buffer, sizeof(buffer) - 1);
 	while (rdd > 0)
 	{
+	
+		if (global_sig.sig_int == 1)
+		{
+			ft_putstr_fd("DEDANS\n", 2);
+			close(fd);
+			unlink("TMPDOC");
+			global_sig.sig_int = 0;
+			return (-1);
+		}
+		//ft_putstr_fd("1", 2);
 		buffer[rdd] = '\0';
+		//ft_putstr_fd("2", 2);
 		if (ft_strcmp(del_n, buffer) == 0)
 		{
 			break;
 		}
+		//ft_putstr_fd("3", 2);
 		write(fd, buffer, rdd);
+		//ft_putstr_fd("4", 2);
+		
 		rdd = read(STDIN_FILENO, buffer, sizeof(buffer) - 1);
+		//ft_putstr_fd("5", 2);
+
 	}
 	close(fd);
 	fd = open("TMPDOC", O_RDONLY);
@@ -188,11 +203,14 @@ int process_redirection(char *str, char *env[], int mode)
 			//print_tab((current_command));
 
 			in_fd = process_delimiter(*(parsed_args + 1));
+			if (in_fd == -1)
+			{
+				return (-1);
+			}
 			//current_command++;
 			//printf("LINE %s\n", *(parsed_args + 1));
 			
 			parsed_args += 2;
-			current_command += 2;
 			//print_tab_(current_command);
 		}
 		else
