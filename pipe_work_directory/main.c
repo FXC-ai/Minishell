@@ -193,11 +193,11 @@ int main (int argc, char *argv[], char *env[])
     tab_cmds[0] = ft_strdup("echo '$USER' \"$USER\" $? \"$?\" '$' $qwerty    $HOME");
     tab_cmds[1] = NULL;
 
-    print_tab(tab_cmds);
+    //print_tab(tab_cmds);
 
     parse_dollar(tab_cmds, env);
 
-    print_tab(tab_cmds);
+    //print_tab(tab_cmds);
 
 
     printf("check de fin= %d\n", check_simple_quote("\"$USER\"", "$USER\""));

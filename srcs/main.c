@@ -6,13 +6,12 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 11:39:22 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/05 14:19:48 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/05 14:24:26 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
 
-int		ms_errno;
 t_sig	global_sig;
 
 void disable_ctrl_chars()
@@ -61,8 +60,7 @@ int	main(int ac, char **argv, char *env[])
 	struct termios		tm;
 	(void) argv;
 	(void) ac;
-	
-	ms_errno = 0;
+
 	if (tcgetattr(STDIN_FILENO, &tm) == -1)
 		return (-1);
 	tm.c_lflag &= ~ECHOCTL;

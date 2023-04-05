@@ -3,17 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ms_pipe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 12:35:43 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/04 16:14:55 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/05 14:24:56 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
-
-
-extern int ms_errno;
 
 static void	error_exit(int code_error)
 {
@@ -166,7 +163,7 @@ void ms_pipe2(char **tab_cmds, char *env[])
 		waitpid(-1, &status, 0);
 		if (WIFEXITED(status))
         {
-            ms_errno = WEXITSTATUS(status);
+
         }
 	}
 

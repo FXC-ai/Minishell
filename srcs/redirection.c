@@ -6,14 +6,11 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:31:55 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/05 13:58:28 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/05 14:37:53 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
-
-extern int ms_errno;
-extern pid_t pid;
 
 void execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
 {
@@ -66,7 +63,7 @@ void execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
 		waitpid(child_pid, &status, 0);
 		if (WIFEXITED(status))
 		{
-			ms_errno = WEXITSTATUS(status);
+
 		}
 	}
 }
@@ -192,8 +189,10 @@ int process_redirection(char *str, char *env[], int mode)
 			in_fd = process_delimiter(*(parsed_args + 1));
 			//current_command++;
 			//printf("LINE %s\n", *(parsed_args + 1));
+			
 			parsed_args += 2;
 			current_command += 2;
+			//print_tab_(current_command);
 		}
 		else
 		{
@@ -201,7 +200,7 @@ int process_redirection(char *str, char *env[], int mode)
 		}
 	}
 	
-	//print_tab(current_command);
+	print_tab(current_command);
 	if (*current_command)
 	{
 		if (mode)

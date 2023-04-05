@@ -8,4 +8,5 @@ includes
 libft
 minishell
 pipe_work_directory
+run.sh
 srcs
