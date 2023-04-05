@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:31:55 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/05 13:26:10 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/05 13:28:06 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,7 @@ int process_redirection(char *str, char *env[], int mode)
 	out_fd = STDOUT_FILENO;
 	parsed_args = ft_lexer_no_quote(str, ' ');
 	current_command = parsed_args;
+	print_tab(current_command);
 	while (*parsed_args)
 	{
 		if (ft_strcmp(*parsed_args, ">") == 0)
