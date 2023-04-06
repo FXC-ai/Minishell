@@ -1,4 +1,4 @@
-SRCS	= $(addprefix srcs/, main.c ms_pipe.c signal.c normalize_cmd.c lexer.c ft_split_lexer.c utils.c redirection.c normalize_with_space.c ft_split_lexer_no_quote.c parse_dollar.c builtins/echo.c builtins/cd.c builtins/pwd.c builtins/env.c builtins/exit.c builtins/unset.c builtins/export.c)
+SRCS	= $(addprefix srcs/, main.c ms_pipe.c signal.c is_builtins.c normalize_cmd.c lexer.c ft_split_lexer.c utils.c redirection.c normalize_with_space.c ft_split_lexer_no_quote.c parse_dollar.c builtins/echo.c builtins/cd.c builtins/pwd.c builtins/env.c builtins/exit.c builtins/unset.c builtins/export.c)
 
 
 OBJS	= ${SRCS:.c=.o}

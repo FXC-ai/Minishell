@@ -71,11 +71,12 @@ int		process_redirection(char *str, char *env[], int mode);
 //UTILS.C
 int		is_space(char c);
 void	print_tab(char **tab);
-int		get_max_length(char *str1, char *str2);
 void	ft_free_tabs(char **tab, int h);
 int		size_tab(char **tab);
-int		is_builtins(char *str);
 void	freemalloc(char **result, int j);
+
+// IS_BUILTINS.C
+int		is_builtins(char *str);
 
 // NORMALIZE_CMD.C
 char	*normalize_cmd(char* str, char *env[]);
