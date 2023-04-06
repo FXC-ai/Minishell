@@ -48,7 +48,7 @@ void    signal_handler();
 //PARSE_DOLLAR.C
 void	parse_dollar(char **tab_cmds, char *env[]);
 char	*find_env_variable (char *var_name, char *env[]);
-char	*ft_strndup(char *str, size_t n);
+
 
 //NORMALIZE_WITH_SPACE.C
 void	cut_end_space(char **str);
@@ -60,7 +60,7 @@ char	**ft_split_lexer(char const *str, char c);
 int		count_chr(const char *str, char c);
 
 //FT_LEXER_NO_QUOTE.C
-char	**ft_lexer_no_quote(char const *str, char c);
+char	**ft_split_lexer_no_quote(char const *str, char c);
 
 //REDIRECTION.C
 void	execute_command(char **parsed_args, int in_fd, int out_fd, char *env[]);
@@ -74,6 +74,7 @@ void	print_tab(char **tab);
 void	ft_free_tabs(char **tab, int h);
 int		size_tab(char **tab);
 void	freemalloc(char **result, int j);
+char	*ft_strndup(char *str, size_t n);
 
 // IS_BUILTINS.C
 int		is_builtins(char *str);

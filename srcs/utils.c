@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 17:35:07 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/06 11:46:42 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/06 15:55:11 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,31 @@ int	size_tab(char **tab)
 	return (count);
 }
 
+char *ft_strndup(char *str, size_t n)
+{
+    char    	*result;
+    size_t     i;
 
+    if (str == NULL)
+        return NULL;
+   
+    if (ft_strlen(str) <= n)
+    {
+        return ft_strdup(str);
+    }
+    
+    result = malloc(sizeof(char) * (n + 1));
+    if (result == NULL)
+        return NULL;
+
+    i = 0;
+    while(i < n)
+    {
+        result[i] = str[i];
+        i++;
+    }
+    result[n] = '\0';
+
+    return result;
+}
 

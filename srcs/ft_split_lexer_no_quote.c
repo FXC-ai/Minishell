@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 14:59:24 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/05 18:06:42 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/06 12:12:36 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ static int process(char const *s, char **result, char c)
     return (0);
 }
 
-char	**ft_lexer_no_quote(char const *s, char c)
+char	**ft_split_lexer_no_quote(char const *s, char c)
 {
 	char	**result;
 	int     r;

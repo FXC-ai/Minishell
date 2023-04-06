@@ -6,41 +6,12 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 11:01:12 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/06 11:02:09 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/06 15:54:48 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
 
-char *ft_strndup(char *str, size_t n)
-{
-    
-    char    	*result;
-    size_t     i;
-
-    if (str == NULL)
-        return NULL;
-
-    
-    if (ft_strlen(str) <= n)
-    {
-        return ft_strdup(str);
-    }
-    
-    result = malloc(sizeof(char) * (n + 1));
-    if (result == NULL)
-        return NULL;
-
-    i = 0;
-    while(i < n)
-    {
-        result[i] = str[i];
-        i++;
-    }
-    result[n] = '\0';
-
-    return result;
-}
 
 char *find_env_variable (char *var_name, char *env[])
 {

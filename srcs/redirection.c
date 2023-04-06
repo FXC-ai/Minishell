@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:31:55 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/05 18:29:20 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/06 12:24:10 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,11 @@ int process_redirection(char *str, char *env[], int mode)
 
 	in_fd = STDIN_FILENO;
 	out_fd = STDOUT_FILENO;
-	parsed_args = ft_lexer_no_quote(str, ' ');
+
+	//printf("str = %s\n", str);
+	parsed_args = ft_split_lexer_no_quote(str, ' ');
+
+
 	current_command = parsed_args;
 	//print_tab(current_command);
 	while (*parsed_args)
