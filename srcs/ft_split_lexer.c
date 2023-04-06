@@ -6,12 +6,11 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:58:03 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/05 18:11:16 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/06 11:25:24 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
-
 
 static int  is_quote(char c)
 {
@@ -69,7 +68,6 @@ static char	*word_dup(const char *str, int start, int finish)
 	word[i] = '\0';
 	return (word);
 }
-
 
 static int process(char const *s, char **result, char c)
 {

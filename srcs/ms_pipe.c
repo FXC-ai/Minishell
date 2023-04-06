@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 12:35:43 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/05 18:08:12 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/06 10:37:53 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,21 +66,6 @@ void execute_first_cmd(int pipe_fd[2], char **tab_cmds, char *env[])
 		process_redirection(tab_cmds[0], env, 0);
 	}    
 
-}
-
-
-void execute_last_cmd(int pipe_fd[2], char **tab_cmds, int nbr_cmds, char *env[])
-{
-	pid_t pid;
-
-	pid = fork();
-	if (pid == 0)
-	{
-		close(pipe_fd[1]);
-		dup2(pipe_fd[0],0);
-		close(pipe_fd[0]);
-		process_redirection(tab_cmds[nbr_cmds - 1], env, 0);
-	}
 }
 
 
@@ -147,6 +132,7 @@ void ms_pipe2(char **tab_cmds, char *env[])
 		close(pipe_fd1[0]);
 		close(pipe_fd1[1]);  
 	}
+
 	for (i = 0; i < nbr_cmds; i++)
 	{
 		waitpid(-1, &status, 0);
