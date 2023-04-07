@@ -6,16 +6,11 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 18:39:34 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/06 18:00:15 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/07 14:56:20 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
-
-
-
-
-
 
 char **lexer(char *str, char *env[])
 {
@@ -37,6 +32,10 @@ char **lexer(char *str, char *env[])
 	normalize_with_space(result);
 
 	parse_dollar(result, env);
+
+	parse_redirection_right(result);
+
+	print_tab(result);
 
     if (result[1] == NULL)
 	{

@@ -49,6 +49,9 @@ void    signal_handler();
 void	parse_dollar(char **tab_cmds, char *env[]);
 char	*find_env_variable (char *var_name, char *env[]);
 
+//PARSE_REDIRECTION.C
+void parse_redirection_right(char **tab_cmds);
+
 
 //NORMALIZE_WITH_SPACE.C
 void	cut_end_space(char **str);
