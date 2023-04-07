@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 12:53:27 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/06 18:38:08 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/07 13:59:50 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void find_start_end(char *cmd, int *start, int *end)
 
     while (cmd[i])
     {
-        if (*cmd == '>')
+        if (cmd[i] == '>')
         {
             *start = i;
             if (cmd[i+1] == '>')
@@ -107,6 +107,51 @@ void find_start_end(char *cmd, int *start, int *end)
     }
 }
 
+char *delete_chevrons(char *cmd, int start, int end)
+{
+
+    char *str1;
+    char *str2;
+    char *tmp;
+    char *result;
+    int i;
+    int j;
+
+    int size_cmd;
+    int size_str_chevrons;
+
+
+    //printf("cmd = [%s]\n", cmd);
+
+    size_cmd = ft_strlen(cmd);
+    size_str_chevrons = end - start;
+
+    result = malloc(sizeof(char)*(size_cmd - size_str_chevrons + 1));
+    if (result == NULL)
+    {
+        return NULL;
+    }
+
+    i = 0;
+    j = 0;
+    while(cmd[i] != '\0')
+    {
+        if (i >= start && i <= end)
+        {
+            i++;
+        }
+        else
+        {
+            result[j] = cmd[i];
+            i++;
+            j++;
+        }
+
+    }
+
+
+    return result;
+}
 
 /*
 void pre_parse_redirection(char *tab_cmds)
@@ -159,36 +204,122 @@ void pre_parse_redirection(char *tab_cmds)
 */
 
 
+void parse_redirection_right(char **tab_cmds)
+{
+
+    int start;
+    int end;
+
+    char *str2;
+    char *str1;
+    char *tmp;
+
+    int nbr_chev;
+
+    while(*tab_cmds)
+    {
+        nbr_chev = is_valid_chevron(*tab_cmds);
+        while(nbr_chev > 0)
+        {
+            find_start_end(*tab_cmds, &start, &end);
+
+            str2 = ft_strndup(*tab_cmds + start, (end - start));
+            str1 = delete_chevrons(*tab_cmds, start, end);
+
+            tmp = ft_strjoin(str1, " ");
+            *tab_cmds = ft_strjoin(tmp, str2);
+
+
+            nbr_chev--;
+        }
+        tab_cmds++;
+    }
+
+
+
+}
+
 
 
 int main(void)
 {
-
-    char *cmd  = ">>p >> 7>abc bonjour >>echo bonjour > >b \"Mr\" > c \"Mme\"";
+    char *cmd  = ">>c echo poire >b Mme >a | >>a >b >c echo poitr";
     char **result;
-    int start;
-    int end;
-
-    char *test;
-
-    int nbr_chev;
 
     result = ft_split_lexer(cmd, '|');
-
     normalize_with_space(result);
+    print_tab(result);
+
+    parse_redirection_right(result);
 
     print_tab(result);
 
-    nbr_chev = is_valid_chevron(cmd);
-
-    find_start_end(result[0], &start, &end);
-
-    printf("start = %d || end = %d\n",start, end);
 
 
-    test = ft_strndup(result[0] + start, end);
 
-    printf("test = [%s]\n", test);
+    
+    /*
+    int start;
+    int end;
+    char *str_chevron;
+
+    char *result_test;
+    char *result_final;
+    char *tmp;
+
+    int nbr_chev;
+
+    int index;
+
+    index = 0;
+    while(result[index])
+    {
+        nbr_chev = is_valid_chevron(result[index]);
+        while(nbr_chev > 0)
+        {
+            find_start_end(result[index], &start, &end);
+
+            str_chevron = ft_strndup(result[index] + start, (end - start));
+            result_test = delete_chevrons(result[0], start, end);
+
+            tmp = ft_strjoin(result_test, " ");
+            result_final = ft_strjoin(tmp, str_chevron);
+
+            result[index] = result_final;
+
+            printf("result = [%s]\n", result_final);
+            nbr_chev--;
+        }
+        index++;
+    }*/
+    // test = ft_strndup(result[0] + start, end);
+
+
+
+    
+
+    // printf("test = [%s]\n", test);
+    // printf("result[0] + start = [%s]\n", result[0] + start);
+    // printf("result[0] + end   = [%s]\n", result[0] + end);
+    
+
+    
+
+
+    // ft_memmove(result[0] + start, result[0] + end, ft_strlen(result[0] + end));
+
+
+    // printf("keep the hope : [%s]\n", result[0]);
+
+
+    // test2 = ft_strjoin(result[0], test);
+
+
+    // printf("keep the hope2 : [%s]\n", test2);
+
+
+
+
 
     /*Maintenant il faut coder la fonction qui modifie la str*/
 
