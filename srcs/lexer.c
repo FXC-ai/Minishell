@@ -6,13 +6,13 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 18:39:34 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/07 16:15:36 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/07 18:05:25 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
 
-char **lexer(char *str, char *env[])
+void lexer(char *str, char *env[])
 {
 	char	**result;
 	char	c = '|';
@@ -23,7 +23,7 @@ char **lexer(char *str, char *env[])
 
 	result = ft_split_lexer(str, c);
 	if (result == NULL)
-		return (0);
+		return ;
     while (result[i])
     {   
         cut_end_space(&(result[i]));
@@ -41,12 +41,12 @@ char **lexer(char *str, char *env[])
     if (result[1] == NULL)
 	{
 		process_redirection(result[0], env, 1);
-		return (0);
+		//return (0);
 	}
 	else
 	{
 		nbr_cmds = size_tab(result);
 		ms_pipe2(result, nbr_cmds, env);
 	}
-	return (result);
+	//return (result);
 }

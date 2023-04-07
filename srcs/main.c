@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 11:39:22 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/05 16:36:20 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/07 18:03:41 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ int	check_entry(char *line)
 void	wait_for_input(char *env[])
 {
 	char    *line;
+	(void) env;
+
 	signal_handler();
 	while(42)
 	{
@@ -58,11 +60,11 @@ void	wait_for_input(char *env[])
 			write(1, "exit\n", 5);
             break;
         }
-		
 		if (check_entry(line))
-		{
+		{	
 			lexer(line, env);	
 		}
+		free(line);
 	}
 }
 
@@ -71,6 +73,7 @@ int	main(int ac, char **argv, char *env[])
 	struct termios		tm;
 	(void) argv;
 	(void) ac;
+	(void) env;
 
 	sig_init();
 	if (tcgetattr(STDIN_FILENO, &tm) == -1)

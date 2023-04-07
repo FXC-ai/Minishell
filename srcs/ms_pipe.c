@@ -6,23 +6,12 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 12:35:43 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/07 16:33:16 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/07 17:21:49 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
 
-
-typedef struct s_cmd_to_execute {
-
-	int index;
-	int fd_in;
-	int fd_out;
-	int pipe_fd1[2];
-	int pipe_fd2[2];
-	char *cmd;
-
-} t_cmd_to_execute;
 
 static void	error_exit(int code_error)
 {
@@ -64,7 +53,29 @@ void redirection (char *input_cmd, int previous_pipe[2], int next_pipe[2], char 
 		process_redirection(input_cmd, env, 0);
 	}
 }
+/*
+void redirection (t_cmd_to_execute cmd_to_execute, char *env[])
+{
+	pid_t pid;
 
+	pid = fork();
+	if (pid == 0)
+	{
+		close(cmd_to_execute.previous_pipe[1]);
+		close(cmd_to_execute.next_pipe[0]);
+
+		dup2(cmd_to_execute.previous_pipe[0],0);
+		dup2(cmd_to_execute.next_pipe[1],1);
+
+		close(cmd_to_execute.previous_pipe[0]);
+		close(cmd_to_execute.next_pipe[1]);       
+
+		process_redirection(cmd_to_execute.cmd, env, 0);
+	}
+}
+*/
+
+/*
 void execute_first_cmd(int pipe_fd[2], char **tab_cmds, char *env[])
 {
 	pid_t pid;
@@ -79,23 +90,32 @@ void execute_first_cmd(int pipe_fd[2], char **tab_cmds, char *env[])
 	}    
 
 }
-/*
-void execute_first_cmd(t_cmd_to_execute cmd_to_execute, char *env[])
+*/
+
+void execute_first_cmd(t_cmd_to_execute cmd_to_execute0, char *env[])
 {
 	pid_t pid;
 
 	pid = fork();
 	if (pid == 0)
 	{
-		close(pipe_fd[0]);
-		dup2(pipe_fd[1],1);
-		close(pipe_fd[1]);
-		process_redirection(tab_cmds[0], env, 0);
+		close(cmd_to_execute0.next_pipe[0]);
+		dup2(cmd_to_execute0.next_pipe[1],1);
+		close(cmd_to_execute0.next_pipe[1]);
+		process_redirection(cmd_to_execute0.cmd, env, 0);
 	}    
 
-}*/
+}
+
+/*
+void set_cmd_to_execute(int index, int *pipe_previous, int pipe_next, char *cmd)
+{
+	t_cmd_to_execute
 
 
+
+}
+*/
 
 void ms_pipe2(char **tab_cmds, int nbr_cmds, char *env[])
 {
@@ -104,19 +124,19 @@ void ms_pipe2(char **tab_cmds, int nbr_cmds, char *env[])
 	int pipe_fd2[2];
 	int status;
 	int i;
-	/*
-	t_cmd_to_execute cmd_to_execute;
+	
+	t_cmd_to_execute cmd_to_execute0;
 
-	cmd_to_execute.index = 0;
-	cmd_to_execute.fd_in = -1;
-	cmd_to_execute.fd_out = -1;
-	cmd_to_execute.
-	cmd_to_execute.cmd = tab_cmds[0];
-	*/
+	cmd_to_execute0.index = 0;
+	cmd_to_execute0.next_pipe = pipe_fd1;
+	cmd_to_execute0.previous_pipe = NULL;
+	cmd_to_execute0.cmd = tab_cmds[0];
+	
 
 	pipe(pipe_fd1);
 
-	execute_first_cmd(pipe_fd1, tab_cmds, env);
+	// execute_first_cmd(pipe_fd1, tab_cmds, env);
+	execute_first_cmd(cmd_to_execute0, env);
 	i = 0;
 	while (i < nbr_cmds - 2)
 	{

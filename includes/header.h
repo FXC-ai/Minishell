@@ -33,6 +33,17 @@ typedef struct	s_sig
 	pid_t	pid;
 } t_sig;
 
+typedef struct s_cmd_to_execute {
+
+	int index;
+	int fd_in;
+	int fd_out;
+	int *previous_pipe;
+	int *next_pipe;
+	char *cmd;
+
+} t_cmd_to_execute;
+
 void	rl_replace_line (const char *text, int clear_undo);
 
 
@@ -58,7 +69,7 @@ void	cut_end_space(char **str);
 void	normalize_with_space(char **str);
 
 //LEXER.C
-char	**lexer(char *str, char *env[]);
+void	lexer(char *str, char *env[]);
 char	**ft_split_lexer(char const *str, char c);
 int		count_chr(const char *str, char c);
 
@@ -87,8 +98,10 @@ char	*normalize_cmd(char* str, char *env[]);
 
 //MS_PIPE.C
 void	execute_last_cmd(int pipe_fd[2], char **tab_cmds, int nbr_cmds, char *env[]);
-void	execute_first_cmd(int pipe_fd[2], char **tab_cmds, char *env[]);
+//void	execute_first_cmd(int pipe_fd[2], char **tab_cmds, char *env[]);
+void	execute_first_cmd(t_cmd_to_execute cmd_to_execute, char *env[]);
 void	redirection (char *input_cmd, int previous_pipe[2], int next_pipe[2], char *env[]);
+//void	redirection (t_cmd_to_execute cmd_to_execute, char *env[])
 void	execution (char *input_cmd, char *env[]);
 void	ms_pipe2(char **tab_cmds, int nbr_cmds, char *env[]);
 
