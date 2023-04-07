@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:31:55 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/06 12:24:10 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/07 15:52:10 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,20 +128,13 @@ int process_delimiter(char *del)
 			global_sig.sig_int = 0;
 			return (-1);
 		}
-		//ft_putstr_fd("1", 2);
 		buffer[rdd] = '\0';
-		//ft_putstr_fd("2", 2);
 		if (ft_strcmp(del_n, buffer) == 0)
 		{
 			break;
 		}
-		//ft_putstr_fd("3", 2);
 		write(fd, buffer, rdd);
-		//ft_putstr_fd("4", 2);
-		
 		rdd = read(STDIN_FILENO, buffer, sizeof(buffer) - 1);
-		//ft_putstr_fd("5", 2);
-
 	}
 	close(fd);
 	fd = open("TMPDOC", O_RDONLY);
@@ -158,6 +151,8 @@ int process_redirection(char *str, char *env[], int mode)
 
 	in_fd = STDIN_FILENO;
 	out_fd = STDOUT_FILENO;
+
+	//printf("Before process_redirection : in_fd = %d / out_fd = %d\n", in_fd, out_fd);
 
 	//printf("str = %s\n", str);
 	parsed_args = ft_split_lexer_no_quote(str, ' ');
@@ -203,21 +198,14 @@ int process_redirection(char *str, char *env[], int mode)
 		}
 		else if (ft_strncmp(*parsed_args, "<<", 2) == 0)
 		{
-			//print_tab(parsed_args);
-			//print_tab((current_command));
 			*parsed_args = NULL;
-			//print_tab((current_command));
 
 			in_fd = process_delimiter(*(parsed_args + 1));
 			if (in_fd == -1)
 			{
 				return (-1);
 			}
-			//current_command++;
-			//printf("LINE %s\n", *(parsed_args + 1));
-			
 			parsed_args += 2;
-			//print_tab_(current_command);
 		}
 		else
 		{
@@ -225,7 +213,7 @@ int process_redirection(char *str, char *env[], int mode)
 		}
 	}
 	
-	//print_tab(current_command);
+
 	if (*current_command)
 	{
 		if (mode)
@@ -234,8 +222,8 @@ int process_redirection(char *str, char *env[], int mode)
 			execute_command_2(current_command, in_fd, out_fd, env);
 	}
 	
-	
-		
+	//printf("After process_redirection : in_fd = %d / out_fd = %d\n", in_fd, out_fd);
+
 	if (in_fd != STDIN_FILENO)
 	{
 		close(in_fd);

@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 18:39:34 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/07 14:56:20 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/07 16:15:36 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ char **lexer(char *str, char *env[])
 	char	**result;
 	char	c = '|';
 	int     i;
+	int		nbr_cmds;
 
     i = 0;
 
@@ -34,7 +35,7 @@ char **lexer(char *str, char *env[])
 	parse_dollar(result, env);
 
 	parse_redirection_right(result);
-
+	
 	print_tab(result);
 
     if (result[1] == NULL)
@@ -42,8 +43,10 @@ char **lexer(char *str, char *env[])
 		process_redirection(result[0], env, 1);
 		return (0);
 	}
-
-	ms_pipe2(result,env);
-
+	else
+	{
+		nbr_cmds = size_tab(result);
+		ms_pipe2(result, nbr_cmds, env);
+	}
 	return (result);
 }

@@ -6,11 +6,23 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 12:35:43 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/06 10:37:53 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/07 16:33:16 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
+
+
+typedef struct s_cmd_to_execute {
+
+	int index;
+	int fd_in;
+	int fd_out;
+	int pipe_fd1[2];
+	int pipe_fd2[2];
+	char *cmd;
+
+} t_cmd_to_execute;
 
 static void	error_exit(int code_error)
 {
@@ -67,20 +79,43 @@ void execute_first_cmd(int pipe_fd[2], char **tab_cmds, char *env[])
 	}    
 
 }
+/*
+void execute_first_cmd(t_cmd_to_execute cmd_to_execute, char *env[])
+{
+	pid_t pid;
+
+	pid = fork();
+	if (pid == 0)
+	{
+		close(pipe_fd[0]);
+		dup2(pipe_fd[1],1);
+		close(pipe_fd[1]);
+		process_redirection(tab_cmds[0], env, 0);
+	}    
+
+}*/
 
 
-void ms_pipe2(char **tab_cmds, char *env[])
+
+void ms_pipe2(char **tab_cmds, int nbr_cmds, char *env[])
 {
 
 	int pipe_fd1[2];
 	int pipe_fd2[2];
 	int status;
-	int nbr_cmds;
 	int i;
+	/*
+	t_cmd_to_execute cmd_to_execute;
 
-	nbr_cmds = size_tab(tab_cmds);
+	cmd_to_execute.index = 0;
+	cmd_to_execute.fd_in = -1;
+	cmd_to_execute.fd_out = -1;
+	cmd_to_execute.
+	cmd_to_execute.cmd = tab_cmds[0];
+	*/
 
 	pipe(pipe_fd1);
+
 	execute_first_cmd(pipe_fd1, tab_cmds, env);
 	i = 0;
 	while (i < nbr_cmds - 2)

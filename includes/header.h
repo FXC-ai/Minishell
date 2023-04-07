@@ -90,7 +90,7 @@ void	execute_last_cmd(int pipe_fd[2], char **tab_cmds, int nbr_cmds, char *env[]
 void	execute_first_cmd(int pipe_fd[2], char **tab_cmds, char *env[]);
 void	redirection (char *input_cmd, int previous_pipe[2], int next_pipe[2], char *env[]);
 void	execution (char *input_cmd, char *env[]);
-void	ms_pipe2(char **tab_cmds, char *env[]);
+void	ms_pipe2(char **tab_cmds, int nbr_cmds, char *env[]);
 
 
 
