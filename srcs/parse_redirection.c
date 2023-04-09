@@ -40,7 +40,7 @@ int size_next_wd(char *str)
     return size_wd;
 }
 
-static int is_valid_chevron (char *cmd)
+static int is_valid_chevron (char *cmd, char chev_type)
 {
     int j;
     int count;
@@ -49,9 +49,9 @@ static int is_valid_chevron (char *cmd)
     j = 0;
     while (*cmd != '\0')
     {
-        if (*cmd == '>')
+        if (*cmd == chev_type)
         {
-            if (*(cmd+1) == '>')
+            if (*(cmd+1) == chev_type)
             {
                 cmd+=1;
             }
@@ -71,7 +71,8 @@ static int is_valid_chevron (char *cmd)
     return count;
 }
 
-static void find_start_end(char *cmd, int *start, int *end)
+
+static void find_start_end(char *cmd, int *start, int *end, char type_chev)
 {
     int i;
 
@@ -81,10 +82,10 @@ static void find_start_end(char *cmd, int *start, int *end)
 
     while (cmd[i])
     {
-        if (cmd[i] == '>')
+        if (cmd[i] == type_chev)
         {
             *start = i;
-            if (cmd[i+1] == '>')
+            if (cmd[i+1] == type_chev)
             {
                 i++;
             }
@@ -158,10 +159,10 @@ void parse_redirection_right(char **tab_cmds)
 
     while(*tab_cmds)
     {
-        nbr_chev = is_valid_chevron(*tab_cmds);
+        nbr_chev = is_valid_chevron(*tab_cmds, '>');
         while(nbr_chev > 0)
         {
-            find_start_end(*tab_cmds, &start, &end);
+            find_start_end(*tab_cmds, &start, &end, '>');
 
             str2 = ft_strndup(*tab_cmds + start, (end - start));
             str1 = delete_chevrons(*tab_cmds, start, end);
@@ -185,11 +186,88 @@ void parse_redirection_right(char **tab_cmds)
 
 }
 
+void parse_redirection_left (char **tab_cmds)
+{
 
-/*
+    /*
+        valider le nombre de chevrons
+        parcourir la commande depuis la fin
+        chaque fois qu un chevron < ou << est trouve
+            le supprimer de la chaine
+            le mettre en debut de chaine
+    
+    
+    */
+
+    int start;
+    int end;
+
+    char *str2;
+    char *str1;
+    char *tmp;
+
+    int nbr_chev;
+    int nbr_chev_cpy;
+
+    int i;
+    int j;
+
+
+    while(*tab_cmds)
+    {
+        nbr_chev = is_valid_chevron(*tab_cmds, '<');
+        nbr_chev_cpy = nbr_chev;
+        while (nbr_chev_cpy > 0)
+        {
+            i = 0;
+            j = 0;
+            while (j < nbr_chev - 1)
+            {
+                if (*(*tab_cmds + i) == '<')
+                {
+                    j++;
+                    if (*(*tab_cmds + i + 1) == '<')
+                    {
+                        i++;
+                    }
+                }
+                i++;
+            }
+
+
+
+            find_start_end(*tab_cmds + i, &start, &end, '<');
+
+
+
+
+            str2 = ft_strndup(*tab_cmds + i + start, end - start);
+
+            //printf("str2 = %s\n", str2);
+
+
+            str1 = delete_chevrons(*tab_cmds, start + i, end + i);
+
+            //printf("str1 = %s\n", str1);
+
+            tmp = ft_strjoin(str2, str1);
+
+
+            *tab_cmds = tmp;
+            //printf("tmp = %s\n", tmp);
+            nbr_chev_cpy--;
+        }
+        tab_cmds++;
+    }
+
+}
+
+
+
 int main(void)
 {
-    char *cmd  = ">>c echo poire >b Mme >a | >>a >b >c echo poitr";
+    //char *cmd  = ">>c echo  poire >b Mme >a | <<a echo poitr <b | echo bonjour <<END <a >>b >C | echo bonjour < <END <a >>b >C";
+    char *cmd  = "<a <<b <<c echo n <d";
     char **result;
 
     result = ft_split_lexer(cmd, '|');
@@ -197,6 +275,8 @@ int main(void)
     print_tab(result);
 
     parse_redirection_right(result);
+    parse_redirection_left(result);
+
 
     print_tab(result);
 
@@ -204,4 +284,4 @@ int main(void)
 
     return 0;
 
-}*/
+}
