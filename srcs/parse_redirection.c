@@ -167,7 +167,15 @@ void parse_redirection_right(char **tab_cmds)
             str1 = delete_chevrons(*tab_cmds, start, end);
 
             tmp = ft_strjoin(str1, " ");
+            free(*tab_cmds);
+            *tab_cmds = NULL;
+            
             *tab_cmds = ft_strjoin(tmp, str2);
+
+            free(tmp);
+            tmp = NULL;
+            free (str1);
+            free (str2);
 
 
             nbr_chev--;
@@ -191,6 +199,8 @@ int main(void)
     parse_redirection_right(result);
 
     print_tab(result);
+
+    freemalloc(result, size_tab(result));
 
     return 0;
 
