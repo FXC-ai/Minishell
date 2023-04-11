@@ -120,15 +120,22 @@ int process_delimiter(char *del)
 	while (rdd > 0)
 	{
 	
-		if (global_sig.sig_int == 1)
+		/*if (global_sig.sig_int == 1)
 		{
 			ft_putstr_fd("DEDANS\n", 2);
 			close(fd);
 			unlink("TMPDOC");
 			global_sig.sig_int = 0;
 			return (-1);
-		}
+		}*/
 		buffer[rdd] = '\0';
+		if (ft_strcmp(buffer, "\4\n") == 0)
+		{
+			ft_putstr_fd("DEDANS\n", 2);
+			close(fd);
+			unlink("TMPDOC");
+			return (-1);
+		}
 		if (ft_strcmp(del_n, buffer) == 0)
 		{
 			break;

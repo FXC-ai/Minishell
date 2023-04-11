@@ -42,11 +42,11 @@ int size_next_wd(char *str)
 
 static int is_valid_chevron (char *cmd, char chev_type)
 {
-    int j;
+    //int j;
     int count;
 
     count = 0;
-    j = 0;
+    //j = 0;
     while (*cmd != '\0')
     {
         if (*cmd == chev_type)
@@ -264,7 +264,7 @@ void parse_redirection_left (char **tab_cmds)
 
 
 
-int main(void)
+/*int main(void)
 {
     //char *cmd  = ">>c echo  poire >b Mme >a | <<a echo poitr <b | echo bonjour <<END <a >>b >C | echo bonjour < <END <a >>b >C";
     char *cmd  = "<a <<b <<c echo n <d";
@@ -284,4 +284,4 @@ int main(void)
 
     return 0;
 
-}
+}*/
