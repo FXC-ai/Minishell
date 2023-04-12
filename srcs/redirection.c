@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:31:55 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/12 18:08:47 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/12 18:31:07 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,9 +231,21 @@ int process_redirection(char *str, char *env[], int mode)
 	if (*current_command)
 	{
 		if (mode)
+		{
+			printf("avant execution de command 1");
 			execute_command(current_command, in_fd, out_fd, env);
+			printf("avant execution de command 2");
+
+		}
 		else
+		{
+			printf("avant execution de command 2");
+
 			execute_command_2(current_command, in_fd, out_fd, env);
+
+			printf("avant execution de command 1");
+
+		}
 	}
 	
 	//printf("After process_redirection : in_fd = %d / out_fd = %d\n", in_fd, out_fd);

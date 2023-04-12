@@ -6,13 +6,13 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 17:00:40 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/12 17:10:41 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/12 18:33:36 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
 
-void lexer(char *str, char *env[])
+int lexer(char *str, char *env[])
 {
 	char	**result;
 	char	c = '|';
@@ -23,7 +23,7 @@ void lexer(char *str, char *env[])
 
 	result = ft_split_lexer(str, c);
 	if (result == NULL)
-		return ;
+		return 0;
     while (result[i])
     {   
         cut_end_space(&(result[i]));
@@ -54,5 +54,5 @@ void lexer(char *str, char *env[])
 		nbr_cmds = size_tab(result);
 		ms_pipe2(result, nbr_cmds, env);
 	}
-	//return (result);
+	return (1);
 }

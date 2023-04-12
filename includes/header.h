@@ -73,7 +73,7 @@ void	normalize_with_space(char **str);
 void	normalize_arguments_order(char **str1);
 
 //LEXER.C
-void	lexer(char *str, char *env[]);
+int		lexer(char *str, char *env[]);
 char	**ft_split_lexer(char const *str, char c);
 int		count_chr(const char *str, char c);
 
