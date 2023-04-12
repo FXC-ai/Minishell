@@ -6,16 +6,17 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:31:55 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/12 15:39:30 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/12 17:00:02 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
 
-void execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
+void	execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
 {
-	int r;
-	int status;
+	int		r;
+	int		status;
+	char	*cmd;
 	
 	r = is_builtins(*parsed_args);
 	if (r == BUILTIN_CD)
@@ -51,7 +52,10 @@ void execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
 			exit_process();
 		else if (r == 0)
 		{
-			execve(normalize_cmd(parsed_args[0], env), parsed_args, env);
+			cmd = normalize_cmd(parsed_args[0], env);
+			if (cmd == NULL)
+				print_command_not_found(parsed_args[0]);
+			execve(cmd, parsed_args, env);
 			//ms_errno = errno;
 			//printf("redirection errno = %d ms_errno = %d\n", errno, ms_errno);
 			perror(parsed_args[0]);
@@ -72,7 +76,8 @@ void execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
 
 void	execute_command_2(char **parsed_args, int in_fd, int out_fd, char *env[])
 {
-	int	r;
+	int		r;
+	char	*cmd;
 
 	if (in_fd != STDIN_FILENO)
 	{
@@ -99,6 +104,9 @@ void	execute_command_2(char **parsed_args, int in_fd, int out_fd, char *env[])
 		env_process(parsed_args, env);
 	else
 	{
+		cmd = normalize_cmd(parsed_args[0], env);
+		if (cmd == NULL)
+			print_command_not_found(parsed_args[0]);
 		execve(normalize_cmd(parsed_args[0], env), parsed_args, env);
 		perror(parsed_args[0]);
 		exit(errno);
@@ -210,6 +218,7 @@ int process_redirection(char *str, char *env[], int mode)
 				return (-1);
 			}
 			parsed_args += 2;
+			current_command += 2;
 		}
 		else
 		{

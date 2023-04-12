@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 17:35:07 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/06 15:55:11 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/12 16:32:49 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,3 +92,10 @@ char *ft_strndup(char *str, size_t n)
     return result;
 }
 
+void	print_command_not_found(char *str)
+{
+	write(2, str, ft_strlen(str));
+	ft_putstr_fd(": command not found\n", 2);
+	global_sig.ms_errno = 127;
+	exit(errno);
+}

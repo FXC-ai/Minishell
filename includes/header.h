@@ -93,6 +93,7 @@ void	ft_free_tabs(char **tab, int h);
 int		size_tab(char **tab);
 void	freemalloc(char **result, int j);
 char	*ft_strndup(char *str, size_t n);
+void	print_command_not_found(char *str);
 
 // IS_BUILTINS.C
 int		is_builtins(char *str);
