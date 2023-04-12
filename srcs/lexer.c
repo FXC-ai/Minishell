@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 18:39:34 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/12 15:19:13 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/12 16:00:00 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,17 @@ void lexer(char *str, char *env[])
 
 	normalize_with_space(result);
 	
-	//normalize_arguments_order(result);
-	
-
 	parse_dollar(result, env);
+
+	//print_tab(result);
 
 	parse_redirection_right(result);
 	
+	//print_tab(result);
+
+	//parse_redirection_left(result);
 	
+	print_tab(result);
 
     if (result[1] == NULL)
 	{

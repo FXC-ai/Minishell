@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_redirection.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 12:53:27 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/07 14:51:28 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/12 15:57:48 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ static void find_start_end(char *cmd, int *start, int *end, char type_chev)
                 i++;
             }
             while (ft_isalnum(cmd[i]))
+            //while (!is_space(cmd[i]))//CHANGE
             {
                 i++;
             }

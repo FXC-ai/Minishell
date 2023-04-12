@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:31:55 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/07 15:52:10 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/12 15:39:30 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,10 +163,7 @@ int process_redirection(char *str, char *env[], int mode)
 
 	//printf("str = %s\n", str);
 	parsed_args = ft_split_lexer_no_quote(str, ' ');
-
-
 	current_command = parsed_args;
-	//print_tab(current_command);
 	while (*parsed_args)
 	{
 		if (ft_strcmp(*parsed_args, ">") == 0)
@@ -220,7 +217,6 @@ int process_redirection(char *str, char *env[], int mode)
 		}
 	}
 	
-
 	if (*current_command)
 	{
 		if (mode)
