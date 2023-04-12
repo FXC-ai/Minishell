@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 18:39:34 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/12 16:00:00 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/12 16:56:56 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,11 @@ void lexer(char *str, char *env[])
 	
 	//print_tab(result);
 
+	//(void) nbr_cmds;
 	//parse_redirection_left(result);
 	
-	print_tab(result);
-
+	//print_tab(result);
+	
     if (result[1] == NULL)
 	{
 		process_redirection(result[0], env, 1);
