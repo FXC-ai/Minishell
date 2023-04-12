@@ -6,6 +6,8 @@
         "readline.h": "c",
         "header.h": "c",
         "typeinfo": "c",
-        "__node_handle": "c"
+        "__node_handle": "c",
+        "libft.h": "c",
+        "stdio.h": "c"
     }
 }

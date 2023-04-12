@@ -67,6 +67,7 @@ void parse_redirection_right(char **tab_cmds);
 //NORMALIZE_WITH_SPACE.C
 void	cut_end_space(char **str);
 void	normalize_with_space(char **str);
+void	normalize_arguments_order(char **str1);
 
 //LEXER.C
 void	lexer(char *str, char *env[]);

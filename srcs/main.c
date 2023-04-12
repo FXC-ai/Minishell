@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 11:39:22 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/07 18:03:41 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/12 15:24:36 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@ void	sig_init(void)
 	global_sig.ms_errno = 0;
 }
 
-void disable_ctrl_chars()
+void	disable_ctrl_chars(void)
 {
-    struct termios attributes;
+	struct termios	attributes;
 
-    tcgetattr(STDIN_FILENO, &attributes);
-    attributes.c_lflag &= ~ ECHO;
-    tcsetattr(STDIN_FILENO, TCSAFLUSH, &attributes);
+	tcgetattr(STDIN_FILENO, &attributes);
+	attributes.c_lflag &= ~ECHO;
+	tcsetattr(STDIN_FILENO, TCSAFLUSH, &attributes);
 }
 
 int	check_entry(char *line)
@@ -45,11 +45,10 @@ int	check_entry(char *line)
 
 void	wait_for_input(char *env[])
 {
-	char    *line;
-	(void) env;
+	char	*line;
 
 	signal_handler();
-	while(42)
+	while (42)
 	{
 		global_sig.program_in_process = 0;
 		line = readline("minishell$ ");
@@ -58,11 +57,11 @@ void	wait_for_input(char *env[])
 		if (line == NULL)
 		{
 			write(1, "exit\n", 5);
-            break;
-        }
+			break ;
+		}
 		if (check_entry(line))
 		{	
-			lexer(line, env);	
+			lexer(line, env);
 		}
 		free(line);
 	}
@@ -71,10 +70,9 @@ void	wait_for_input(char *env[])
 int	main(int ac, char **argv, char *env[])
 {
 	struct termios		tm;
+
 	(void) argv;
 	(void) ac;
-	(void) env;
-
 	sig_init();
 	if (tcgetattr(STDIN_FILENO, &tm) == -1)
 		return (-1);
