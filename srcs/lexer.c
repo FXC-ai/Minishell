@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/30 18:39:34 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/12 16:20:19 by vgiordan         ###   ########.fr       */
+/*   Created: 2023/04/12 17:00:40 by vgiordan          #+#    #+#             */
+/*   Updated: 2023/04/12 17:00:59 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,10 @@ void lexer(char *str, char *env[])
 	
 	//print_tab(result);
 
+	//(void) nbr_cmds;
 	//parse_redirection_left(result);
 	
 	//print_tab(result);
-
     if (result[1] == NULL)
 	{
 		process_redirection(result[0], env, 1);
