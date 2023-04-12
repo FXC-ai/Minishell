@@ -35,7 +35,7 @@ void proces_redirections(char **parsed_args) {
             out_fd = open(*(parsed_args + 1), O_WRONLY | O_CREAT | O_TRUNC, 0644);
 
             if (out_fd == -1) {
-                perror("open");
+                perror(*(parsed_args + 1));
                 exit(1);
             }
         } else if (strcmp(*parsed_args, "<") == 0) {
@@ -43,7 +43,7 @@ void proces_redirections(char **parsed_args) {
             in_fd = open(*(parsed_args + 1), O_RDONLY | O_CREAT);
 
             if (in_fd == -1) {
-                perror("open");
+                perror(*(parsed_args + 1));
                 exit(1);
             }
         }

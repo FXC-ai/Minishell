@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_redirection.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 12:53:27 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/12 16:55:57 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/12 17:01:55 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,7 @@ void parse_redirection_right(char **tab_cmds)
     while(*tab_cmds)
     {
         nbr_chev = is_valid_chevron(*tab_cmds);
-        printf("nbr_chev = %d\n", nbr_chev);
+        //printf("nbr_chev = %d\n", nbr_chev);
 
         while(nbr_chev > 0)
         {

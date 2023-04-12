@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 11:39:22 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/12 16:42:55 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/12 18:03:40 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ void	wait_for_input(char *env[])
 	signal_handler();
 	while (42)
 	{
+		dup2(0,0);
+		dup2(1,1);
 		global_sig.program_in_process = 0;
 		line = readline("minishell$ ");
 		global_sig.program_in_process = 1;

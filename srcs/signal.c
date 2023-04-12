@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 12:15:22 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/05 15:51:05 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/12 18:01:41 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ static void handler(int sig)
         if (global_sig.program_in_process == 0)
             rl_on_new_line();
         rl_redisplay();
-        global_sig.sig_int = 1;
-
     }
     if (sig == SIGQUIT) //Ctrl + '\'
     {
