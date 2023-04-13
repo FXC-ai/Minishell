@@ -6,12 +6,11 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 17:00:40 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/13 15:35:01 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/13 17:07:51 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
-
 int lexer(char *str, char *env[])
 {
 	char	**result;
@@ -31,11 +30,13 @@ int lexer(char *str, char *env[])
     }
 
 	normalize_with_space(result);
+
 	parse_dollar(result, env);
 	print_tab(result);
 
 	parse_redirection_right(result);
 	parse_redirection_left(result);
+
 	
 	print_tab(result);
     if (result[1] == NULL)

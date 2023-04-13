@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/22 18:31:55 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/13 16:36:42 by vgiordan         ###   ########.fr       */
+/*   Created: 2023/04/13 17:05:42 by vgiordan          #+#    #+#             */
+/*   Updated: 2023/04/13 17:05:49 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../includes/header.h"
 
@@ -230,6 +231,10 @@ int process_redirection(char *str, char *env[], int mode)
 	{
 		if (mode)
 		{
+			printf("avant execution de command 1\n");
+			execute_command(current_command, in_fd, out_fd, env);
+			printf("avant execution de command 2\n");
+
 			//printf("avant execution de command 1");
 			execute_command(current_command, in_fd, out_fd, env);
 			//printf("avant execution de command 2");

@@ -6,10 +6,9 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 12:53:27 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/13 15:59:30 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/13 17:06:04 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../includes/header.h"
 
@@ -100,6 +99,8 @@ static void find_start_end(char *cmd, int *start, int *end, char chev_type)
 static char *delete_chevrons(char *cmd, int start, int end)
 {
 
+    printf("cmd = [%s] start = %d end = %d\n", cmd, start, end);
+
     char *result;
     int i;
     int j;
@@ -110,10 +111,18 @@ static char *delete_chevrons(char *cmd, int start, int end)
     int size_result;
 
     size_cmd = ft_strlen(cmd);
-    size_str_chevrons = end - start;
-    size_result = size_cmd - size_str_chevrons + 1;
+    //printf("size_cmd = %d\n", size_cmd);
 
-    result = malloc(sizeof(char)*(size_cmd - size_str_chevrons + 1));
+    size_str_chevrons = end - start;
+    //printf("size_str_chevrons = %d\n", size_str_chevrons);
+
+
+
+    size_result = size_cmd - size_str_chevrons + 1;
+    //printf("size_result = %d\n", size_result);
+    
+
+    result = ft_calloc(sizeof(char), (size_cmd - size_str_chevrons)+1);
     if (result == NULL)
     {
         return NULL;
@@ -121,7 +130,7 @@ static char *delete_chevrons(char *cmd, int start, int end)
 
     i = 0;
     j = 0;
-    while(j < size_result)
+    while(j < size_result - 1)
     {
         if (i >= start && i <= end)
         {
@@ -130,11 +139,14 @@ static char *delete_chevrons(char *cmd, int start, int end)
         else
         {
             result[j] = cmd[i];
+            //printf("i = %d / j = %d result = [%s]\n",i,j, result);
             i++;
             j++;
         }
     }
     result[j] = '\0';
+
+    //printf("final result = [%s]\n", result);
     return result;
 }
 
@@ -157,11 +169,16 @@ void parse_redirection_right(char **tab_cmds)
         {
             find_start_end(*tab_cmds, &start, &end, '>');
             str2 = ft_strndup(*tab_cmds + start, (end - start));
+
+
             str1 = delete_chevrons(*tab_cmds, start, end);
+
+
             tmp = ft_strjoin(str1, " ");
             free(*tab_cmds);
             *tab_cmds = NULL;
             *tab_cmds = ft_strjoin(tmp, str2);
+
             free(tmp);
             tmp = NULL;
             free (str1);
@@ -173,18 +190,8 @@ void parse_redirection_right(char **tab_cmds)
 }
 
 
-void parse_redirection_left (char **tab_cmds)
+void parse_redirection_left(char **tab_cmds)
 {
-
-    
-        // valider le nombre de chevrons
-        // parcourir la commande depuis la fin
-        // chaque fois qu un chevron < ou << est trouve
-        //     le supprimer de la chaine
-        //     le mettre en debut de chaine
-    
-
-
     int start;
     int end;
 
@@ -193,64 +200,114 @@ void parse_redirection_left (char **tab_cmds)
     char *tmp;
 
     int nbr_chev;
-    int nbr_chev_cpy;
-
-    int i;
-    int j;
-
 
     while(*tab_cmds)
     {
         nbr_chev = is_valid_chevron(*tab_cmds, '<');
-        nbr_chev_cpy = nbr_chev;
-        while (nbr_chev_cpy > 0)
+        while(nbr_chev > 0)
         {
-            i = 0;
-            j = 0;
-            while (j < nbr_chev - 1)
-            {
-                if (*(*tab_cmds + i) == '<')
-                {
-                    j++;
-                    if (*(*tab_cmds + i + 1) == '<')
-                    {
-                        i++;
-                    }
-                }
-                i++;
-            }
-
-            find_start_end(*tab_cmds + i, &start, &end, '<');
-
-            tmp = ft_strndup(*tab_cmds + i + start, end - start);
-
-            str1 = ft_strjoin(tmp, " ");
-
-            //printf("str2 = %s\n", str2);
+            find_start_end(*tab_cmds, &start, &end, '<');
+            str2 = ft_strndup(*tab_cmds + start, (end - start));
 
 
-            str2 = delete_chevrons(*tab_cmds, start + i, end + i);
+            str1 = delete_chevrons(*tab_cmds, start, end);
 
-            //printf("str1 = %s\n", str1);
 
-            //tmp = ft_strjoin(str2, str1);
+            tmp = ft_strjoin(str1, " ");
             free(*tab_cmds);
             *tab_cmds = NULL;
+            *tab_cmds = ft_strjoin(tmp, str2);
 
-
-            *tab_cmds = ft_strjoin(str1, str2);
-            free(str1);
-            free(str2);
             free(tmp);
-
-
-            //printf("tmp = %s\n", tmp);
-            nbr_chev_cpy--;
+            tmp = NULL;
+            free (str1);
+            free (str2);
+            nbr_chev--;
         }
         tab_cmds++;
     }
-
 }
+
+
+// void parse_redirection_left (char **tab_cmds)
+// {
+
+    
+//         // valider le nombre de chevrons
+//         // parcourir la commande depuis la fin
+//         // chaque fois qu un chevron < ou << est trouve
+//         //     le supprimer de la chaine
+//         //     le mettre en debut de chaine
+    
+
+
+//     int start;
+//     int end;
+
+//     char *str2;
+//     char *str1;
+//     //char *tmp;
+
+//     int nbr_chev;
+//     int nbr_chev_cpy;
+
+//     int i;
+//     int j;
+
+
+//     while(*tab_cmds)
+//     {
+//         nbr_chev = is_valid_chevron(*tab_cmds, '<');
+//         nbr_chev_cpy = nbr_chev;
+//         while (nbr_chev_cpy > 0)
+//         {
+//             i = 0;
+//             j = 0;
+//             while (j < nbr_chev - 1)
+//             {
+//                 if (*(*tab_cmds + i) == '<')
+//                 {
+//                     j++;
+//                     if (*(*tab_cmds + i + 1) == '<')
+//                     {
+//                         i++;
+//                     }
+//                 }
+//                 i++;
+//             }
+
+//             find_start_end(*tab_cmds + i, &start, &end, '<');
+
+//             str2 = ft_strndup(*tab_cmds + i + start, end - start);
+
+//             str1 = delete_chevrons(*tab_cmds, start + i, end + i);
+
+//             //str1 = ft_strjoin(tmp, " ");
+
+//             //printf("str2 = %s\n", str2);
+
+
+
+//             //printf("str1 = %s\n", str1);
+
+//             //tmp = ft_strjoin(str2, str1);
+//             free(*tab_cmds);
+//             *tab_cmds = NULL;
+
+
+//             *tab_cmds = ft_strjoin(str1, str2);
+//             free(str1);
+//             free(str2);
+//             //free(tmp);
+
+
+//             //printf("tmp = %s\n", tmp);
+//             nbr_chev_cpy--;
+//         }
+//         tab_cmds++;
+//     }
+
+// }
 
 
 
