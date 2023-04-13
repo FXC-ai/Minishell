@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_pipe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 12:35:43 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/07 17:21:49 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/13 14:12:20 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void redirection (char *input_cmd, int previous_pipe[2], int next_pipe[2], char 
 	{
 		close(previous_pipe[1]);
 		close(next_pipe[0]);
+
 
 		dup2(previous_pipe[0],0);
 		dup2(next_pipe[1],1);
