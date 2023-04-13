@@ -5,7 +5,7 @@ Ce projet est une implémentation du shell Unix, permettant de lancer des comman
 
 @IAmVictorG
 
-@FX-C
+@FXC-ai
 
 ## Utilisation
 
