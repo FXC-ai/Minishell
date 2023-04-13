@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:31:55 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/12 18:31:07 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/13 14:59:30 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,9 +232,9 @@ int process_redirection(char *str, char *env[], int mode)
 	{
 		if (mode)
 		{
-			printf("avant execution de command 1");
+			printf("avant execution de command 1\n");
 			execute_command(current_command, in_fd, out_fd, env);
-			printf("avant execution de command 2");
+			printf("avant execution de command 2\n");
 
 		}
 		else

@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 17:00:40 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/13 14:33:57 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/13 15:40:54 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,16 @@ int lexer(char *str, char *env[])
 
 	normalize_with_space(result);
 	
+	print_tab(result);
+	
 	parse_dollar(result, env);
 
-	//print_tab(result);
 
+	parse_redirection_left(result);
 	parse_redirection_right(result);
 	
 
 	//(void) nbr_cmds;
-	parse_redirection_left(result);
 	print_tab(result);
 	
 	print_tab(result);
