@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_redirection.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 12:53:27 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/12 17:01:55 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/13 14:43:07 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,13 @@
 
 static int is_chevron (char c)
 {
-
     return c == '>' || c == '<';
-
 }
 
 int size_next_wd(char *str)
 {
-    
     int size_wd;
-
     size_wd = 0;
-
     while(*str && is_space(*str) == 1)
     {
         str++;
@@ -36,11 +31,10 @@ int size_next_wd(char *str)
         size_wd++;
         str++;
     }
-
     return size_wd;
 }
 
-static int is_valid_chevron (char *cmd)
+static int is_valid_chevron (char *cmd, char chev_type)
 {
     int j;
     int count;
@@ -49,9 +43,9 @@ static int is_valid_chevron (char *cmd)
     j = 0;
     while (*cmd != '\0')
     {
-        if (*cmd == '>')
+        if (*cmd == chev_type)
         {
-            if (*(cmd+1) == '>')
+            if (*(cmd+1) == chev_type)
             {
                 cmd+=1;
             }
@@ -71,20 +65,19 @@ static int is_valid_chevron (char *cmd)
     return count;
 }
 
-static void find_start_end(char *cmd, int *start, int *end)
+static void find_start_end(char *cmd, int *start, int *end, char chev_type)
 {
     int i;
 
     i = 0;
     *end = 0;
     *start = 0;
-
     while (cmd[i])
     {
-        if (cmd[i] == '>')
+        if (cmd[i] == chev_type)
         {
             *start = i;
-            if (cmd[i+1] == '>')
+            if (cmd[i+1] == chev_type)
             {
                 i++;
             }
@@ -148,7 +141,6 @@ static char *delete_chevrons(char *cmd, int start, int end)
 
 void parse_redirection_right(char **tab_cmds)
 {
-
     int start;
     int end;
 
@@ -160,45 +152,27 @@ void parse_redirection_right(char **tab_cmds)
 
     while(*tab_cmds)
     {
-        nbr_chev = is_valid_chevron(*tab_cmds);
-        //printf("nbr_chev = %d\n", nbr_chev);
-
+        nbr_chev = is_valid_chevron(*tab_cmds, '>');
         while(nbr_chev > 0)
         {
-            find_start_end(*tab_cmds, &start, &end);
-
-            
-
+            find_start_end(*tab_cmds, &start, &end, '>');
             str2 = ft_strndup(*tab_cmds + start, (end - start));
-
-            printf("str2 = [%s]\n", str2);
-
             str1 = delete_chevrons(*tab_cmds, start, end);
-
-            printf("str1 = [%s]\n", str1);
-
             tmp = ft_strjoin(str1, " ");
             free(*tab_cmds);
             *tab_cmds = NULL;
-            
             *tab_cmds = ft_strjoin(tmp, str2);
-
-            printf("tab_cmds = [%s]\n\n", *tab_cmds);
-
             free(tmp);
             tmp = NULL;
             free (str1);
             free (str2);
-
-
             nbr_chev--;
         }
         tab_cmds++;
     }
-
 }
 
-/*
+
 void parse_redirection_left (char **tab_cmds)
 {
 
@@ -248,19 +222,28 @@ void parse_redirection_left (char **tab_cmds)
 
             find_start_end(*tab_cmds + i, &start, &end, '<');
 
-            str2 = ft_strndup(*tab_cmds + i + start, end - start);
+            tmp = ft_strndup(*tab_cmds + i + start, end - start);
+
+            str1 = ft_strjoin(tmp, " ");
 
             //printf("str2 = %s\n", str2);
 
 
-            str1 = delete_chevrons(*tab_cmds, start + i, end + i);
+            str2 = delete_chevrons(*tab_cmds, start + i, end + i);
 
             //printf("str1 = %s\n", str1);
 
-            tmp = ft_strjoin(str2, str1);
+            //tmp = ft_strjoin(str2, str1);
+            free(*tab_cmds);
+            *tab_cmds = NULL;
 
 
-            *tab_cmds = tmp;
+            *tab_cmds = ft_strjoin(str1, str2);
+            free(str1);
+            free(str2);
+            free(tmp);
+
+
             //printf("tmp = %s\n", tmp);
             nbr_chev_cpy--;
         }
@@ -268,7 +251,7 @@ void parse_redirection_left (char **tab_cmds)
     }
 
 }
-*/
+
 
 
 // int main(void)
