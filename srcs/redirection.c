@@ -6,76 +6,15 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 17:05:42 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/13 17:05:49 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/13 17:28:36 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../includes/header.h"
 
+
 void	execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
-{
-	int		r;
-	int		status;
-	char	*cmd;
-	
-	r = is_builtins(*parsed_args);
-	if (r == BUILTIN_CD)
-		cd_process(parsed_args, env);
-	else if (r == BUILTIN_EXPORT)
-		export_process(parsed_args, env);
-	else if (r == BUILTIN_UNSET)
-		unset_process(parsed_args, env);
-	else if (r == BUILTIN_EXIT)
-		exit_process();
-	global_sig.pid = fork();
-	if (global_sig.pid == 0)
-	{
-		if (in_fd != STDIN_FILENO)
-		{
-			dup2(in_fd, STDIN_FILENO);  
-			close(in_fd);
-		}
-		if (out_fd != STDOUT_FILENO)
-		{
-			dup2(out_fd, STDOUT_FILENO);
-			close(out_fd);
-		}
-		if (r == BUILTIN_ECHO)
-			echo_process(parsed_args);
-		else if (r == BUILTIN_PWD)
-			pwd_process(parsed_args);
-		else if (r == 6)
-			env_process(parsed_args, env);
-		else if (r == 7)
-			exit_process();
-		else if (r == 0)
-		{
-			cmd = normalize_cmd(parsed_args[0], env);
-			if (cmd == NULL)
-				print_command_not_found(parsed_args[0]);
-			execve(cmd, parsed_args, env);
-			
-			//ms_errno = errno;
-			//printf("redirection errno = %d ms_errno = %d\n", errno, ms_errno);
-			perror(parsed_args[0]);
-			exit(errno);
-		}
-		exit(0);
-	}
-	else
-	{
-		waitpid(global_sig.pid, &status, 0);
-		//ft_putstr_fd("waitpid\n", 2);
-		if (WIFEXITED(status))
-		{
-			global_sig.ms_errno = WEXITSTATUS(status);
-
-		}
-	}
-}
-
-void	execute_command_2(char **parsed_args, int in_fd, int out_fd, char *env[])
 {
 	int		r;
 	char	*cmd;
@@ -158,7 +97,7 @@ int process_delimiter(char *del)
 	return fd;
 }
 
-int process_redirection(char *str, char *env[], int mode)
+int process_redirection(char *str, char *env[])
 {
 	int in_fd;
 	int out_fd;
@@ -229,26 +168,11 @@ int process_redirection(char *str, char *env[], int mode)
 	
 	if (*current_command)
 	{
-		if (mode)
-		{
-			printf("avant execution de command 1\n");
-			execute_command(current_command, in_fd, out_fd, env);
-			printf("avant execution de command 2\n");
-
-			//printf("avant execution de command 1");
-			execute_command(current_command, in_fd, out_fd, env);
-			//printf("avant execution de command 2");
-
-		}
-		else
-		{
-			//printf("avant execution de command 2");
-
-			execute_command_2(current_command, in_fd, out_fd, env);
-
-			//printf("avant execution de command 1");
-
-		}
+		execute_command(current_command, in_fd, out_fd, env);	
+	}
+	else
+	{
+		perror("cmd");
 	}
 	
 	//printf("After process_redirection : in_fd = %d / out_fd = %d\n", in_fd, out_fd);

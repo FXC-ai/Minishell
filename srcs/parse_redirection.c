@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 12:53:27 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/13 17:06:04 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/13 17:49:19 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,6 @@ static void find_start_end(char *cmd, int *start, int *end, char chev_type)
 static char *delete_chevrons(char *cmd, int start, int end)
 {
 
-    printf("cmd = [%s] start = %d end = %d\n", cmd, start, end);
 
     char *result;
     int i;

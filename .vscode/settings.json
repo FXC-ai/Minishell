@@ -8,6 +8,7 @@
         "typeinfo": "c",
         "__node_handle": "c",
         "libft.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "locale": "c"
     }
 }

@@ -84,7 +84,7 @@ char	**ft_split_lexer_no_quote(char const *str, char c);
 void	execute_command(char **parsed_args, int in_fd, int out_fd, char *env[]);
 void	execute_command_2(char **parsed_args, int in_fd, int out_fd, char *env[]);
 int 	process_delimiter(char *del);
-int		process_redirection(char *str, char *env[], int mode);
+int		process_redirection(char *str, char *env[]);
 
 //UTILS.C
 int		is_space(char c);
