@@ -15,6 +15,7 @@ make
 ```bash
 ./minishell
 ```
+
 ## Contribution
 
 Les contributions sont les bienvenues ! Pour contribuer, veuillez suivre les étapes suivantes :
