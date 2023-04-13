@@ -26,7 +26,7 @@ git clone https://github.com/janedoe/minishell.git
 Créez une nouvelle branche pour votre contribution :
 ```bash
 git checkout -b my-new-feature
-bash
+```
 Faites vos modifications
 Commitez vos changements :
 ```bash
