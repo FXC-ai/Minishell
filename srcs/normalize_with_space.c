@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 11:04:56 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/12 15:50:12 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/13 14:57:09 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,39 +53,48 @@ void cut_end_space(char **str)
 
 void normalize_with_space(char **str)
 {
-	char *p = *str;
-	char *prev = NULL;
-	char quote = '\0';
+	char *p;
+	char *prev;
+	char quote;
+	int	i;
 
-	while (*p != '\0')
+	prev = NULL;
+	quote = '\0';
+	i = 0;
+	while (str[i])
 	{
-		if (quote != '\0' && *p == quote)
+		p = str[i];
+		while (*p != '\0')
 		{
-			quote = '\0';
-		}
-		else if (quote == '\0' && (*p == '\'' || *p == '\"'))
-		{
-			quote = *p;
-			p++;
-		}
-		else if (quote == '\0' && (*p == '<' || *p == '>'))
-		{
-			if (prev != NULL && !is_space(*prev) && *prev != '\'' && *prev != '\"' && *prev != *p) {
-				ft_memmove(p + 1, p, ft_strlen(p) + 1);
-				*p = ' ';
+			if (quote != '\0' && *p == quote)
+			{
+				quote = '\0';
+			}
+			else if (quote == '\0' && (*p == '\'' || *p == '\"'))
+			{
+				quote = *p;
+				p++;
+			}
+			else if (quote == '\0' && (*p == '<' || *p == '>'))
+			{
+				if (prev != NULL && !is_space(*prev) && *prev != '\'' && *prev != '\"' && *prev != *p) {
+					ft_memmove(p + 1, p, ft_strlen(p) + 1);
+					*p = ' ';
+					prev = p;
+				}
+				p++;
+				if (*(p) != '\0' && !is_space(*(p)) && *(p) != '\'' && *(p) != '\"' && *(p) != *(p - 1)) {
+					ft_memmove(p + 1, p, ft_strlen(p) + 1);
+					*(p) = ' ';
+				}
+			}
+			else
+			{
 				prev = p;
-			}
-			p++;
-			if (*(p) != '\0' && !is_space(*(p)) && *(p) != '\'' && *(p) != '\"' && *(p) != *(p - 1)) {
-				ft_memmove(p + 1, p, ft_strlen(p) + 1);
-				*p = ' ';
+				p++;
 			}
 		}
-		else
-		{
-			prev = p;
-			p++;
-		}
+		i++;
 	}
 }
 
