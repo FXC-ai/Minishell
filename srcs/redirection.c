@@ -6,7 +6,11 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:31:55 by fcoindre          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/04/13 14:59:30 by fcoindre         ###   ########.fr       */
+=======
+/*   Updated: 2023/04/13 14:59:24 by vgiordan         ###   ########.fr       */
+>>>>>>> 12b7b475de22138881fb587d0865bfb385e314b0
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +71,7 @@ void	execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
 	else
 	{
 		waitpid(global_sig.pid, &status, 0);
-		ft_putstr_fd("waitpid\n", 2);
+		//ft_putstr_fd("waitpid\n", 2);
 		if (WIFEXITED(status))
 		{
 			global_sig.ms_errno = WEXITSTATUS(status);
@@ -232,18 +236,24 @@ int process_redirection(char *str, char *env[], int mode)
 	{
 		if (mode)
 		{
+<<<<<<< HEAD
 			printf("avant execution de command 1\n");
 			execute_command(current_command, in_fd, out_fd, env);
 			printf("avant execution de command 2\n");
+=======
+			//printf("avant execution de command 1");
+			execute_command(current_command, in_fd, out_fd, env);
+			//printf("avant execution de command 2");
+>>>>>>> 12b7b475de22138881fb587d0865bfb385e314b0
 
 		}
 		else
 		{
-			printf("avant execution de command 2");
+			//printf("avant execution de command 2");
 
 			execute_command_2(current_command, in_fd, out_fd, env);
 
-			printf("avant execution de command 1");
+			//printf("avant execution de command 1");
 
 		}
 	}

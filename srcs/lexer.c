@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 17:00:40 by vgiordan          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/04/13 15:40:54 by fcoindre         ###   ########.fr       */
+=======
+/*   Updated: 2023/04/13 15:10:29 by vgiordan         ###   ########.fr       */
+>>>>>>> 12b7b475de22138881fb587d0865bfb385e314b0
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +35,7 @@ int lexer(char *str, char *env[])
     }
 
 	normalize_with_space(result);
+<<<<<<< HEAD
 	
 	print_tab(result);
 	
@@ -43,12 +48,17 @@ int lexer(char *str, char *env[])
 
 	//(void) nbr_cmds;
 	print_tab(result);
+=======
+	parse_dollar(result, env);
+
+	parse_redirection_right(result);
+	parse_redirection_left(result);
+>>>>>>> 12b7b475de22138881fb587d0865bfb385e314b0
 	
 	print_tab(result);
     if (result[1] == NULL)
 	{
 		process_redirection(result[0], env, 1);
-		//return (0);
 	}
 	else
 	{
