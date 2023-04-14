@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 17:00:40 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/14 17:48:03 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/14 18:28:37 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,22 +214,36 @@ char **separate_command (char *tab_cmds)
 			j++;
 		
 
-		i+=length+1;
+		i+=length;
 
-		while (tab_cmds[i] && is_chevron(tab_cmds[i]))
-		{
-			i++;
+		while (is_chevron(tab_cmds[i]))
+		{			
+			while (tab_cmds[i] && is_chevron(tab_cmds[i]))
+			{
+				i++;
+			}
+			
+			while (tab_cmds[i] && (is_space(tab_cmds[i])))
+			{
+				i++;
+			}
+			while (tab_cmds[i] && !is_space(tab_cmds[i]) && !is_chevron(tab_cmds[i]))
+			{
+				i++;
+			}
+
+			while (tab_cmds[i] && (is_space(tab_cmds[i])))
+			{
+				i++;
+			}
+			
 		}
-		while (tab_cmds[i] && (is_space(tab_cmds[i])))
-		{
-			i++;
-		}
-		while (tab_cmds[i] && !is_space(tab_cmds[i]))
-			i++;
 
 
 		
 	}
+
+	printf("j = %d\n", j);
 
 	result = malloc((j + 1) * sizeof(char *));
 	if (result == NULL)
@@ -251,23 +265,42 @@ char **separate_command (char *tab_cmds)
 		}
 
 
-		i+=length+1;
-
+		i+=length;
 		
-		while (tab_cmds[i] && is_chevron(tab_cmds[i]))
-		{
-			i++;
-		}
-		while (tab_cmds[i] && (is_space(tab_cmds[i])))
-		{
-			i++;
-		}
-		while (tab_cmds[i] && !is_space(tab_cmds[i]))
-			i++;
+		// if ((tab_cmds+ i))
+		// 	printf("0 [%s]\n", (tab_cmds+ i));
 
 
-		
+		while (is_chevron(tab_cmds[i]))
+		{			
+			while (tab_cmds[i] && is_chevron(tab_cmds[i]))
+			{
+				i++;
+			}
+			
+			while (tab_cmds[i] && (is_space(tab_cmds[i])))
+			{
+				i++;
+			}
+			while (tab_cmds[i] && !is_space(tab_cmds[i]) && !is_chevron(tab_cmds[i]))
+			{
+				i++;
+			}
+
+			while (tab_cmds[i] && (is_space(tab_cmds[i])))
+			{
+				i++;
+			}
+			
+		}
+
+
+			
+		// if ((tab_cmds+ i))
+		// 	printf("3 [%s]\n", (tab_cmds+ i));
+	
 	}
+	
 	result[j] = NULL;
 
 
