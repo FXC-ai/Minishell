@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 11:37:57 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/12 16:33:23 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/14 12:27:23 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,21 @@ static char	**create_tab_paths(char *env[])
 	char	**paths_tab;
 
 	i = 0;
+	paths = NULL;
+	paths_tab = NULL;
 	while (env[i])
 	{
 		if (strncmp(env[i], "PATH", 4) == 0)
 			paths = ft_substr(env[i], 5, ft_strlen(env[i]) - 4);
 		i++;
 	}
-	paths_tab = ft_split(paths, ':');
-	free(paths);
+	
+	if (paths != NULL)
+	{
+		paths_tab = ft_split(paths, ':');
+		free(paths);
+	}
+		
 	paths = NULL;
 	return (paths_tab);
 }
@@ -50,6 +57,8 @@ static char	*cmd_exists(char *cmd, char *env[])
 	char	*path_to_test;
 
 	tab_paths = create_tab_paths(env);
+	if (tab_paths == NULL)
+		return (NULL);
 	i = 0;
 	while (tab_paths[i])
 	{
@@ -67,7 +76,7 @@ static char	*cmd_exists(char *cmd, char *env[])
 	return (NULL);
 }
 
-static char *extract_command_name(const char *full_path)
+/*static char *extract_command_name(const char *full_path)
 {
 	//F_OK = LE FICHIER EXITSTE, X_OK LE FICHIER EST EXECUTABLE
 	if (full_path == NULL || access(full_path, F_OK | X_OK) != 0)
@@ -84,23 +93,18 @@ static char *extract_command_name(const char *full_path)
 		return strdup(last_slash + 1);
 	}
 	//faudra free result
-}
+}*/
 
 char *normalize_cmd(char* str, char *env[])
 {	
-	char *result;
+	//char *result;
 
 	if (str == NULL || str[0] == '\0')
 		return str;
 	// Cas ou la commande est envoyée sous forme de chemin
 	if (ft_strchr(str, '/') != NULL)
 	{
-		result = extract_command_name(str);
-		if (result == NULL)
-		{
-			return (NULL);
-		}
-		return cmd_exists(result, env);
+		return str;
 	}
 	
 	// Cas ou la commande est envoyée sans chemin

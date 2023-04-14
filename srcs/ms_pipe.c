@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 12:35:43 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/13 17:26:04 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/14 11:55:42 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void redirection (char *input_cmd, int previous_pipe[2], int next_pipe[2], char 
 		close(next_pipe[1]);       
 
 		process_redirection(input_cmd, env);
+		exit(0);
 	}
 }
 /*
@@ -104,6 +105,7 @@ void execute_first_cmd(t_cmd_to_execute cmd_to_execute0, char *env[])
 		dup2(cmd_to_execute0.next_pipe[1],1);
 		close(cmd_to_execute0.next_pipe[1]);
 		process_redirection(cmd_to_execute0.cmd, env);
+		exit(0);
 	}    
 
 }
@@ -146,7 +148,6 @@ void ms_pipe2(char **tab_cmds, int nbr_cmds, char *env[])
 
 			pipe(pipe_fd2);
 			redirection(tab_cmds[i + 1], pipe_fd1, pipe_fd2, env);
-
 			close(pipe_fd1[0]);
 			close(pipe_fd1[1]);          
 		}
@@ -171,6 +172,7 @@ void ms_pipe2(char **tab_cmds, int nbr_cmds, char *env[])
 			dup2(pipe_fd2[0],0);
 			close(pipe_fd2[0]);
 			process_redirection(tab_cmds[nbr_cmds-1], env);
+			exit(0);
 		}
 		close(pipe_fd2[1]);
 		close(pipe_fd2[0]);
@@ -184,6 +186,7 @@ void ms_pipe2(char **tab_cmds, int nbr_cmds, char *env[])
 			dup2(pipe_fd1[0],0);
 			close(pipe_fd1[0]);
 			process_redirection(tab_cmds[nbr_cmds-1], env);
+			exit(0);
 		}
 		close(pipe_fd1[0]);
 		close(pipe_fd1[1]);  

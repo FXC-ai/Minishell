@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 17:05:42 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/13 17:28:36 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/14 13:13:16 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
 		close(out_fd);
 	}
 	r = is_builtins(*parsed_args);
+
 	if (r == BUILTIN_ECHO)
 		echo_process(parsed_args);
 	else if (r == BUILTIN_CD)
@@ -42,6 +43,8 @@ void	execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
 		unset_process(parsed_args, env);
 	else if (r == BUILTIN_ENV)
 		env_process(parsed_args, env);
+	else if (r == BUILTIN_EXIT)
+		exit_process();
 	else
 	{
 		cmd = normalize_cmd(parsed_args[0], env);
@@ -51,7 +54,7 @@ void	execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
 		perror(parsed_args[0]);
 		exit(errno);
 	}
-	exit(0);
+	//exit(0);
 }
 
 int process_delimiter(char *del)
@@ -111,6 +114,8 @@ int process_redirection(char *str, char *env[])
 
 	//printf("str = %s\n", str);
 	parsed_args = ft_split_lexer_no_quote(str, ' ');
+
+	//print_tab(parsed_args);
 	current_command = parsed_args;
 	while (*parsed_args)
 	{
@@ -157,8 +162,10 @@ int process_redirection(char *str, char *env[])
 			{
 				return (-1);
 			}
+			//print_tab(parsed_args + 2);
+			//print_tab(current_command);
 			parsed_args += 2;
-			current_command += 2;
+
 		}
 		else
 		{

@@ -1,14 +1,12 @@
 commandes vides
-focntion exit ne fonctionne pas
-error message paspareil /bin/lss et lss
 valeur de la variable erreur different
 echo "cat lol.c | cat > lol.c" : n'affiche rien
 echo '$USER' '>a' : fonctionne pas 
-les buil in ne fonctionnent plus ne fonctionne plus
+
 pwd . et pwd ..
 cat <b  -e >> b : seg fault
 echo :l.l;  >>b : seg fault systematiquement
 
 cat b > c| grep bla <<d | more >a : ne fonctionne pas
 
-le heredoc ne fonctionne plus.
+le heredoc ne fonctionne plus quand pas de commande en +.
