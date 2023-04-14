@@ -44,6 +44,14 @@ typedef struct s_cmd_to_execute {
 
 } t_cmd_to_execute;
 
+
+typedef struct s_parsed_args {
+
+	char **redirections;
+	char **cmd_args;
+
+} t_parsed_args;
+
 void	rl_replace_line (const char *text, int clear_undo);
 
 

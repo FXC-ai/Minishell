@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 17:35:07 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/13 15:49:59 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/14 16:14:39 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,13 @@ void	print_tab(char **tab)
 	int i;
 
 	i = 0;
+	
 	printf("--------------TAB------------\n");
+	if (tab[i] == NULL)
+	{
+		printf("TAB IS NULL\n");
+		return ;
+	}
 	while (tab[i])
 	{
 		printf("line : [%s]\n",tab[i++]);
