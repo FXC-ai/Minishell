@@ -92,7 +92,7 @@ char	**ft_split_lexer_no_quote(char const *str, char c);
 void	execute_command(char **parsed_args, int in_fd, int out_fd, char *env[]);
 void	execute_command_2(char **parsed_args, int in_fd, int out_fd, char *env[]);
 int 	process_delimiter(char *del);
-int		process_redirection(char *str, char *env[]);
+int		process_redirection(char **redirections, int **in_out_fd, char *env[]);
 
 //UTILS.C
 int		is_space(char c);
@@ -102,6 +102,7 @@ int		size_tab(char **tab);
 void	freemalloc(char **result, int j);
 char	*ft_strndup(char *str, size_t n);
 void	print_command_not_found(char *str);
+int		is_chevron (char c);
 
 // IS_BUILTINS.C
 int		is_builtins(char *str);
@@ -110,13 +111,13 @@ int		is_builtins(char *str);
 char	*normalize_cmd(char* str, char *env[]);
 
 //MS_PIPE.C
-void	execute_last_cmd(int pipe_fd[2], char **tab_cmds, int nbr_cmds, char *env[]);
+//void	execute_last_cmd(int pipe_fd[2], char **tab_cmds, int nbr_cmds, char *env[]);
 //void	execute_first_cmd(int pipe_fd[2], char **tab_cmds, char *env[]);
-void	execute_first_cmd(t_cmd_to_execute cmd_to_execute, char *env[]);
-void	redirection (char *input_cmd, int previous_pipe[2], int next_pipe[2], char *env[]);
+//void	execute_first_cmd(t_cmd_to_execute cmd_to_execute, char *env[]);
+//void	redirection (char *input_cmd, int previous_pipe[2], int next_pipe[2], char *env[]);
 //void	redirection (t_cmd_to_execute cmd_to_execute, char *env[])
-void	execution (char *input_cmd, char *env[]);
-void	ms_pipe2(char **tab_cmds, int nbr_cmds, char *env[]);
+//void	execution (char *input_cmd, char *env[]);
+//void	ms_pipe2(char **tab_cmds, int nbr_cmds, char *env[]);
 
 
 

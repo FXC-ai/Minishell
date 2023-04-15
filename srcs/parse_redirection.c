@@ -3,19 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parse_redirection.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 12:53:27 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/14 13:47:21 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/15 12:07:02 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
 
-static int is_chevron (char c)
-{
-    return c == '>' || c == '<';
-}
+
 
 int size_next_wd(char *str)
 {

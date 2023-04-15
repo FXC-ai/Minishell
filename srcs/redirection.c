@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 17:05:42 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/14 13:13:16 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/15 12:21:58 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int process_delimiter(char *del)
 	int fd;
 	char *del_n = ft_strjoin(del, "\n");
 
-	free(del);
+	//ree(del);
 	fd = open("TMPDOC", O_TRUNC | O_CREAT | O_WRONLY, 0777);
 
 	rdd = read(STDIN_FILENO, buffer, sizeof(buffer) - 1);
@@ -100,97 +100,140 @@ int process_delimiter(char *del)
 	return fd;
 }
 
-int process_redirection(char *str, char *env[])
+int		process_redirection(char **redirections, int **in_out_fd, char *env[])
 {
-	int in_fd;
-	int out_fd;
-	char **parsed_args;
+	(void) env;
 	char **current_command;
 
-	in_fd = STDIN_FILENO;
-	out_fd = STDOUT_FILENO;
+	(*in_out_fd)[0] = STDIN_FILENO;
+	(*in_out_fd)[1] = STDOUT_FILENO;
+	
 
-	//printf("Before process_redirection : in_fd = %d / out_fd = %d\n", in_fd, out_fd);
+	//printf("Before process_redirection : in_in_out_fd[1][0] = %d / in_out_fd[1] = %d\n", in_in_out_fd[1][0], in_out_fd[1]);
 
 	//printf("str = %s\n", str);
-	parsed_args = ft_split_lexer_no_quote(str, ' ');
+
 
 	//print_tab(parsed_args);
-	current_command = parsed_args;
-	while (*parsed_args)
+	current_command = redirections;
+	while (*redirections)
 	{
-		if (ft_strcmp(*parsed_args, ">") == 0)
-		{
-			*parsed_args = NULL;
-			out_fd = open(*(parsed_args + 1), O_WRONLY | O_CREAT | O_TRUNC, 0777);
-			if (in_fd == -1)
-			{
-				perror(*(parsed_args + 1));
-				return -1;
-			}
-			parsed_args++;
-		}
-		else if (ft_strcmp(*parsed_args, ">>") == 0)
-		{
-			*parsed_args = NULL;
-			out_fd = open(*(parsed_args + 1), O_WRONLY | O_CREAT | O_APPEND, 0777);
-			if (in_fd == -1)
-			{
-				perror(*(parsed_args + 1));
-				return -1;
-			}
-			parsed_args++;
-		}
-		else if (ft_strcmp(*parsed_args, "<") == 0)
-		{
-			*parsed_args = NULL;
-			in_fd = open(*(parsed_args + 1), O_RDONLY);
-			
-			if (in_fd == -1)
-			{
-				perror(*(parsed_args + 1));
-				return -1;
-			}
-			parsed_args++;
-		}
-		else if (ft_strncmp(*parsed_args, "<<", 2) == 0)
-		{
-			*parsed_args = NULL;
+		//printf("*redirection = %s\n", *redirections);
 
-			in_fd = process_delimiter(*(parsed_args + 1));
-			if (in_fd == -1)
+		if (ft_strncmp(*redirections, ">>", 2) == 0)
+		{
+			(*redirections)++;
+			(*redirections)++;
+			while (is_space(**redirections))
+			{
+				(*redirections)++;
+			}
+
+			(*in_out_fd)[1] = open(*(redirections), O_WRONLY | O_CREAT | O_TRUNC, 0777);
+			if ((*in_out_fd)[1] == -1)
+			{
+				perror(*(redirections));
+				return -1;
+			}
+		}
+		else if (ft_strncmp(*redirections, ">", 1) == 0)
+		{
+			(*redirections)++;
+			while (is_space(**redirections))
+			{
+				(*redirections)++;
+			}
+
+			(*in_out_fd)[1] = open(*(redirections), O_WRONLY | O_CREAT | O_TRUNC, 0777);
+			if ((*in_out_fd)[1] == -1)
+			{
+				perror(*(redirections));
+				return -1;
+			}
+		}
+		else if (ft_strncmp(*redirections, "<<", 2) == 0)
+		{
+			(*redirections)++;
+			(*redirections)++;
+			while (is_space(**redirections))
+			{
+				(*redirections)++;
+			}
+
+			(*in_out_fd)[0] = process_delimiter(*redirections);
+			if ((*in_out_fd)[0] == -1)
+			{
+				perror(*(redirections));
+				return -1;
+			}
+		}
+		else if (ft_strncmp(*redirections, "<", 1) == 0)
+		{
+			(*redirections)++;
+			while (is_space(**redirections))
+			{
+				(*redirections)++;
+			}
+
+			(*in_out_fd)[0] = open(*(redirections), O_WRONLY | O_CREAT | O_TRUNC, 0777);
+			if ((*in_out_fd)[0] == -1)
+			{
+				perror(*(redirections));
+				return -1;
+			}
+		}
+		
+		/*
+		else if (ft_strcmp(*redirections, "<") == 0)
+		{
+			*redirections = NULL;
+			in_out_fd[0] = open(*(redirections + 1), O_RDONLY);
+			
+			if (in_out_fd[0] == -1)
+			{
+				perror(*(redirections + 1));
+				return -1;
+			}
+			redirections++;
+		}
+		else if (ft_strncmp(*redirections, "<<", 2) == 0)
+		{
+			*redirections = NULL;
+
+			in_out_fd[0] = process_delimiter(*(redirections + 1));
+			if (in_out_fd[0] == -1)
 			{
 				return (-1);
 			}
-			//print_tab(parsed_args + 2);
+			//print_tab(redirections + 2);
 			//print_tab(current_command);
-			parsed_args += 2;
+			redirections += 2;
 
-		}
-		else
-		{
-			parsed_args++;
-		}
+		}*/
+
+		redirections++;
+
 	}
 	
+	/*
 	if (*current_command)
 	{
-		execute_command(current_command, in_fd, out_fd, env);	
+		execute_command(current_command, in_out_fd[0], out_fd, env);	
 	}
 	else
 	{
 		perror("cmd");
 	}
-	
-	//printf("After process_redirection : in_fd = %d / out_fd = %d\n", in_fd, out_fd);
+	*/
+	//printf("After process_redirection : in_out_fd[0] = %d / out_fd = %d\n", in_out_fd[0], out_fd);
 
-	if (in_fd != STDIN_FILENO)
+	/*if (in_out_fd[0] != STDIN_FILENO)
 	{
-		close(in_fd);
+		close(in_out_fd[0]);
 	}
-	if (out_fd != STDOUT_FILENO)
+	if (in_out_fd[1] != STDOUT_FILENO)
 	{
-		close(out_fd);
-	}
-	return (out_fd);
+		close(in_out_fd[1]);
+	}*/
+	return (1);
 }

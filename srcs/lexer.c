@@ -3,19 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 17:00:40 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/14 18:28:37 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/15 12:25:39 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
-
-int is_chevron (char c)
-{
-    return c == '>' || c == '<';
-}
 
 int is_valid_chevron (char *tab_cmd, char chev_type)
 {
@@ -243,8 +238,6 @@ char **separate_command (char *tab_cmds)
 		
 	}
 
-	printf("j = %d\n", j);
-
 	result = malloc((j + 1) * sizeof(char *));
 	if (result == NULL)
 		return (NULL);
@@ -311,6 +304,7 @@ t_parsed_args **init_parsed_args (char **tab_cmds)
 {
 	t_parsed_args **list_struct;
 	t_parsed_args *current_struct;
+	char **tmp;
 	int i;
 
 	list_struct = malloc((size_tab(tab_cmds) + 1) * sizeof(t_parsed_args * ));
@@ -322,11 +316,12 @@ t_parsed_args **init_parsed_args (char **tab_cmds)
 		current_struct = malloc(sizeof(t_parsed_args));
 		if (current_struct == NULL)
 			return (NULL);
-		current_struct->cmd_args = separate_command(tab_cmds[i]);
+		tmp = separate_command(tab_cmds[i]);
+		current_struct->cmd_args = ft_split_lexer_no_quote(tmp[0], ' ');
+		free(tmp);
 		current_struct->redirections = separate_redirections(tab_cmds[i]);
-
-		print_tab(current_struct->redirections);
-		print_tab(current_struct->cmd_args);
+		//print_tab(current_struct->redirections);
+		//print_tab(current_struct->cmd_args);
 		list_struct[i] = current_struct;
 		i++;
 	}
@@ -341,10 +336,16 @@ int lexer(char *str, char *env[])
 	char	**result;
 	char	c = '|';
 	int     i;
+	int		*in_out_fd;
+	int		status;
+
+	in_out_fd = malloc(2 * sizeof(int));
+
 	//int		nbr_cmds;
 	//int		status;
 	//int		r;
 	//char **parsed_args;
+	t_parsed_args **cmd_red_lst;
 
     i = 0;
 
@@ -368,12 +369,58 @@ int lexer(char *str, char *env[])
 
 	//printf("result = %s");
 
-	print_tab(result);
+	//print_tab(result);
 
-	init_parsed_args(result);
-	//parse_redirection_right(result);
+	cmd_red_lst = init_parsed_args(result);
+
+	i = 0;
 	
-	//parse_redirection_left(result);
+	if (cmd_red_lst[1] == NULL)
+	{
+
+		process_redirection(cmd_red_lst[i]->redirections, &in_out_fd, env);
+
+		global_sig.pid = fork();
+		if (global_sig.pid == 0)
+		{
+			execute_command(cmd_red_lst[0]->cmd_args, in_out_fd[0], in_out_fd[1], env);
+			if (in_out_fd[0] != STDIN_FILENO)
+			{
+				close(in_out_fd[0]);
+			}
+			if (in_out_fd[1] != STDOUT_FILENO)
+			{
+				close(in_out_fd[1]);
+			}
+			exit(0);
+		}
+		else
+		{
+			waitpid(global_sig.pid, &status, 0);
+			//ft_putstr_fd("waitpid\n", 2);
+			if (WIFEXITED(status))
+			{
+				global_sig.ms_errno = WEXITSTATUS(status);
+
+			}
+		}
+		printf("infd = %d et outfd = %d\n", in_out_fd[0], in_out_fd[1]);
+		i++;
+
+	}
+	else
+	{
+		while (cmd_red_lst[i] != NULL)
+		{
+			process_redirection(cmd_red_lst[i]->redirections, &in_out_fd, env);
+			//printf("infd = %d et outfd = %d\n", in_out_fd[0], in_out_fd[1]);
+			i++;
+		}
+	}
+	
+
+
+
 
 
 	/*
