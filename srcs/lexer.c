@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 17:00:40 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/15 15:31:56 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/15 17:43:06 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -278,6 +278,8 @@ int lexer(char *str, char *env[])
 	int		*in_out_fd;
 	int		status;
 
+	int		r;
+
 	in_out_fd = malloc(2 * sizeof(int));
 
 	//int		nbr_cmds;
@@ -312,17 +314,26 @@ int lexer(char *str, char *env[])
 
 	cmd_red_lst = init_parsed_args(result);
 
-	i = 0;
-	
+	r = is_builtins(cmd_red_lst[0]->cmd_args[0]);
+	//printf("r = %d\n", r);
+
+
+
+
+
+
 	if (cmd_red_lst[1] == NULL)
 	{
 		in_out_fd[0] = STDIN_FILENO;
 		in_out_fd[1] = STDOUT_FILENO;
 
-		process_redirection(cmd_red_lst[i]->redirections, &in_out_fd, env);
+		if (process_redirection(cmd_red_lst[0]->redirections, &in_out_fd, env) == -1)
+		{
+			errno = global_sig.ms_errno;
+			return -1;
+		}
 
-		global_sig.pid = fork();
-		if (global_sig.pid == 0)
+		if (r == BUILTIN_CD || r == BUILTIN_EXPORT || r == BUILTIN_UNSET || r == BUILTIN_EXIT)
 		{
 			execute_command(cmd_red_lst[0]->cmd_args, in_out_fd[0], in_out_fd[1], env);
 			if (in_out_fd[0] != STDIN_FILENO)
@@ -333,21 +344,38 @@ int lexer(char *str, char *env[])
 			{
 				close(in_out_fd[1]);
 			}
-			exit(0);
 		}
 		else
 		{
-			waitpid(global_sig.pid, &status, 0);
-			if (WIFEXITED(status))
+			global_sig.pid = fork();
+			if (global_sig.pid == 0)
 			{
-				global_sig.ms_errno = WEXITSTATUS(status);
+				execute_command(cmd_red_lst[0]->cmd_args, in_out_fd[0], in_out_fd[1], env);
+				if (in_out_fd[0] != STDIN_FILENO)
+				{
+					close(in_out_fd[0]);
+				}
+				if (in_out_fd[1] != STDOUT_FILENO)
+				{
+					close(in_out_fd[1]);
+				}
+				exit(SUCCESS);
 			}
+			else
+			{
+				waitpid(global_sig.pid, &status, 0);
+				if (WIFEXITED(status))
+				{
+					global_sig.ms_errno = WEXITSTATUS(status);
+				}
+			}
+		//printf("infd = %d et outfd = %d\n", in_out_fd[0], in_out_fd[1]);+
 		}
-		//printf("infd = %d et outfd = %d\n", in_out_fd[0], in_out_fd[1]);
-		i++;
+		
 	}
 	else
 	{
+		i = 0;
 		while (cmd_red_lst[i] != NULL)
 		{
 			process_redirection(cmd_red_lst[i]->redirections, &in_out_fd, env);

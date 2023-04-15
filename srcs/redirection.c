@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 17:05:42 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/15 12:44:39 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/15 17:54:19 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,12 @@ void	execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
 		cmd = normalize_cmd(parsed_args[0], env);
 		if (cmd == NULL)
 			print_command_not_found(parsed_args[0]);
+		ft_putstr_fd("SAWDFWAFWAFAF\n",2);
 		execve(normalize_cmd(parsed_args[0], env), parsed_args, env);
-		perror(parsed_args[0]);
-		exit(errno);
+		/*perror(parsed_args[0]);
+		ft_putnbr_fd(errno, 2);
+		global_sig.ms_errno = map_errno_to_exit_code(errno);
+		exit(map_errno_to_exit_code(errno));*/
 	}
 	//exit(0);
 }
@@ -133,6 +136,7 @@ int		process_redirection(char **redirections, int **in_out_fd, char *env[])
 			if ((*in_out_fd)[1] == -1)
 			{
 				perror(*(redirections));
+				global_sig.ms_errno = 1;
 				return -1;
 			}
 		}
@@ -148,6 +152,7 @@ int		process_redirection(char **redirections, int **in_out_fd, char *env[])
 			if ((*in_out_fd)[1] == -1)
 			{
 				perror(*(redirections));
+				global_sig.ms_errno = 1;
 				return -1;
 			}
 		}
@@ -164,6 +169,7 @@ int		process_redirection(char **redirections, int **in_out_fd, char *env[])
 			if ((*in_out_fd)[0] == -1)
 			{
 				perror(*(redirections));
+				global_sig.ms_errno = 1;
 				return -1;
 			}
 		}
@@ -179,6 +185,7 @@ int		process_redirection(char **redirections, int **in_out_fd, char *env[])
 			if ((*in_out_fd)[0] == -1)
 			{
 				perror(*(redirections));
+				global_sig.ms_errno = 1;
 				return -1;
 			}
 		}

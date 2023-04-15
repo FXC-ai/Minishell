@@ -24,6 +24,14 @@
 # define BUILTIN_ENV 6
 #define BUILTIN_EXIT 7
 
+# define NO_SUCH_FILE_DIRECTORY 1
+# define COMMAND_NOT_FOUND 127
+# define SUCCESS 0
+# define PERMISSION_DENIED 1
+
+
+
+
 typedef struct	s_sig
 {
 	int 	sig_int;

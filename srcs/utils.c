@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 17:35:07 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/15 13:31:07 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/15 17:53:09 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,7 @@ void	print_command_not_found(char *str)
 {
 	write(2, str, ft_strlen(str));
 	ft_putstr_fd(": command not found\n", 2);
-	global_sig.ms_errno = 127;
-	exit(errno);
+	exit(127);
 }
 
 int is_chevron (char c)
