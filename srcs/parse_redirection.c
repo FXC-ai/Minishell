@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_redirection.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: victorgiordani01 <victorgiordani01@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 12:53:27 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/15 12:07:02 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/15 22:14:07 by victorgiord      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,9 @@ int size_next_wd(char *str)
 
 static int is_valid_chevron (char *cmd, char chev_type)
 {
-    int j;
     int count;
 
     count = 0;
-    j = 0;
     while (*cmd != '\0')
     {
         if (*cmd == chev_type)

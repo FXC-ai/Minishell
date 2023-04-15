@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: victorgiordani01 <victorgiordani01@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 17:00:40 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/15 18:32:16 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/15 23:28:10 by victorgiord      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,6 @@ char **separate_redirections (char *tab_cmds)
 	int i;
 	int j;
 	int lenght;
-	char *tmp;
 	int in_quote;
 	char quote;
 	char **result;
@@ -168,10 +167,8 @@ char **separate_redirections (char *tab_cmds)
 		if (in_quote == 0 && (tab_cmds[i] == '<' || tab_cmds[i] == '>'))
 		{
 			lenght = find_lenght(tab_cmds+i, tab_cmds[i]);
-			tmp = ft_substr(tab_cmds, i, lenght);
+			result[j++] = ft_substr(tab_cmds, i, lenght);
 			i += lenght - 2;
-			result[j++] = tmp;
-			//printf("Result[%d] = [%s]\n", j, tmp);
 		}
 		i++;
 	}
@@ -184,7 +181,6 @@ char **separate_command (char *tab_cmds)
 	int i;
 	int j;
 	int length;
-	char *tmp;
 	char **result;
 
 	j = 0;
@@ -219,8 +215,8 @@ char **separate_command (char *tab_cmds)
 		length = find_lenght_command(tab_cmds + i);
 		if (length != 0)
 		{
-			tmp = ft_substr(tab_cmds, i, length);
-			result[j] = tmp;
+			result[j] = ft_substr(tab_cmds, i, length);
+			printf("result[%d] = %p\n", j, &(result[j]));
 			j++;
 		}
 		i+=length;
@@ -259,19 +255,17 @@ t_parsed_args **init_parsed_args (char **tab_cmds)
 			return (NULL);
 		tmp = separate_command(tab_cmds[i]);
 		current_struct->cmd_args = ft_split_lexer_no_quote(tmp[0]);
-		free(tmp);
+		freemalloc(tmp, size_tab(tmp));
 		current_struct->redirections = separate_redirections(tab_cmds[i]);
 		//print_tab("redirections", current_struct->redirections);
 		//print_tab(" command ",current_struct->cmd_args);
 		list_struct[i] = current_struct;
+
 		i++;
 	}
 	list_struct[i] = NULL;
 	return (list_struct);
 }
-
-
-
 
 int lexer(char *str, char *env[])
 {
@@ -292,7 +286,6 @@ int lexer(char *str, char *env[])
 
 	result = ft_split_lexer(str, c);
 	
-
 	if (result == NULL)
 		return 0;
     while (result[i])
@@ -301,12 +294,13 @@ int lexer(char *str, char *env[])
         i++;
     }
 
-
 	parse_dollar(result, env);
 
 	cmd_red_lst = init_parsed_args(result);
 
+
 	r = is_builtins(cmd_red_lst[0]->cmd_args[0]);
+
 
 
 	if (cmd_red_lst[1] == NULL)
@@ -321,6 +315,8 @@ int lexer(char *str, char *env[])
 			free_struct(cmd_red_lst);
 			return -1;
 		}
+		print_tab("redirections", cmd_red_lst[0]->redirections);
+	print_tab(" command ",  cmd_red_lst[0]->cmd_args);
 
 		if (r == BUILTIN_CD || r == BUILTIN_EXPORT || r == BUILTIN_UNSET || r == BUILTIN_EXIT)
 		{

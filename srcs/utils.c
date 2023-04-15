@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: victorgiordani01 <victorgiordani01@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 17:35:07 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/15 18:43:18 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/15 22:44:35 by victorgiord      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,19 +49,19 @@ void	ft_free_tabs(char **tab, int h)
 	free(tab);
 }
 
-void	freemalloc(char **result, int j)
+void freemalloc(char **result, int j)
 {
-	if (result[j] == NULL)
-		return ;
-	while (j >= 0)
-	{
-		//printf("j = %d\n", j);
-		free(result[j]);
-		result[j] = NULL;
-		j--;
-	}
-	free(result);
+    while (j >= 0)
+    {
+        printf("Freeing result[%d] at address %p\n", j, (void *)result[j]);
+        free(result[j]);
+        result[j] = NULL;
+        j--;
+    }
+    printf("Freeing result at address %p\n", (void *)result);
+    free(result);
 }
+
 
 
 void	free_struct(t_parsed_args **cmd_red_lst)

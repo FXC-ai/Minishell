@@ -1,0 +1,22 @@
+total 88
+drwxr-xr-x 1 victorgiordani01 victorgiordani01   238 Apr 15 22:28 .
+drwxr-xr-x 1 victorgiordani01 victorgiordani01  1050 Apr 15 22:20 ..
+-rwxr-xr-x 1 victorgiordani01 victorgiordani01  1467 Apr 15 22:28 a
+-rwxr-xr-x 1 victorgiordani01 victorgiordani01  1267 Apr 15 22:06 aaa
+-rwxr-xr-x 1 victorgiordani01 victorgiordani01     0 Apr 15 22:28 aaaa
+-rwxr-xr-x 1 victorgiordani01 victorgiordani01  1204 Apr 15 22:06 aaaaa
+drwxr-xr-x 1 victorgiordani01 victorgiordani01    16 Apr 15 22:06 a.out.dSYM
+drwxr-xr-x 1 victorgiordani01 victorgiordani01   374 Apr 15 22:06 Bazar
+-rwxr-xr-x 1 victorgiordani01 victorgiordani01  1267 Apr 15 22:06 bbb
+drwxr-xr-x 1 victorgiordani01 victorgiordani01   138 Apr 15 22:06 .git
+-rw-r--r-- 1 victorgiordani01 victorgiordani01    31 Apr 15 22:06 .gitignore
+drwxr-xr-x 1 victorgiordani01 victorgiordani01    16 Apr 15 22:06 includes
+drwxr-xr-x 1 victorgiordani01 victorgiordani01  1644 Apr 15 22:14 libft
+-rw-r--r-- 1 victorgiordani01 victorgiordani01   852 Apr 15 22:06 Makefile
+-rwxr-xr-x 1 victorgiordani01 victorgiordani01 47152 Apr 15 22:28 minishell
+-rw-r--r-- 1 victorgiordani01 victorgiordani01   889 Apr 15 22:06 README.md
+-rw-r--r-- 1 victorgiordani01 victorgiordani01    18 Apr 15 22:06 run.sh
+drwxr-xr-x 1 victorgiordani01 victorgiordani01   714 Apr 15 22:28 srcs
+-rw-r--r-- 1 victorgiordani01 victorgiordani01  2066 Apr 15 22:06 test.c
+-rw-r--r-- 1 victorgiordani01 victorgiordani01   329 Apr 15 22:06 ToDoList.txt
+drwxr-xr-x 1 victorgiordani01 victorgiordani01    26 Apr 15 22:06 .vscode

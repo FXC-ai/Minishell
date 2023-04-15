@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: victorgiordani01 <victorgiordani01@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 17:05:42 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/15 18:26:19 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/15 22:39:18 by victorgiord      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,77 +91,78 @@ int process_delimiter(char *del)
 int		process_redirection(char **redirections, int **in_out_fd, char *env[])
 {
 	(void) env;
-	char **current_command;
 
 	(*in_out_fd)[0] = STDIN_FILENO;
 	(*in_out_fd)[1] = STDOUT_FILENO;
-	
-	current_command = redirections;
+
+	char *redirection;
+
+	redirection = *redirections;
 	while (*redirections)
 	{
 
-		if (ft_strncmp(*redirections, ">>", 2) == 0)
+		if (ft_strncmp(redirection, ">>", 2) == 0)
 		{
-			(*redirections)++;
-			(*redirections)++;
-			while (is_space(**redirections))
+			redirection++;
+			redirection++;
+			while (is_space(*redirection))
 			{
-				(*redirections)++;
+				redirections++;
 			}
 
-			(*in_out_fd)[1] = open(*(redirections), O_WRONLY | O_CREAT | O_APPEND, 0777);
+			(*in_out_fd)[1] = open(redirection, O_WRONLY | O_CREAT | O_APPEND, 0777);
 			if ((*in_out_fd)[1] == -1)
 			{
-				perror(*(redirections));
+				perror(redirection);
 				global_sig.ms_errno = 1;
 				return -1;
 			}
 		}
-		else if (ft_strncmp(*redirections, ">", 1) == 0)
+		else if (ft_strncmp(redirection, ">", 1) == 0)
 		{
-			(*redirections)++;
-			while (is_space(**redirections))
+			redirection++;
+			while (is_space(*redirection))
 			{
-				(*redirections)++;
+				redirection++;
 			}
 
-			(*in_out_fd)[1] = open(*(redirections), O_WRONLY | O_CREAT | O_TRUNC, 0777);
+			(*in_out_fd)[1] = open(redirection, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 			if ((*in_out_fd)[1] == -1)
 			{
-				perror(*(redirections));
+				perror(redirection);
 				global_sig.ms_errno = 1;
 				return -1;
 			}
 		}
-		else if (ft_strncmp(*redirections, "<<", 2) == 0)
+		else if (ft_strncmp(redirection, "<<", 2) == 0)
 		{
-			(*redirections)++;
-			(*redirections)++;
-			while (is_space(**redirections))
+			redirection++;
+			redirection++;
+			while (is_space(*redirection))
 			{
-				(*redirections)++;
+				redirection++;
 			}
 
-			(*in_out_fd)[0] = process_delimiter(*redirections);
+			(*in_out_fd)[0] = process_delimiter(redirection);
 			if ((*in_out_fd)[0] == -1)
 			{
-				perror(*(redirections));
+				perror(redirection);
 				global_sig.ms_errno = 1;
 				return -1;
 			}
 		}
-		else if (ft_strncmp(*redirections, "<", 1) == 0)
+		else if (ft_strncmp(redirection, "<", 1) == 0)
 		{
-			(*redirections)++;
-			while (is_space(**redirections))
+			redirection++;
+			while (is_space(*redirection))
 			{
-				(*redirections)++;
+				redirection++;
 			}
 
-			(*in_out_fd)[0] = open(*(redirections), O_RDONLY, 0777);
+			(*in_out_fd)[0] = open(redirection, O_RDONLY, 0777);
 			if ((*in_out_fd)[0] == -1)
 			{
-				perror(*(redirections));
+				perror(redirection);
 				global_sig.ms_errno = 1;
 				return -1;
 			}
