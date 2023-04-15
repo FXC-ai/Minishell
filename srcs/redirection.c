@@ -6,7 +6,7 @@
 /*   By: victorgiordani01 <victorgiordani01@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 17:05:42 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/15 22:39:18 by victorgiord      ###   ########.fr       */
+/*   Updated: 2023/04/16 00:21:11 by victorgiord      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int		process_redirection(char **redirections, int **in_out_fd, char *env[])
 			redirection++;
 			while (is_space(*redirection))
 			{
-				redirections++;
+				redirection++;
 			}
 
 			(*in_out_fd)[1] = open(redirection, O_WRONLY | O_CREAT | O_APPEND, 0777);
