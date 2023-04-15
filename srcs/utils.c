@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 17:35:07 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/15 10:25:36 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/15 13:31:07 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ int is_space(char c)
     return (c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '\f' || c == '\v');
 }
 
-void	print_tab(char **tab)
+void	print_tab(char *title, char **tab)
 {
 	int i;
 
 	i = 0;
 	
-	printf("--------------TAB------------\n");
+	printf("--------------%s------------\n", title);
 	if (tab[i] == NULL)
 	{
 		printf("TAB IS NULL\n");

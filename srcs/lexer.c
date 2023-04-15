@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 17:00:40 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/15 12:25:39 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/15 15:31:56 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,24 +37,16 @@ int is_valid_chevron (char *tab_cmd, char chev_type)
 				quote = '\0';
 				in_quote = 0;
 			}
-			//printf("quote = %c in_quote = %d\n", quote, in_quote);
 		}
-		//printf("c = %c | in_quote = %d\n", tab_cmd[i], in_quote);
         if (tab_cmd[i] == chev_type && in_quote == 0)
         {
             if (tab_cmd[i + 1] == chev_type)
-            {
                 i++;
-            }
             i++;
             while (is_space(tab_cmd[i]) == 1)
-            {
                 i++;
-            }
             if (is_chevron(tab_cmd[i]) == 1)
-            {
                 return -1;
-            }
             count++;
         }
         i++;
@@ -193,55 +185,31 @@ char **separate_command (char *tab_cmds)
 	int j;
 	int length;
 	char *tmp;
-	//int in_quote;
-	//char quote;
 	char **result;
 
 	j = 0;
 	i = 0;
-
 	while (tab_cmds[i])
 	{
-		
-
 		length = find_lenght_command(tab_cmds + i);
 		if (length != 0)
 			j++;
-		
-
 		i+=length;
-
 		while (is_chevron(tab_cmds[i]))
 		{			
 			while (tab_cmds[i] && is_chevron(tab_cmds[i]))
-			{
 				i++;
-			}
-			
 			while (tab_cmds[i] && (is_space(tab_cmds[i])))
-			{
 				i++;
-			}
 			while (tab_cmds[i] && !is_space(tab_cmds[i]) && !is_chevron(tab_cmds[i]))
-			{
 				i++;
-			}
-
 			while (tab_cmds[i] && (is_space(tab_cmds[i])))
-			{
 				i++;
-			}
-			
 		}
-
-
-		
 	}
-
 	result = malloc((j + 1) * sizeof(char *));
 	if (result == NULL)
 		return (NULL);
-
 
 	i = 0;
 	j = 0;
@@ -253,50 +221,23 @@ char **separate_command (char *tab_cmds)
 		{
 			tmp = ft_substr(tab_cmds, i, length);
 			result[j] = tmp;
-			//printf("tmp = [%s]\n", tmp);
 			j++;
 		}
-
-
 		i+=length;
-		
-		// if ((tab_cmds+ i))
-		// 	printf("0 [%s]\n", (tab_cmds+ i));
-
-
 		while (is_chevron(tab_cmds[i]))
 		{			
 			while (tab_cmds[i] && is_chevron(tab_cmds[i]))
-			{
 				i++;
-			}
-			
 			while (tab_cmds[i] && (is_space(tab_cmds[i])))
-			{
 				i++;
-			}
 			while (tab_cmds[i] && !is_space(tab_cmds[i]) && !is_chevron(tab_cmds[i]))
-			{
 				i++;
-			}
-
 			while (tab_cmds[i] && (is_space(tab_cmds[i])))
-			{
 				i++;
-			}
-			
 		}
-
-
-			
-		// if ((tab_cmds+ i))
-		// 	printf("3 [%s]\n", (tab_cmds+ i));
-	
 	}
-	
 	result[j] = NULL;
-
-
+	//print_tab("separate command", result);
 	return (result);
 }
 
@@ -317,19 +258,17 @@ t_parsed_args **init_parsed_args (char **tab_cmds)
 		if (current_struct == NULL)
 			return (NULL);
 		tmp = separate_command(tab_cmds[i]);
-		current_struct->cmd_args = ft_split_lexer_no_quote(tmp[0], ' ');
+		current_struct->cmd_args = ft_split_lexer_no_quote(tmp[0]);
 		free(tmp);
 		current_struct->redirections = separate_redirections(tab_cmds[i]);
-		//print_tab(current_struct->redirections);
-		//print_tab(current_struct->cmd_args);
+		//print_tab("redirections", current_struct->redirections);
+		//print_tab(" command ",current_struct->cmd_args);
 		list_struct[i] = current_struct;
 		i++;
 	}
 	list_struct[i] = NULL;
 	return (list_struct);
 }
-
-
 
 int lexer(char *str, char *env[])
 {
@@ -377,6 +316,8 @@ int lexer(char *str, char *env[])
 	
 	if (cmd_red_lst[1] == NULL)
 	{
+		in_out_fd[0] = STDIN_FILENO;
+		in_out_fd[1] = STDOUT_FILENO;
 
 		process_redirection(cmd_red_lst[i]->redirections, &in_out_fd, env);
 
@@ -397,16 +338,13 @@ int lexer(char *str, char *env[])
 		else
 		{
 			waitpid(global_sig.pid, &status, 0);
-			//ft_putstr_fd("waitpid\n", 2);
 			if (WIFEXITED(status))
 			{
 				global_sig.ms_errno = WEXITSTATUS(status);
-
 			}
 		}
-		printf("infd = %d et outfd = %d\n", in_out_fd[0], in_out_fd[1]);
+		//printf("infd = %d et outfd = %d\n", in_out_fd[0], in_out_fd[1]);
 		i++;
-
 	}
 	else
 	{

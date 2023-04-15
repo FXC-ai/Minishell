@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 17:05:42 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/15 12:21:58 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/15 12:44:39 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ int		process_redirection(char **redirections, int **in_out_fd, char *env[])
 				(*redirections)++;
 			}
 
-			(*in_out_fd)[1] = open(*(redirections), O_WRONLY | O_CREAT | O_TRUNC, 0777);
+			(*in_out_fd)[1] = open(*(redirections), O_WRONLY | O_CREAT | O_APPEND, 0777);
 			if ((*in_out_fd)[1] == -1)
 			{
 				perror(*(redirections));
@@ -175,7 +175,7 @@ int		process_redirection(char **redirections, int **in_out_fd, char *env[])
 				(*redirections)++;
 			}
 
-			(*in_out_fd)[0] = open(*(redirections), O_WRONLY | O_CREAT | O_TRUNC, 0777);
+			(*in_out_fd)[0] = open(*(redirections), O_RDONLY, 0777);
 			if ((*in_out_fd)[0] == -1)
 			{
 				perror(*(redirections));

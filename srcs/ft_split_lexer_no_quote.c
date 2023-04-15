@@ -3,115 +3,135 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_lexer_no_quote.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 14:59:24 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/13 15:29:53 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/15 15:31:24 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
 
-static char	*word_dup(const char *str, int start, int finish)
+static int  is_quote(char c)
 {
-	char	*word;
-	int		i;
-
-	i = 0;
-	word = malloc((finish - start + 1) * sizeof(char));
-	if (!word)
-		return (NULL);
-	while (start < finish)
-		word[i++] = str[start++];
-	word[i] = '\0';
-	return (word);
+	return (c == '\'' || c == '"');
 }
 
+static int count_chr_no_quote(const char *str)
+{
+	int count;
+	int i;
+	int in_quote;
+	char quote;
+	int in_word;
 
-static int process(char const *s, char **result, char c)
+	count = 0;
+	i = 0;
+	in_quote = 0;
+	quote = '\0';
+	in_word = 0;
+	while (str[i] != '\0')
+	{
+		
+        if (in_word == 0 && in_quote == 0 && !is_space(str[i]))
+        {
+            if (is_quote(str[i]))
+            {
+                quote = str[i];
+                in_quote = 1;
+            }
+            in_word = 1;
+            count++;
+        }
+        else if (in_word == 1 && in_quote == 0 && is_quote(str[i]))
+        {
+            quote = str[i];
+            in_quote = 1;
+            count++;
+        }
+        else if (in_word == 1 && in_quote == 1 && str[i] == quote)
+        {
+            quote = '\0';
+            in_quote = 0;
+            in_word = 0;
+        }
+		else if (in_word == 1 && in_quote == 0 && is_space(str[i]))
+		{
+			in_word = 0;
+		}
+        //printf("count = %d | str[%d] = %c : in_word = %d, in_quote = %d, quote = %c\n",count,i, str[i], in_word, in_quote, quote);
+
+		i++;
+	}
+	//printf("Nombre de mot %d\n", count);
+	return count;
+}
+
+static int process(char const *str, char **result, int nb_word)
 {
     int i = 0;
     int j = 0;
-    int words_count;
-    int word_start;
-    int word_end;
     int start = 0;
-    int in_quotes = 0;
-    char quote_char = '\0';
+    int in_quote = 0;
+    char quote = '\0';
+    int in_word = 0;
 
-    words_count = count_chr(s, c);
-    while (s[i])
-    {
-        if ((s[i] == '\'' || s[i] == '\"') && !in_quotes)
+	while (str[i] != '\0')
+	{
+        //printf("sdfsdffsddfs\n");
+        if (in_word == 0 && in_quote == 0 && !is_space(str[i]))
         {
-            in_quotes = 1;
-            quote_char = s[i];
-        }
-        else if ((s[i] == '\'' || s[i] == '\"') && in_quotes && s[i] == quote_char)
-        {
-            in_quotes = 0;
-        }
-        else if (!in_quotes && s[i] == c)
-        {
-            word_start = start;
-            word_end = i;
-
-            // Check if the string begins and ends with the same quote character
-            if ((s[word_start] == '\'' && s[word_end - 1] == '\'') || (s[word_start] == '\"' && s[word_end - 1] == '\"'))
+            if (is_quote(str[i]))
             {
-                word_start++;
-                word_end--;
+                quote = str[i];
+                in_quote = 1;
             }
-
-            if (j < words_count)
-            {
-                result[j++] = word_dup(s, word_start, word_end);
-                if (!result[j - 1])
-                {
-                    freemalloc(result, j - 1);
-                    return (-1);
-                }
-            }
-            while (s[i + 1] && s[i + 1] == ' ' && !in_quotes)
-                i++;
-            start = i + 1;
+            start = i;
+            in_word = 1;
         }
-        i++;
-    }
-    if (in_quotes == 1)
-        return (-2);
-    if (!in_quotes && j < words_count)
-    {
-        word_start = start;
-        word_end = i;
-
-        // Check if the string begins and ends with the same quote character
-        if ((s[word_start] == '\'' && s[word_end - 1] == '\'') || (s[word_start] == '\"' && s[word_end - 1] == '\"'))
+        else if (in_word == 1 && in_quote == 0 && is_quote(str[i]))
         {
-            word_start++;
-            word_end--;
+            quote = str[i];
+            in_quote = 1;
+            result[j++] = ft_substr(str, start, i - start);
+            start = i;
+            //printf("result[%d] = [%s]\n", j-1, result[j-1]);
         }
-
-        result[j++] = word_dup(s, word_start, word_end);
-        if (!result[j - 1])
+        else if (in_word == 1 && in_quote == 1 && str[i] == quote)
         {
-            freemalloc(result, j - 1);
-            return (-1);
+            quote = '\0';
+            in_quote = 0;
+            in_word = 0;
+            result[j++] = ft_substr(str, start+1, i - start -1);
+            //printf("result[%d] = [%s]\n", j-1, result[j-1]);
         }
-    }
+		else if (in_word == 1 && in_quote == 0 && is_space(str[i]))
+		{
+			in_word = 0;
+            result[j++] = ft_substr(str, start, i - start);
+            //printf("result[%d] = [%s]\n", j-1, result[j-1]);
+		}
+		i++;
+	}
+    //printf("nb_word = %d j = %d\n", nb_word, j);
+    if (j < nb_word)
+        result[j++] = ft_substr(str, start, i - start);
     result[j] = NULL;
     return (0);
 }
 
-char	**ft_split_lexer_no_quote(char const *s, char c)
+char	**ft_split_lexer_no_quote(char const *s)
 {
 	char	**result;
 	int     r;
+    int nb_word;
 
-	result = malloc((count_chr(s, c) + 1) * sizeof(char *));
+    nb_word = count_chr_no_quote(s);
+
+	result = malloc((nb_word + 1) * sizeof(char *));
 	if (!result)
 		return (NULL);
-	r = process(s, result, c);
+	r = process(s, result, nb_word);
 	if (r == -1)
 		return (NULL);
 	if (r == -2)
