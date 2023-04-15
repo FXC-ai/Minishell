@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 17:35:07 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/15 17:53:09 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/15 18:43:18 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,38 @@ void	ft_free_tabs(char **tab, int h)
 
 void	freemalloc(char **result, int j)
 {
+	if (result[j] == NULL)
+		return ;
 	while (j >= 0)
 	{
+		//printf("j = %d\n", j);
 		free(result[j]);
 		result[j] = NULL;
 		j--;
 	}
 	free(result);
+}
+
+
+void	free_struct(t_parsed_args **cmd_red_lst)
+{
+
+	//char **parsed_args;
+	int i;
+
+	i = 0;
+	while (cmd_red_lst[i])
+	{
+		print_tab("cmd_args",cmd_red_lst[i]->cmd_args);
+		print_tab("redirection",cmd_red_lst[i]->redirections);
+
+		freemalloc(cmd_red_lst[i]->cmd_args, size_tab(cmd_red_lst[i]->cmd_args));
+		freemalloc(cmd_red_lst[i]->redirections, size_tab(cmd_red_lst[i]->redirections));
+		free(cmd_red_lst[i]);
+		i++;
+	}
+	
+	free(cmd_red_lst);
 }
 
 int	size_tab(char **tab)

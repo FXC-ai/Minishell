@@ -111,6 +111,7 @@ void	freemalloc(char **result, int j);
 char	*ft_strndup(char *str, size_t n);
 void	print_command_not_found(char *str);
 int		is_chevron (char c);
+void	free_struct(t_parsed_args **cmd_red_lst);
 
 // IS_BUILTINS.C
 int		is_builtins(char *str);

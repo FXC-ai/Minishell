@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 17:00:40 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/15 17:43:06 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/15 18:32:16 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -270,6 +270,9 @@ t_parsed_args **init_parsed_args (char **tab_cmds)
 	return (list_struct);
 }
 
+
+
+
 int lexer(char *str, char *env[])
 {
 	char	**result;
@@ -277,16 +280,13 @@ int lexer(char *str, char *env[])
 	int     i;
 	int		*in_out_fd;
 	int		status;
+	t_parsed_args **cmd_red_lst;
 
 	int		r;
 
 	in_out_fd = malloc(2 * sizeof(int));
-
-	//int		nbr_cmds;
-	//int		status;
-	//int		r;
-	//char **parsed_args;
-	t_parsed_args **cmd_red_lst;
+	if (in_out_fd == NULL)
+		return 0;
 
     i = 0;
 
@@ -302,24 +302,11 @@ int lexer(char *str, char *env[])
     }
 
 
-	//normalize_with_space(result);
-
-	//add_space_chevron(result, env);
-
 	parse_dollar(result, env);
-
-	//printf("result = %s");
-
-	//print_tab(result);
 
 	cmd_red_lst = init_parsed_args(result);
 
 	r = is_builtins(cmd_red_lst[0]->cmd_args[0]);
-	//printf("r = %d\n", r);
-
-
-
-
 
 
 	if (cmd_red_lst[1] == NULL)
@@ -329,7 +316,9 @@ int lexer(char *str, char *env[])
 
 		if (process_redirection(cmd_red_lst[0]->redirections, &in_out_fd, env) == -1)
 		{
-			errno = global_sig.ms_errno;
+			freemalloc(result, size_tab(result));
+			free(in_out_fd);
+			free_struct(cmd_red_lst);
 			return -1;
 		}
 
@@ -368,68 +357,22 @@ int lexer(char *str, char *env[])
 				{
 					global_sig.ms_errno = WEXITSTATUS(status);
 				}
+				
 			}
-		//printf("infd = %d et outfd = %d\n", in_out_fd[0], in_out_fd[1]);+
 		}
 		
 	}
-	else
+	/*else
 	{
 		i = 0;
 		while (cmd_red_lst[i] != NULL)
 		{
 			process_redirection(cmd_red_lst[i]->redirections, &in_out_fd, env);
-			//printf("infd = %d et outfd = %d\n", in_out_fd[0], in_out_fd[1]);
 			i++;
 		}
-	}
-	
-
-
-
-
-
-	/*
-	parsed_args = ft_split_lexer_no_quote(result[0], ' ');
-	
-	r = is_builtins(parsed_args[0]);
-	if (r != 0 && result[1] == NULL) // Certain builtin doivent etre executer dans le parent et si il y a des pipes ils ne sont pas exec
-	{
-		if (r == BUILTIN_UNSET || r == BUILTIN_CD || r == BUILTIN_EXIT || r == BUILTIN_EXPORT)
-		{
-			execute_command(parsed_args, 0, 1, env);
-			free(parsed_args);
-			free(result);
-			return (0);
-		}
-	}
-
-
-    if (result[1] == NULL)
-	{
-		global_sig.pid = fork();
-		if (global_sig.pid == 0)
-		{
-			process_redirection(result[0], env);
-			exit(0);
-		}
-		else
-		{
-			waitpid(global_sig.pid, &status, 0);
-			//ft_putstr_fd("waitpid\n", 2);
-			if (WIFEXITED(status))
-			{
-				global_sig.ms_errno = WEXITSTATUS(status);
-
-			}
-		}
-		return (0);
-	}
-	else
-	{
-		nbr_cmds = size_tab(result);
-		ms_pipe2(result, nbr_cmds, env);
-	}
-	*/
+	}*/
+	freemalloc(result, size_tab(result));
+	free(in_out_fd);
+	free_struct(cmd_red_lst);
 	return (1);
 }
