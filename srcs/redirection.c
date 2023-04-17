@@ -6,7 +6,7 @@
 /*   By: victorgiordani01 <victorgiordani01@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 17:05:42 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/15 22:39:18 by victorgiord      ###   ########.fr       */
+/*   Updated: 2023/04/16 23:15:31 by victorgiord      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ void	execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
 		if (cmd == NULL)
 			print_command_not_found(parsed_args[0]);
 		execve(normalize_cmd(parsed_args[0], env), parsed_args, env);
+		perror(parsed_args[0]);
+		exit(errno);
 	}
 
 }
@@ -70,7 +72,6 @@ int process_delimiter(char *del)
 		buffer[rdd] = '\0';
 		if (ft_strcmp(buffer, "\4\n") == 0)
 		{
-			ft_putstr_fd("DEDANS\n", 2);
 			close(fd);
 			unlink("TMPDOC");
 			return (-1);
@@ -90,24 +91,21 @@ int process_delimiter(char *del)
 
 int		process_redirection(char **redirections, int **in_out_fd, char *env[])
 {
-	(void) env;
+	char	*redirection;
 
+	(void) env;
 	(*in_out_fd)[0] = STDIN_FILENO;
 	(*in_out_fd)[1] = STDOUT_FILENO;
-
-	char *redirection;
-
 	redirection = *redirections;
 	while (*redirections)
 	{
-
 		if (ft_strncmp(redirection, ">>", 2) == 0)
 		{
 			redirection++;
 			redirection++;
 			while (is_space(*redirection))
 			{
-				redirections++;
+				redirection++;
 			}
 
 			(*in_out_fd)[1] = open(redirection, O_WRONLY | O_CREAT | O_APPEND, 0777);
@@ -167,9 +165,7 @@ int		process_redirection(char **redirections, int **in_out_fd, char *env[])
 				return -1;
 			}
 		}
-		
 		redirections++;
-
 	}
 	
 	return (1);

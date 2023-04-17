@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_lexer_no_quote.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: victorgiordani01 <victorgiordani01@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 14:59:24 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/15 15:31:24 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/16 12:17:31 by victorgiord      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ static int process(char const *str, char **result, int nb_word)
     return (0);
 }
 
-char	**ft_split_lexer_no_quote(char const *s)
+char	**ft_split_lexer_no_quote(char *s)
 {
 	char	**result;
 	int     r;
@@ -139,6 +139,7 @@ char	**ft_split_lexer_no_quote(char const *s)
 		printf("Please close \" or \'\n");
 		return (NULL);
 	}
-		
+	
+	free(s);
 	return (result);
 }

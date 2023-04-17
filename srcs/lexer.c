@@ -6,7 +6,7 @@
 /*   By: victorgiordani01 <victorgiordani01@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 17:00:40 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/15 23:28:10 by victorgiord      ###   ########.fr       */
+/*   Updated: 2023/04/16 23:20:08 by victorgiord      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,6 @@ static int find_lenght_command(char *cmd)
 
 char **separate_redirections (char *tab_cmds)
 {
-
 	int i;
 	int j;
 	int lenght;
@@ -143,7 +142,6 @@ char **separate_redirections (char *tab_cmds)
 	j = 0;
 	nbr_chev = is_valid_chevron(tab_cmds, '>');
 	nbr_chev += is_valid_chevron(tab_cmds, '<');
-	//printf("nbr chev %d\n", nbr_chev);
 	result = malloc(sizeof(char *) * (nbr_chev + 1));
 	if (result == NULL)
 	{
@@ -216,7 +214,6 @@ char **separate_command (char *tab_cmds)
 		if (length != 0)
 		{
 			result[j] = ft_substr(tab_cmds, i, length);
-			printf("result[%d] = %p\n", j, &(result[j]));
 			j++;
 		}
 		i+=length;
@@ -254,13 +251,12 @@ t_parsed_args **init_parsed_args (char **tab_cmds)
 		if (current_struct == NULL)
 			return (NULL);
 		tmp = separate_command(tab_cmds[i]);
-		current_struct->cmd_args = ft_split_lexer_no_quote(tmp[0]);
+		current_struct->cmd_args = ft_split_lexer_no_quote(concatenate_strings_with_spaces(tmp));
 		freemalloc(tmp, size_tab(tmp));
 		current_struct->redirections = separate_redirections(tab_cmds[i]);
 		//print_tab("redirections", current_struct->redirections);
 		//print_tab(" command ",current_struct->cmd_args);
 		list_struct[i] = current_struct;
-
 		i++;
 	}
 	list_struct[i] = NULL;
@@ -273,10 +269,7 @@ int lexer(char *str, char *env[])
 	char	c = '|';
 	int     i;
 	int		*in_out_fd;
-	int		status;
 	t_parsed_args **cmd_red_lst;
-
-	int		r;
 
 	in_out_fd = malloc(2 * sizeof(int));
 	if (in_out_fd == NULL)
@@ -297,77 +290,22 @@ int lexer(char *str, char *env[])
 	parse_dollar(result, env);
 
 	cmd_red_lst = init_parsed_args(result);
+	freemalloc(result, size_tab(result));
 
-
-	r = is_builtins(cmd_red_lst[0]->cmd_args[0]);
-
-
+	in_out_fd[0] = STDIN_FILENO;
+	in_out_fd[1] = STDOUT_FILENO;
 
 	if (cmd_red_lst[1] == NULL)
 	{
-		in_out_fd[0] = STDIN_FILENO;
-		in_out_fd[1] = STDOUT_FILENO;
-
-		if (process_redirection(cmd_red_lst[0]->redirections, &in_out_fd, env) == -1)
-		{
-			freemalloc(result, size_tab(result));
-			free(in_out_fd);
-			free_struct(cmd_red_lst);
-			return -1;
-		}
-		print_tab("redirections", cmd_red_lst[0]->redirections);
-	print_tab(" command ",  cmd_red_lst[0]->cmd_args);
-
-		if (r == BUILTIN_CD || r == BUILTIN_EXPORT || r == BUILTIN_UNSET || r == BUILTIN_EXIT)
-		{
-			execute_command(cmd_red_lst[0]->cmd_args, in_out_fd[0], in_out_fd[1], env);
-			if (in_out_fd[0] != STDIN_FILENO)
-			{
-				close(in_out_fd[0]);
-			}
-			if (in_out_fd[1] != STDOUT_FILENO)
-			{
-				close(in_out_fd[1]);
-			}
-		}
-		else
-		{
-			global_sig.pid = fork();
-			if (global_sig.pid == 0)
-			{
-				execute_command(cmd_red_lst[0]->cmd_args, in_out_fd[0], in_out_fd[1], env);
-				if (in_out_fd[0] != STDIN_FILENO)
-				{
-					close(in_out_fd[0]);
-				}
-				if (in_out_fd[1] != STDOUT_FILENO)
-				{
-					close(in_out_fd[1]);
-				}
-				exit(SUCCESS);
-			}
-			else
-			{
-				waitpid(global_sig.pid, &status, 0);
-				if (WIFEXITED(status))
-				{
-					global_sig.ms_errno = WEXITSTATUS(status);
-				}
-				
-			}
-		}
-		
+		if (process_single_command(cmd_red_lst, in_out_fd, env) == -1)
+			return (-1);	
 	}
-	/*else
+	else
 	{
-		i = 0;
-		while (cmd_red_lst[i] != NULL)
-		{
-			process_redirection(cmd_red_lst[i]->redirections, &in_out_fd, env);
-			i++;
-		}
-	}*/
-	freemalloc(result, size_tab(result));
+		if (process_multiple_commands(cmd_red_lst, env) == -1)
+			return (-1);
+		ft_putstr_fd("END MULTIPLE\n", 2);
+	}
 	free(in_out_fd);
 	free_struct(cmd_red_lst);
 	return (1);

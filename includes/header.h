@@ -94,11 +94,10 @@ char	**ft_split_lexer(char const *str, char c);
 int		count_chr(const char *str, char c);
 
 //FT_LEXER_NO_QUOTE.C
-char	**ft_split_lexer_no_quote(char const *str);
+char	**ft_split_lexer_no_quote(char *str);
 
 //REDIRECTION.C
 void	execute_command(char **parsed_args, int in_fd, int out_fd, char *env[]);
-void	execute_command_2(char **parsed_args, int in_fd, int out_fd, char *env[]);
 int 	process_delimiter(char *del);
 int		process_redirection(char **redirections, int **in_out_fd, char *env[]);
 
@@ -112,6 +111,7 @@ char	*ft_strndup(char *str, size_t n);
 void	print_command_not_found(char *str);
 int		is_chevron (char c);
 void	free_struct(t_parsed_args **cmd_red_lst);
+char	*concatenate_strings_with_spaces(char **strings);
 
 // IS_BUILTINS.C
 int		is_builtins(char *str);
@@ -128,8 +128,9 @@ char	*normalize_cmd(char* str, char *env[]);
 //void	execution (char *input_cmd, char *env[]);
 //void	ms_pipe2(char **tab_cmds, int nbr_cmds, char *env[]);
 
-
-
+//PROCESS_COMMANDS.C
+int process_multiple_commands(t_parsed_args **cmd_red_lst, char *env[]);
+int	process_single_command(t_parsed_args **cmd_red_lst, int *in_out_fd, char *env[]);
 
 //BUILTINS
 void	echo_process(char **cmd);

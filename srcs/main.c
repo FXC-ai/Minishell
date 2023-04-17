@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: victorgiordani01 <victorgiordani01@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 11:39:22 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/15 15:38:32 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/16 23:32:58 by victorgiord      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	wait_for_input(char *env[])
 		if (line == NULL)
 		{
 			write(1, "exit\n", 5);
-			break ;
+			//break ;
 		}
 		if (check_entry(line))
 		{
@@ -103,5 +103,6 @@ int	main(int ac, char **argv, char *env[])
 	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &tm) == -1)
 		return (-1);
 	wait_for_input(env);
+	ft_putstr_fd("END MAIN\n", 2);
 	return (0);
 }
