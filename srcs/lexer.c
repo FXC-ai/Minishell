@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 17:00:40 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/18 11:26:28 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/18 15:35:27 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,8 +254,8 @@ t_parsed_args **init_parsed_args (char **tab_cmds)
 		current_struct->cmd_args = ft_split_lexer_no_quote(concatenate_strings_with_spaces(tmp));
 		freemalloc(tmp, size_tab(tmp));
 		current_struct->redirections = separate_redirections(tab_cmds[i]);
-		print_tab("redirections", current_struct->redirections);
-		print_tab(" command ",current_struct->cmd_args);
+		//print_tab("redirections", current_struct->redirections);
+		//print_tab(" command ",current_struct->cmd_args);
 		list_struct[i] = current_struct;
 		i++;
 	}
@@ -304,7 +304,6 @@ int lexer(char *str, char *env[])
 	{
 		if (process_multiple_commands(cmd_red_lst, env) == -1)
 			return (-1);
-		ft_putstr_fd("END MULTIPLE\n", 2);
 	}
 	free(in_out_fd);
 	free_struct(cmd_red_lst);

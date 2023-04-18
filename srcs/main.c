@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 11:39:22 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/18 11:27:25 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/18 15:35:35 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,5 @@ int	main(int ac, char **argv, char *env[])
 	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &tm) == -1)
 		return (-1);
 	wait_for_input(env);
-	ft_putstr_fd("END MAIN\n", 2);
 	return (0);
 }

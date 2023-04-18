@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 23:39:04 by victorgiord       #+#    #+#             */
-/*   Updated: 2023/04/18 15:30:56 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/18 15:48:47 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ void execute_parent_process(int *in_out_fd, int *status)
 	(void) in_out_fd;
     ft_putstr_fd("End pid\n", 2);
 }
-
-
 
 void close_pipes(int *pipe_fd)
 {
@@ -62,12 +60,8 @@ void print_les_fd (int pipe_fd[], char *name)
 void execute_first_command (char **cmd, int *in_out_fd, int pipe_fd[], char *env[])
 {
 	//int status;
-	(void) in_out_fd;
 
-
-	print_les_fd(pipe_fd, "execute_first_command");
-
-
+	//print_les_fd(pipe_fd, "execute_first_command");
 	global_sig.pid = fork();
 	if (global_sig.pid == 0)
 	{
@@ -78,21 +72,12 @@ void execute_first_command (char **cmd, int *in_out_fd, int pipe_fd[], char *env
 		exit (0);
 
 	}
-	/*else
-	{
-		execute_parent_process(in_out_fd, &status);
-		
-	}*/
+
 }
 
 void execute_middle_command(char **cmd, int *in_out_fd, int pipe_fd_in[], int pipe_fd_out[],char *env[])
 {
 
-	print_les_fd(pipe_fd_in, "execute_middle_command : pipe_fd_in");
-	print_les_fd(pipe_fd_out, "execute_middle_command : pipe_fd_out");
-
-
-	(void) in_out_fd;
     global_sig.pid = fork();
     if (global_sig.pid == 0)
     {
@@ -110,12 +95,7 @@ void execute_middle_command(char **cmd, int *in_out_fd, int pipe_fd_in[], int pi
 
 void execute_last_command(char **cmd, int *in_out_fd, int pipe_fd_in[], char *env[])
 {
-    //int status;
-
-	print_les_fd(pipe_fd_in, "execute_last_command : pipe_fd_in");
-
-
-	(void) in_out_fd;
+	//print_les_fd(pipe_fd_in, "execute_last_command : pipe_fd_in");
     global_sig.pid = fork();
     if (global_sig.pid == 0)
     {
@@ -125,10 +105,6 @@ void execute_last_command(char **cmd, int *in_out_fd, int pipe_fd_in[], char *en
         execute_command(cmd, in_out_fd[0], in_out_fd[1], env);
 		exit (0);
     }
-//     else
-//     {
-//         execute_parent_process(in_out_fd, &status);
-//     }
 }
 
 int process_multiple_commands(t_parsed_args **cmd_red_lst, char *env[])
@@ -140,28 +116,16 @@ int process_multiple_commands(t_parsed_args **cmd_red_lst, char *env[])
 	int nbr_cmd;
 	int status;
 
-	//pipe_fd1[0] = -1;
-	// pipe_fd1[1] = -1;
-	// pipe_fd2[0] = -1;
-	// pipe_fd2[1] = -1;
-
 	nbr_cmd = size_struct(cmd_red_lst);
-	printf("nbr = %d\n", nbr_cmd);
-
     in_out_fd = malloc(2 * sizeof(int));
+	if (in_out_fd == NULL)
+	{
+		return -1;
+	}
     in_out_fd[0] = STDIN_FILENO;
     in_out_fd[1] = STDOUT_FILENO;
-	//(void) pipe_fd;
-
-	//pipe(pipe_fd1);
-
-	//print_les_fd(pipe_fd1, "TEST");
-
     while (cmd_red_lst[i])
     {
-	
-		printf("I = %d\n", i);
-
         if (process_redirection(cmd_red_lst[i]->redirections, &in_out_fd, env) == -1)
         {
             free(in_out_fd);
@@ -176,8 +140,6 @@ int process_multiple_commands(t_parsed_args **cmd_red_lst, char *env[])
 					perror("pipe");
 					exit(EXIT_FAILURE);
 				}
-				
-				//print_les_fd(pipe_fd1, "pipe_creation");
 			}
 			else
 			{
@@ -187,27 +149,16 @@ int process_multiple_commands(t_parsed_args **cmd_red_lst, char *env[])
 					exit(EXIT_FAILURE);
 				}
 			}
-
 			if (i == 0)
 			{
-				//printf();
 				execute_first_command(cmd_red_lst[i]->cmd_args, in_out_fd, pipe_fd1, env);
 			}
 			else if (i == nbr_cmd - 1) //LAST
 			{
-
 				if (i % 2 == 0)
-				{
-					//close(pipe_fd1[0]);
-					//close(pipe_fd1[1]);
 					execute_last_command(cmd_red_lst[i]->cmd_args, in_out_fd, pipe_fd2, env);  
-				}
 				else if (i % 2 == 1)
-				{
-					//close(pipe_fd2[0]);
-					//close(pipe_fd2[1]);					
 					execute_last_command(cmd_red_lst[i]->cmd_args, in_out_fd, pipe_fd1, env);
-				}
 			}
 			else
 			{
@@ -216,7 +167,6 @@ int process_multiple_commands(t_parsed_args **cmd_red_lst, char *env[])
 					execute_middle_command(cmd_red_lst[i]->cmd_args, in_out_fd, pipe_fd2, pipe_fd1, env);
 					close(pipe_fd2[0]);
 					close(pipe_fd2[1]);
-					
 				}
 				else if (i % 2 == 1)
 				{
@@ -224,35 +174,25 @@ int process_multiple_commands(t_parsed_args **cmd_red_lst, char *env[])
 					close(pipe_fd1[0]);
 					close(pipe_fd1[1]);
 				}
-
 			}
-
-
-			
-
 		}
 		i++;
 	}
-	
-
 	close(pipe_fd1[0]);
 	close(pipe_fd1[1]);
 	close(pipe_fd2[0]);
 	close(pipe_fd2[1]);
 	
 	i = 0;
-	for (i = 0; i < nbr_cmd; i++)
+	while (i < nbr_cmd)
 	{
-		printf("wait %i\n", i);
 		waitpid(-1, &status, 0);
 		if (WIFEXITED(status))
         {
             global_sig.ms_errno = WEXITSTATUS(status);
         }
+		i++;
 	}
-	
-
-
     free(in_out_fd);
 	return (1);
 }
