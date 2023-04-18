@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 17:00:40 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/18 21:46:45 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/18 23:07:35 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -264,7 +264,7 @@ t_parsed_args **init_parsed_args (char **tab_cmds)
 }
 
 
-int	check_redirections (char *str, char type_chev)
+char	check_redirections (char *str, char type_chev)
 {
 	char *str_from_chev;
 
@@ -272,44 +272,57 @@ int	check_redirections (char *str, char type_chev)
 	if (str_from_chev != NULL)
 	{
 		str_from_chev++;
+		if (*str_from_chev == type_chev)
+			str_from_chev++;
 		while (is_space(*str_from_chev) == 1)
 			str_from_chev++;
-		if (is_chevron(*str_from_chev) == 1)
+		if (is_chevron(*str_from_chev) == 1 || *str_from_chev == '\0')
 		{
 			global_sig.ms_errno = 258;
-			return (0);
-		}
-		else if (*str_from_chev == '\0')
-		{
-			global_sig.ms_errno = 258;
-			return (-1);
+			return *str_from_chev;
 		}
 	}
-	return (1);
+	return 1;
+}
+
+char *error_redirection_msg (char chr_err)
+{
+	if (chr_err == '>')
+		return ft_strdup("minishell: syntax error near unexpected token `>'\n");
+	else if (chr_err == '<')
+		return ft_strdup("minishell: syntax error near unexpected token `<'\n");
+	return ft_strdup("minishell: syntax error near unexpected token `newline'\n");
 }
 
 int check_redirections_process (char **tab_cmds)
 {
 	int i;
 	int result;
+	char *error_msg;
 
 	result = 0;
 	i = 0;
 	while (tab_cmds[i] != NULL)
 	{
-		if (check_redirections(tab_cmds[i], '>') == 0)
+		if (check_redirections(tab_cmds[i], '>') != 1)
 		{
-			ft_putstr_fd("minishell: syntax error near unexpected token `>'\n", 2);
+			error_msg = error_redirection_msg(check_redirections(tab_cmds[i], '>'));
+			ft_putstr_fd(error_msg, 2);
+			free(error_msg);
 			return (0);
 		}
 		else if (check_redirections(tab_cmds[i], '<') == 0)
 		{
-			ft_putstr_fd("minishell: syntax error near unexpected token `<'\n", 2);
+			error_msg = error_redirection_msg(check_redirections(tab_cmds[i], '<'));
+			ft_putstr_fd(error_msg, 2);
+			free(error_msg);
 			return (0);
 		}
-		else if (check_redirections(tab_cmds[i], '<') == 0)
+		else if (check_redirections(tab_cmds[i], '<') == '\0' || check_redirections(tab_cmds[i], '>') == '\0')
 		{
-			ft_putstr_fd("minishell: syntax error near unexpected token `<'\n", 2);
+			error_msg = error_redirection_msg('\0');
+			ft_putstr_fd(error_msg, 2);
+			free(error_msg);
 			return (0);
 		}
 		i++;
@@ -336,6 +349,7 @@ int lexer(char *str, char *env[])
 	//print_tab("ft_split_lexer", result);
 	if (check_redirections_process(result) == 0)
 	{
+		freemalloc(result, size_tab(result));
 		return (1);
 	}
 
@@ -344,7 +358,6 @@ int lexer(char *str, char *env[])
     while (result[i])
     {   
         cut_end_space(&(result[i]));
-
         i++;
     }
 
