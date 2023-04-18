@@ -110,6 +110,13 @@ int main(int argc, char const *argv[])
 {
 
     const char *str = "echo \"p\"p";
+	char *str2 = "Hello";
+	char str3[] = "Hello\0";
+
+	//str2[2] = '1';
+	str3[2] = '1';
+	printf("%s\n", str2);
+	printf("%s\n", str3);
 
     int count = count_chr_no_quote(str);
 

@@ -1,0 +1,12 @@
+Bazar
+Makefile
+README.md
+ToDoList.txt
+a
+b
+includes
+libft
+minishell
+run.sh
+srcs
+test.c

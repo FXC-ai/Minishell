@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: victorgiordani01 <victorgiordani01@stud    +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 17:00:40 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/16 23:20:08 by victorgiord      ###   ########.fr       */
+/*   Updated: 2023/04/18 11:26:28 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,8 +254,8 @@ t_parsed_args **init_parsed_args (char **tab_cmds)
 		current_struct->cmd_args = ft_split_lexer_no_quote(concatenate_strings_with_spaces(tmp));
 		freemalloc(tmp, size_tab(tmp));
 		current_struct->redirections = separate_redirections(tab_cmds[i]);
-		//print_tab("redirections", current_struct->redirections);
-		//print_tab(" command ",current_struct->cmd_args);
+		print_tab("redirections", current_struct->redirections);
+		print_tab(" command ",current_struct->cmd_args);
 		list_struct[i] = current_struct;
 		i++;
 	}

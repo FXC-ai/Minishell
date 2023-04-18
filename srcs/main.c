@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: victorgiordani01 <victorgiordani01@stud    +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 11:39:22 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/16 23:32:58 by victorgiord      ###   ########.fr       */
+/*   Updated: 2023/04/18 11:27:25 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	wait_for_input(char *env[])
 		if (line == NULL)
 		{
 			write(1, "exit\n", 5);
-			//break ;
+			break ;
 		}
 		if (check_entry(line))
 		{

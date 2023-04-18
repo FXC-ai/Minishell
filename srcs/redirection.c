@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: victorgiordani01 <victorgiordani01@stud    +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 17:05:42 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/17 22:20:37 by victorgiord      ###   ########.fr       */
+/*   Updated: 2023/04/18 11:52:38 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ int process_delimiter(char *del)
 		{
 			close(fd);
 			unlink("TMPDOC");
+			free(del_n);
 			return (-1);
 		}
 		if (ft_strcmp(del_n, buffer) == 0)
@@ -85,6 +86,7 @@ int process_delimiter(char *del)
 	close(fd);
 	fd = open("TMPDOC", O_RDONLY);
 	unlink("TMPDOC");
+	free(del_n);
 	return fd;
 }
 
@@ -95,9 +97,10 @@ int		process_redirection(char **redirections, int **in_out_fd, char *env[])
 	(void) env;
 	(*in_out_fd)[0] = STDIN_FILENO;
 	(*in_out_fd)[1] = STDOUT_FILENO;
-	redirection = *redirections;
+	
 	while (*redirections)
 	{
+		redirection = *redirections;
 		if (ft_strncmp(redirection, ">>", 2) == 0)
 		{
 			redirection++;
@@ -117,6 +120,7 @@ int		process_redirection(char **redirections, int **in_out_fd, char *env[])
 		}
 		else if (ft_strncmp(redirection, ">", 1) == 0)
 		{
+			//printf("if de redirection = %s\n", redirection);
 			redirection++;
 			while (is_space(*redirection))
 			{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: victorgiordani01 <victorgiordani01@stud    +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 23:39:04 by victorgiord       #+#    #+#             */
-/*   Updated: 2023/04/16 23:31:57 by victorgiord      ###   ########.fr       */
+/*   Updated: 2023/04/18 15:25:04 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,7 @@ void execute_parent_process(int *in_out_fd, int *status)
     {
         global_sig.ms_errno = WEXITSTATUS(*status);
     }
-    if (in_out_fd[1] != STDIN_FILENO && in_out_fd[1] != STDOUT_FILENO)
-    {
-        close(in_out_fd[1]); // close write end of pipe
-    }
+	(void) in_out_fd;
     ft_putstr_fd("End pid\n", 2);
 }
 
@@ -40,25 +37,131 @@ void redirect_pipe_fds(int *in_out_fd, int *pipe_fd, int cmd_index)
     if (pipe_fd[1] != STDOUT_FILENO) in_out_fd[1] = pipe_fd[1];
 }
 
+int	size_struct(t_parsed_args **s)
+{
+	int	i;
+	if (s == NULL || *s == NULL)
+		return (0);
+	i = 0;
+	while (s[i])
+	{
+		i++;
+	}
+	return (i);
+}
+
+
+void print_les_fd (int pipe_fd[], char *name)
+{
+	printf("name = %s\n", name);
+	printf("pipe_fd[1] = %d\n", pipe_fd[0]);
+	printf("pipe_fd[2] = %d\n", pipe_fd[1]);
+}
+
+
+void execute_first_command (char **cmd, int *in_out_fd, int pipe_fd[], char *env[])
+{
+	//int status;
+	(void) in_out_fd;
+
+
+	print_les_fd(pipe_fd, "execute_first_command");
+
+
+	global_sig.pid = fork();
+	if (global_sig.pid == 0)
+	{
+		dup2(pipe_fd[1], STDOUT_FILENO);
+		close(pipe_fd[0]); // Bout en lecture
+		close(pipe_fd[1]); // bout en ecriture
+		execute_command(cmd, 0, 1, env);
+		exit (0);
+
+	}
+	/*else
+	{
+		execute_parent_process(in_out_fd, &status);
+		
+	}*/
+}
+
+void execute_middle_command(char **cmd, int *in_out_fd, int pipe_fd_in[], int pipe_fd_out[],char *env[])
+{
+
+	print_les_fd(pipe_fd_in, "execute_middle_command : pipe_fd_in");
+	print_les_fd(pipe_fd_out, "execute_middle_command : pipe_fd_out");
+
+
+	(void) in_out_fd;
+    global_sig.pid = fork();
+    if (global_sig.pid == 0)
+    {
+        dup2(pipe_fd_in[0], STDIN_FILENO);
+        dup2(pipe_fd_out[1], STDOUT_FILENO);
+        close(pipe_fd_in[0]);
+        close(pipe_fd_out[1]);
+		close(pipe_fd_in[1]);
+		close(pipe_fd_out[0]);
+        execute_command(cmd, 0, 1, env);
+		exit (0);
+
+    }
+}
+
+void execute_last_command(char **cmd, int *in_out_fd, int pipe_fd_in[], char *env[])
+{
+    //int status;
+
+	print_les_fd(pipe_fd_in, "execute_last_command : pipe_fd_in");
+
+
+	(void) in_out_fd;
+    global_sig.pid = fork();
+    if (global_sig.pid == 0)
+    {
+        dup2(pipe_fd_in[0], STDIN_FILENO);
+		close(pipe_fd_in[1]);
+        close(pipe_fd_in[0]);
+        execute_command(cmd, 0, 1, env);
+		exit (0);
+    }
+//     else
+//     {
+//         execute_parent_process(in_out_fd, &status);
+//     }
+}
+
 int process_multiple_commands(t_parsed_args **cmd_red_lst, char *env[])
 {
     int *in_out_fd;
-    int pipe_fd[2];
-    int status;
+    int pipe_fd1[2];
+	int pipe_fd2[2];
     int i = 0;
+	int nbr_cmd;
+	int status;
+
+	//pipe_fd1[0] = -1;
+	// pipe_fd1[1] = -1;
+	// pipe_fd2[0] = -1;
+	// pipe_fd2[1] = -1;
+
+	nbr_cmd = size_struct(cmd_red_lst);
+	printf("nbr = %d\n", nbr_cmd);
 
     in_out_fd = malloc(2 * sizeof(int));
     in_out_fd[0] = STDIN_FILENO;
     in_out_fd[1] = STDOUT_FILENO;
-	(void) pipe_fd;
+	//(void) pipe_fd;
+
+	//pipe(pipe_fd1);
+
+	//print_les_fd(pipe_fd1, "TEST");
+
     while (cmd_red_lst[i])
     {
+	
 		printf("I = %d\n", i);
-		if (pipe(pipe_fd) == -1)
-		{
-			perror("pipe");
-			exit(EXIT_FAILURE);
-		}
+
         if (process_redirection(cmd_red_lst[i]->redirections, &in_out_fd, env) == -1)
         {
             free(in_out_fd);
@@ -66,30 +169,90 @@ int process_multiple_commands(t_parsed_args **cmd_red_lst, char *env[])
         }
 		else
 		{
-			global_sig.pid = fork();
-			if (global_sig.pid == 0)
+			if (i % 2 == 0)
 			{
-				close(pipe_fd[0]);
-                close(in_out_fd[1]);
-                execute_command(cmd_red_lst[i]->cmd_args, in_out_fd[0], pipe_fd[1], env);
-                close(pipe_fd[1]);
-                close(in_out_fd[0]);
-                exit(EXIT_SUCCESS);
+				if (pipe(pipe_fd1) == -1)
+				{
+					perror("pipe");
+					exit(EXIT_FAILURE);
+				}
+				
+				//print_les_fd(pipe_fd1, "pipe_creation");
 			}
 			else
 			{
-				close(pipe_fd[1]);
-                close(in_out_fd[0]);
-                in_out_fd[0] = pipe_fd[0];
-                execute_parent_process(in_out_fd, &status);
-                close(pipe_fd[0]);
-				if (in_out_fd[1] != STDOUT_FILENO)
-                	close(in_out_fd[1]);
+				if (pipe(pipe_fd2) == -1)
+				{
+					perror("pipe");
+					exit(EXIT_FAILURE);
+				}
 			}
-		
+
+			if (i == 0)
+			{
+				//printf();
+				execute_first_command(cmd_red_lst[i]->cmd_args, in_out_fd, pipe_fd1, env);
+			}
+			else if (i == nbr_cmd - 1) //LAST
+			{
+
+				if (i % 2 == 0)
+				{
+					//close(pipe_fd1[0]);
+					//close(pipe_fd1[1]);
+					execute_last_command(cmd_red_lst[i]->cmd_args, in_out_fd, pipe_fd2, env);  
+				}
+				else if (i % 2 == 1)
+				{
+					//close(pipe_fd2[0]);
+					//close(pipe_fd2[1]);					
+					execute_last_command(cmd_red_lst[i]->cmd_args, in_out_fd, pipe_fd1, env);
+				}
+			}
+			else
+			{
+				if (i % 2 == 0)
+				{
+					execute_middle_command(cmd_red_lst[i]->cmd_args, in_out_fd, pipe_fd2, pipe_fd1, env);
+					close(pipe_fd2[0]);
+					close(pipe_fd2[1]);
+					
+				}
+				else if (i % 2 == 1)
+				{
+					execute_middle_command(cmd_red_lst[i]->cmd_args, in_out_fd, pipe_fd1, pipe_fd2, env);
+					close(pipe_fd1[0]);
+					close(pipe_fd1[1]);
+				}
+
+			}
+
+
+			
+
 		}
 		i++;
 	}
+	
+
+	close(pipe_fd1[0]);
+	close(pipe_fd1[1]);
+	close(pipe_fd2[0]);
+	close(pipe_fd2[1]);
+	
+	i = 0;
+	for (i = 0; i < nbr_cmd; i++)
+	{
+		printf("wait %i\n", i);
+		waitpid(-1, &status, 0);
+		if (WIFEXITED(status))
+        {
+            global_sig.ms_errno = WEXITSTATUS(status);
+        }
+	}
+	
+
+
     free(in_out_fd);
 	return (1);
 }
