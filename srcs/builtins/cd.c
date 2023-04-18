@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 14:14:50 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/04 19:12:23 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/18 16:06:41 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,7 @@ void cd_process(char **parsed_args, char *env[])
         {
             if (getcwd(cwd, sizeof(cwd)) != NULL)
             {
-
-
                 ligne = ft_strjoin("PWD=", cwd);
-
                 add_to_env(ligne, cwd, env);
                 free(ligne);
             }

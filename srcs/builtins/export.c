@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 14:32:31 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/04 19:12:13 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/18 16:08:54 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void add_to_env(char *ligne, char *value, char *env[])
 		i++;
 	env[i] = result;
 	env[i + 1] = NULL;
+	freemalloc(s_result, size_tab(s_result));
 }
 
 void export_process(char **current_command, char *env[])
