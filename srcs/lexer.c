@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 17:00:40 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/18 23:07:35 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/18 23:12:18 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -349,6 +349,7 @@ int lexer(char *str, char *env[])
 	//print_tab("ft_split_lexer", result);
 	if (check_redirections_process(result) == 0)
 	{
+		free(in_out_fd);
 		freemalloc(result, size_tab(result));
 		return (1);
 	}
