@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:58:03 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/15 14:06:04 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/18 19:25:15 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,6 @@ static int process(char const *s, char **result, char c)
 	words_count = count_chr(s, c);
 	while (s[i])
 	{
-		
-		
 		if ((s[i] == '\'' || s[i] == '\"') && !in_quotes)
 		{
 			in_quotes = 1;
@@ -140,7 +138,6 @@ char	**ft_split_lexer(char const *s, char c)
 		printf("Please close \" or \'\n");
 		return (NULL);
 	}
-		
 	return (result);
 }
 

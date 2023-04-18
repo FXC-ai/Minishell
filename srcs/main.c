@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 11:39:22 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/18 15:35:35 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/18 19:19:18 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,15 @@ int check_blank_line(char *line)
 	}
 	return 1;
 }
+
+// int check_redirections (char *line)
+// {
+
+
+
+
+
+// }
 
 
 int	check_entry(char *line)

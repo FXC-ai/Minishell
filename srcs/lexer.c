@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 17:00:40 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/18 15:35:27 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/18 21:46:45 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -263,6 +263,61 @@ t_parsed_args **init_parsed_args (char **tab_cmds)
 	return (list_struct);
 }
 
+
+int	check_redirections (char *str, char type_chev)
+{
+	char *str_from_chev;
+
+	str_from_chev = ft_strchr(str, type_chev);
+	if (str_from_chev != NULL)
+	{
+		str_from_chev++;
+		while (is_space(*str_from_chev) == 1)
+			str_from_chev++;
+		if (is_chevron(*str_from_chev) == 1)
+		{
+			global_sig.ms_errno = 258;
+			return (0);
+		}
+		else if (*str_from_chev == '\0')
+		{
+			global_sig.ms_errno = 258;
+			return (-1);
+		}
+	}
+	return (1);
+}
+
+int check_redirections_process (char **tab_cmds)
+{
+	int i;
+	int result;
+
+	result = 0;
+	i = 0;
+	while (tab_cmds[i] != NULL)
+	{
+		if (check_redirections(tab_cmds[i], '>') == 0)
+		{
+			ft_putstr_fd("minishell: syntax error near unexpected token `>'\n", 2);
+			return (0);
+		}
+		else if (check_redirections(tab_cmds[i], '<') == 0)
+		{
+			ft_putstr_fd("minishell: syntax error near unexpected token `<'\n", 2);
+			return (0);
+		}
+		else if (check_redirections(tab_cmds[i], '<') == 0)
+		{
+			ft_putstr_fd("minishell: syntax error near unexpected token `<'\n", 2);
+			return (0);
+		}
+		i++;
+	}
+	return (1);
+}
+
+
 int lexer(char *str, char *env[])
 {
 	char	**result;
@@ -276,14 +331,20 @@ int lexer(char *str, char *env[])
 		return 0;
 
     i = 0;
-
 	result = ft_split_lexer(str, c);
-	
+
+	//print_tab("ft_split_lexer", result);
+	if (check_redirections_process(result) == 0)
+	{
+		return (1);
+	}
+
 	if (result == NULL)
 		return 0;
     while (result[i])
     {   
         cut_end_space(&(result[i]));
+
         i++;
     }
 
@@ -292,6 +353,7 @@ int lexer(char *str, char *env[])
 	cmd_red_lst = init_parsed_args(result);
 	freemalloc(result, size_tab(result));
 
+	
 	in_out_fd[0] = STDIN_FILENO;
 	in_out_fd[1] = STDOUT_FILENO;
 
