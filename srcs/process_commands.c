@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 23:39:04 by victorgiord       #+#    #+#             */
-/*   Updated: 2023/04/18 15:25:04 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/18 15:30:56 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void execute_first_command (char **cmd, int *in_out_fd, int pipe_fd[], char *env
 		dup2(pipe_fd[1], STDOUT_FILENO);
 		close(pipe_fd[0]); // Bout en lecture
 		close(pipe_fd[1]); // bout en ecriture
-		execute_command(cmd, 0, 1, env);
+		execute_command(cmd, in_out_fd[0], in_out_fd[1], env);
 		exit (0);
 
 	}
@@ -102,7 +102,7 @@ void execute_middle_command(char **cmd, int *in_out_fd, int pipe_fd_in[], int pi
         close(pipe_fd_out[1]);
 		close(pipe_fd_in[1]);
 		close(pipe_fd_out[0]);
-        execute_command(cmd, 0, 1, env);
+        execute_command(cmd, in_out_fd[0], in_out_fd[1], env);
 		exit (0);
 
     }
@@ -122,7 +122,7 @@ void execute_last_command(char **cmd, int *in_out_fd, int pipe_fd_in[], char *en
         dup2(pipe_fd_in[0], STDIN_FILENO);
 		close(pipe_fd_in[1]);
         close(pipe_fd_in[0]);
-        execute_command(cmd, 0, 1, env);
+        execute_command(cmd, in_out_fd[0], in_out_fd[1], env);
 		exit (0);
     }
 //     else
