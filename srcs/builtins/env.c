@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 17:17:52 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/19 12:43:50 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/19 15:14:40 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 void	env_process(char **parsed_args, char *env[])
 {
     int i;
-    print_tab("env_process", parsed_args);
 
     if (size_tab(parsed_args) == 1)
     {

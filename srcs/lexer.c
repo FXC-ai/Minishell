@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 17:00:40 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/19 13:55:45 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/19 14:59:49 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -368,7 +368,6 @@ int lexer(char *str, char *env[])
 	cmd_red_lst = init_parsed_args(result);
 	freemalloc(result, size_tab(result));
 
-	
 	in_out_fd[0] = STDIN_FILENO;
 	in_out_fd[1] = STDOUT_FILENO;
 

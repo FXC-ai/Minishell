@@ -1,5 +1,8 @@
-commandes vides
+echo -n a reparer
+cd leaks
 
-exit arguments
-
-exit doit renvoyer le code d erreur %255
+Essayez ctrl-\ après avoir lancé une commande bloquante, comme cat ou grep sans argument.
+verifier di l utilisation des " et des ' est consistante dans le lexer
+unset leaks
+unset sans rien segfault
+unset et export doivent pouvoir creer plusieurs variables 
