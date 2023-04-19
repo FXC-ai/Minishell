@@ -2,8 +2,6 @@ commandes vides
 
 ATTENTION aux redirections sans commande !!!
 
-maj de OLDPWD avec cd
-
 exit arguments
 
 
