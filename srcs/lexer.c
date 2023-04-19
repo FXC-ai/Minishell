@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 17:00:40 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/19 12:16:29 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/19 13:55:45 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -256,7 +256,7 @@ t_parsed_args **init_parsed_args (char **tab_cmds)
 		freemalloc(tmp, size_tab(tmp));
 		current_struct->redirections = separate_redirections(tab_cmds[i]);
 		//print_tab("redirections", current_struct->redirections);
-		print_tab(" command ",current_struct->cmd_args);
+		//print_tab(" command ",current_struct->cmd_args);
 		list_struct[i] = current_struct;
 		i++;
 	}

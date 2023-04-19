@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_lexer_no_quote.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 14:59:24 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/19 12:33:15 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/19 13:54:58 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,6 @@ char	**ft_split_lexer_no_quote(char *s)
 	}
 	
 	free(s);
-    print_tab("Result", result);
+    //print_tab("Result", result);
 	return (result);
 }
