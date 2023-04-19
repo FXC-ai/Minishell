@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 11:39:22 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/19 09:05:20 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/19 16:11:07 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,16 +47,6 @@ int check_blank_line(char *line)
 	return 1;
 }
 
-// int check_redirections (char *line)
-// {
-
-
-
-
-
-// }
-
-
 int	check_entry(char *line)
 {
 	if (!line)
@@ -67,6 +57,8 @@ int	check_entry(char *line)
 		return (0);
 	add_history(line);
 	if (check_blank_line(line) == 0)
+		return (0);
+	if (check_quotes(line) == 0)
 		return (0);
 	if (ft_strncmp(line, " ", ft_strlen(line)) == 0)
 		return (0);

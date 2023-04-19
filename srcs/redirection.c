@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 17:05:42 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/19 13:46:26 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/19 16:25:46 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ void	execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
 		exit_process(parsed_args);
 	else
 	{
+		if (parsed_args[0] == NULL)//ATTENTION wajhfwahflwahfwalhfl;wahflwaflahflwahhdwaldhwafhwafhlwahflwahfwalfhwahfwalhfwalhfwalh
+			exit(0);
 		cmd = normalize_cmd(parsed_args[0], env);
 		if (cmd == NULL)
 			print_command_not_found(parsed_args[0]);
