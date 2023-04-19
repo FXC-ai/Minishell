@@ -1,12 +1,5 @@
 commandes vides
 
-ATTENTION aux redirections sans commande !!!
-
-maj de OLDPWD avec cd
-
 exit arguments
 
-
-Attention msg d erreur poue les export et unset si le nom de l argument n est pas alphanumeriques
-Dans le export il faut ajouter le guillemets
 exit doit renvoyer le code d erreur %255
