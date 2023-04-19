@@ -6,11 +6,12 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 14:11:00 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/19 12:09:47 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/19 18:13:04 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/header.h"
+
 
 void echo_process(char **current_command)
 {

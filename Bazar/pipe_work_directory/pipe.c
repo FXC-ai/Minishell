@@ -61,7 +61,7 @@ int size_tab(char **tab)
     return (i);
 }
 
-void ms_pipe(char *tab_cmd[2], char *env[]) 
+void ms_pipe(char *tab_cmd[2]) 
 {
     int pid;
     int i;
@@ -106,7 +106,7 @@ void ms_pipe(char *tab_cmd[2], char *env[])
                 
                 cmd = ft_split(tab_cmd[i], ' ');
 
-                if (execve(cmd[0], cmd, env) == -1)
+                if (execve(cmd[0], cmd) == -1)
                 {
                     freemalloc(cmd, size_tab(cmd));
                     error_exit(EXIT_FAILURE);
@@ -123,14 +123,14 @@ void ms_pipe(char *tab_cmd[2], char *env[])
     //printf("Tous les processus enfants sont terminés.\n");
 }
 
-int main (int argc, char *argv[], char *env[])
+int main (int argc, char *argv[])
 {
     char    *tab_cmd[2];
     
     tab_cmd[0] = "/bin/ls > fichier";
     tab_cmd[1] = "/bin/ls";
 
-    ms_pipe(tab_cmd, env);
+    ms_pipe(tab_cmd);
     
     
     return 0;

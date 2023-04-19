@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_pipe.c                                          :+:      :+:    :+:   */
+/*   ms_pipe_dep.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:32:05 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/03/29 12:10:44 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/19 17:42:10 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,20 +30,20 @@ static void	freemalloc(char **result, int j)
 	free(result);
 }
 
-void execution (char *input_cmd, char *env[])
+void execution (char *input_cmd)
 {
     char **tab_cmd;
  
     tab_cmd = ft_split_lexer(input_cmd, ' ');
 
-    if (execve(normalize_cmd(tab_cmd[0], env), tab_cmd, env) == -1)
+    if (execve(normalize_cmd(tab_cmd[0]), tab_cmd) == -1)
     {
         freemalloc(tab_cmd, size_tab(tab_cmd));
         error_exit(EXIT_FAILURE);
     }
 }
 
-void boucle_executor (char *tab_cmd, int (*pipe_fd)[2], int (*former_pipe)[2], char *env[])
+void boucle_executor (char *tab_cmd, int (*pipe_fd)[2], int (*former_pipe)[2])
 {
 
     int pid;
@@ -63,12 +63,12 @@ void boucle_executor (char *tab_cmd, int (*pipe_fd)[2], int (*former_pipe)[2], c
     {
         close((*pipe_fd)[0]);
         dup2((*pipe_fd)[1], 1);
-        execution(tab_cmd, env);
+        execution(tab_cmd);
     }
 
 }
 
-void ms_pipe2(char **tab_cmds, char *env[])
+void ms_pipe2(char **tab_cmds)
 {
     int pipe_fd[2];
     int former_pipe[2];
@@ -94,13 +94,13 @@ void ms_pipe2(char **tab_cmds, char *env[])
     {
         close(pipe_fd[0]);
         dup2(pipe_fd[1], 1);
-        execution(tab_cmds[0], env);
+        execution(tab_cmds[0]);
     }
 
     i = 0;
     while (i < process_num - 2)
     {
-        boucle_executor(tab_cmds[i+1], &pipe_fd, &former_pipe, env);
+        boucle_executor(tab_cmds[i+1], &pipe_fd, &former_pipe);
         i++;
     }
 
@@ -111,7 +111,7 @@ void ms_pipe2(char **tab_cmds, char *env[])
     }
     else
     {
-        execution(tab_cmds[process_num-1], env);
+        execution(tab_cmds[process_num-1]);
     }
     
     /*while(process_num > 0)

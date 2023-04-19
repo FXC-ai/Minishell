@@ -36,6 +36,8 @@ typedef struct	s_sig
 	int		ms_errno;
 	int		program_in_process;
 	pid_t	pid;
+	char	**env;
+
 } t_sig;
 
 typedef struct s_cmd_to_execute {
@@ -61,17 +63,18 @@ void	rl_replace_line (const char *text, int clear_undo);
 
 
 //MAIN.C
-void	sig_init(void);
+void	sig_init();
 void	disable_ctrl_chars();
 int		check_entry(char *line);
-void	wait_for_input(char *env[]);
+void	wait_for_input();
+void	cpy_env(char **env);
 
 //SIGNAL.C
 void    signal_handler();
 
 //PARSE_DOLLAR.C
-void	parse_dollar(char **tab_cmds, char *env[]);
-char	*find_env_variable (char *var_name, char *env[]);
+void	parse_dollar(char **tab_cmds);
+char	*find_env_variable (char *var_name);
 
 //PARSE_REDIRECTION.C
 void parse_redirection_right(char **tab_cmds);
@@ -86,7 +89,7 @@ void	normalize_with_space(char **str);
 void	normalize_arguments_order(char **str1);
 
 //LEXER.C
-int		lexer(char *str, char *env[]);
+int		lexer(char *str);
 char	**ft_split_lexer(char const *str, char c);
 int		count_chr(const char *str, char c);
 
@@ -94,9 +97,9 @@ int		count_chr(const char *str, char c);
 char	**ft_split_lexer_no_quote(char *str);
 
 //REDIRECTION.C
-void	execute_command(char **parsed_args, int in_fd, int out_fd, char *env[]);
+void	execute_command(char **parsed_args, int in_fd, int out_fd);
 int 	process_delimiter(char *del);
-int		process_redirection(char **redirections, int **in_out_fd, char *env[]);
+int		process_redirection(char **redirections, int **in_out_fd);
 
 //UTILS.C
 int		is_space(char c);
@@ -118,31 +121,31 @@ int		is_builtins(char *str);
 int check_quotes(char *line);
 
 // NORMALIZE_CMD.C
-char	*normalize_cmd(char* str, char *env[]);
+char	*normalize_cmd(char* str);
 
 //MS_PIPE.C
-//void	execute_last_cmd(int pipe_fd[2], char **tab_cmds, int nbr_cmds, char *env[]);
-//void	execute_first_cmd(int pipe_fd[2], char **tab_cmds, char *env[]);
-//void	execute_first_cmd(t_cmd_to_execute cmd_to_execute, char *env[]);
-//void	redirection (char *input_cmd, int previous_pipe[2], int next_pipe[2], char *env[]);
-//void	redirection (t_cmd_to_execute cmd_to_execute, char *env[])
-//void	execution (char *input_cmd, char *env[]);
-//void	ms_pipe2(char **tab_cmds, int nbr_cmds, char *env[]);
+//void	execute_last_cmd(int pipe_fd[2], char **tab_cmds, int nbr_cmds);
+//void	execute_first_cmd(int pipe_fd[2], char **tab_cmds);
+//void	execute_first_cmd(t_cmd_to_execute cmd_to_execute);
+//void	redirection (char *input_cmd, int previous_pipe[2], int next_pipe[2]);
+//void	redirection (t_cmd_to_execute cmd_to_execute)
+//void	execution (char *input_cmd);
+//void	ms_pipe2(char **tab_cmds, int nbr_cmds);
 
 //PROCESS_COMMANDS.C
-int process_multiple_commands(t_parsed_args **cmd_red_lst, char *env[]);
-int	process_single_command(t_parsed_args **cmd_red_lst, int *in_out_fd, char *env[]);
+int process_multiple_commands(t_parsed_args **cmd_red_lst);
+int	process_single_command(t_parsed_args **cmd_red_lst, int *in_out_fd);
 
 //BUILTINS
 void	echo_process(char **cmd);
-void	cd_process(char **current_command, char *env[]);
+void	cd_process(char **current_command);
 void	pwd_process();
-int		unset_process(char **parsed_args, char *env[]);
-void	env_process(char **parsed_args, char *env[]);
-void	export_process(char **current_command, char *env[]);
-void	add_to_env(char *ligne, char *value, char *env[]);
+int		unset_process(char **parsed_args);
+void	env_process(char **parsed_args);
+void	export_process(char **current_command);
+void	add_to_env(char *ligne, char *value);
 void    exit_process(char **parsed_args);
-int		unset_process_str(char *key, char *env[]);
+int		unset_process_str(char *key);
 
 extern t_sig global_sig;
 
