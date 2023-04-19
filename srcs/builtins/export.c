@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 14:32:31 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/18 16:08:54 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/19 13:46:13 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,11 +85,21 @@ void export_process(char **current_command, char *env[])
 	}
 	else
 	{
+		i = 0;
+		while (current_command[1][i] != '\0' && current_command[1][i] != '=')
+		{
+
+			if (ft_isalnum(current_command[1][i]) == 0)
+			{
+				printf("export: `%s': not a valid identifier\n", current_command[1]);
+				return ;
+			}
+			i++;
+		}
 		equal_sign = strchr(current_command[1], '=');
-       /*if (equal_sign == NULL) {
-            fprintf(stderr, "export: invalid format, use KEY=VALUE\n");
+       	if (equal_sign == NULL) {
             return;
-        }*/
+        }
         key = current_command[1];
         value = ++equal_sign;
 

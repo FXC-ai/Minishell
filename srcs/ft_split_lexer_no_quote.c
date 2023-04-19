@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 14:59:24 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/19 11:46:11 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/19 12:33:15 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ static int process(char const *str, char **result, int nb_word)
 	while (str[i] != '\0')
 	{
         //printf("sdfsdffsddfs\n");
-        printf("%d [%c] in quote = [%d], quote = [%c], in_word = [%d]\n", i, str[i], in_quote, quote, in_word);
+        //printf("%d [%c] in quote = [%d], quote = [%c], in_word = [%d]\n", i, str[i], in_quote, quote, in_word);
         if (in_word == 0 && in_quote == 0 && !is_space(str[i]))
         {
             if (is_quote(str[i]))
@@ -116,7 +116,7 @@ static int process(char const *str, char **result, int nb_word)
         
 	}
     
-    printf("Nb word %d\n", nb_word);
+    //printf("Nb word %d\n", nb_word);
     //printf("nb_word = %d j = %d\n", nb_word, j);
     if (j < nb_word)
         result[j++] = ft_substr(str, start, i - start);
