@@ -29,9 +29,6 @@
 # define SUCCESS 0
 # define PERMISSION_DENIED 1
 
-
-
-
 typedef struct	s_sig
 {
 	int 	sig_int;
@@ -119,6 +116,9 @@ void	remove_quote_in_tab(char **tab);
 
 // IS_BUILTINS.C
 int		is_builtins(char *str);
+
+// PRE_PARSING.C
+int check_quotes(char *line);
 
 // NORMALIZE_CMD.C
 char	*normalize_cmd(char* str);

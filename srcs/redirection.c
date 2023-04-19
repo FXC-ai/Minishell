@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 17:05:42 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/19 17:52:01 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/19 18:16:16 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ void	execute_command(char **parsed_args, int in_fd, int out_fd)
 		exit_process(parsed_args);
 	else
 	{
+		if (parsed_args[0] == NULL)//ATTENTION wajhfwahflwahfwalhfl;wahflwaflahflwahhdwaldhwafhwafhlwahflwahfwalfhwahfwalhfwalhfwalh
+			exit(0);
 		cmd = normalize_cmd(parsed_args[0]);
 		if (cmd == NULL)
 			print_command_not_found(parsed_args[0]);
