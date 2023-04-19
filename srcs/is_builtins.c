@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   is_builtins.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 11:46:13 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/06 11:47:16 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/19 18:36:06 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ static int	get_max_length(char *str1, char *str2)
 
 int	is_builtins(char *str)
 {
-	
 	if (ft_strncmp(str, "echo", get_max_length(str, "echo")) == 0)
 		return (1);
 	if (ft_strncmp(str, "cd", get_max_length(str, "cd")) == 0)

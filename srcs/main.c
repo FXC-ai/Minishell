@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 11:39:22 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/19 16:11:07 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/19 18:32:15 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ void	disable_ctrl_chars(void)
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &attributes);
 }
 
-int check_blank_line(char *line)
+int	check_blank_line(char *line)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (is_space(line[i]))
@@ -42,9 +42,9 @@ int check_blank_line(char *line)
 	}
 	if (line[i] == '\0')
 	{
-		return 0;
+		return (0);
 	}
-	return 1;
+	return (1);
 }
 
 int	check_entry(char *line)
@@ -72,12 +72,11 @@ void	wait_for_input(char *env[])
 	signal_handler();
 	while (42)
 	{
-		dup2(0,0);
-		dup2(1,1);
+		dup2(0, 0);
+		dup2(1, 1);
 		global_sig.program_in_process = 0;
 		line = readline("minishell$ ");
 		global_sig.program_in_process = 1;
-		//disable_ctrl_chars();
 		if (line == NULL)
 		{
 			write(1, "exit\n", 5);
@@ -93,7 +92,6 @@ void	wait_for_input(char *env[])
 
 int	main(int ac, char **argv, char *env[])
 {
-
 	struct termios		tm;
 
 	(void) argv;
