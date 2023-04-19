@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 11:01:12 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/18 18:51:33 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/19 11:16:21 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ void parse_dollar(char **tab_cmds, char *env[])
                     if (trimmed_command[1] == '?')
                         env_variable = ft_itoa(global_sig.ms_errno);
                     else
-                        env_variable = "";
+                        env_variable = ft_strdup("");
 
                     tmp = ft_strndup(tab_cmds[i], ft_strlen(tab_cmds[i]) - ft_strlen(trimmed_command));
                     str1 = ft_strjoin(tmp, env_variable);
@@ -168,6 +168,7 @@ void parse_dollar(char **tab_cmds, char *env[])
                     free(tmp);
                     free(str1);
                     free(str2);
+                    free(env_variable);
                     trimmed_command = ft_strchr(tab_cmds[i], '$');
                 }
             }

@@ -109,6 +109,15 @@ static int count_chr_no_quote(const char *str)
 int main(int argc, char const *argv[])
 {
 
+	char *tab[1];
+
+	tab[0] = "erer";
+
+	printf("test = %s\n\n", tab[1]);
+
+
+
+
     const char *str = "echo \"p\"p";
 	char *str2 = "Hello";
 	char str3[] = "Hello\0";
@@ -116,7 +125,6 @@ int main(int argc, char const *argv[])
 	//str2[2] = '1';
 	str3[2] = '1';
 	printf("%s\n", str2);
-	printf("%s\n", str3);
 
     int count = count_chr_no_quote(str);
 

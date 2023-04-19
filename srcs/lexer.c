@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 17:00:40 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/18 23:12:18 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/19 11:02:07 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -311,7 +311,7 @@ int check_redirections_process (char **tab_cmds)
 			free(error_msg);
 			return (0);
 		}
-		else if (check_redirections(tab_cmds[i], '<') == 0)
+		else if (check_redirections(tab_cmds[i], '<') != 1)
 		{
 			error_msg = error_redirection_msg(check_redirections(tab_cmds[i], '<'));
 			ft_putstr_fd(error_msg, 2);

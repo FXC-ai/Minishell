@@ -2,7 +2,6 @@ commandes vides
 echo sans rien n affiche pas de retour a la ligne
 echo "err"'eee' met un espace entre les deux mots
 
-probleme valeur de retour d erreur quand la commande existe pas. 2 pour nous 127 pour le bash
 
 env avec des arguments doit envoyer une erreur
 
@@ -11,3 +10,8 @@ ATTENTION aux redirections sans commande !!!
 
 
 maj de OLDPWD avec cd
+
+
+Attention msg d erreur poue les export et unset si le nom de l argument n est pas alphanumeriques
+Dans le export il faut ajouter le guillemets
+exit doit renvoyer le code d erreur %255
