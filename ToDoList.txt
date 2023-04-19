@@ -1,5 +1,5 @@
 commandes vides
-echo sans rien n affiche pas de retour a la ligne
+
 echo "err"'eee' met un espace entre les deux mots
 
 
