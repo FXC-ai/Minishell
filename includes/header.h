@@ -112,6 +112,7 @@ void	print_command_not_found(char *str);
 int		is_chevron (char c);
 void	free_struct(t_parsed_args **cmd_red_lst);
 char	*concatenate_strings_with_spaces(char **strings);
+void	remove_quote_in_tab(char **tab);
 
 // IS_BUILTINS.C
 int		is_builtins(char *str);
