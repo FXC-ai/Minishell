@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 11:39:22 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/18 19:19:18 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/19 09:05:20 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ void	wait_for_input(char *env[])
 
 int	main(int ac, char **argv, char *env[])
 {
+
 	struct termios		tm;
 
 	(void) argv;
