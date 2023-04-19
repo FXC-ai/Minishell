@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 17:00:40 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/19 14:59:49 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/19 17:42:10 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -332,7 +332,7 @@ int check_redirections_process (char **tab_cmds)
 }
 
 
-int lexer(char *str, char *env[])
+int lexer(char *str)
 {
 	char	**result;
 	char	c = '|';
@@ -363,7 +363,7 @@ int lexer(char *str, char *env[])
         i++;
     }
 
-	parse_dollar(result, env);
+	parse_dollar(result);
 
 	cmd_red_lst = init_parsed_args(result);
 	freemalloc(result, size_tab(result));
@@ -373,12 +373,12 @@ int lexer(char *str, char *env[])
 
 	if (cmd_red_lst[1] == NULL)
 	{
-		if (process_single_command(cmd_red_lst, in_out_fd, env) == -1)
+		if (process_single_command(cmd_red_lst, in_out_fd) == -1)
 			return (-1);	
 	}
 	else
 	{
-		if (process_multiple_commands(cmd_red_lst, env) == -1)
+		if (process_multiple_commands(cmd_red_lst) == -1)
 			return (-1);
 	}
 	free(in_out_fd);

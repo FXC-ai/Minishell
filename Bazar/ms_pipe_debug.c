@@ -51,13 +51,13 @@ int find_ind_filename(char **tab_cmd_path)
     return (-1);
 }
 
-void execution (char *input_cmd, char *env[])
+void execution (char *input_cmd)
 {
     char **tab_cmd;
  
     tab_cmd = ft_split_lexer(input_cmd, ' ');
 
-    if (execve(normalize_cmd(tab_cmd[0], env), tab_cmd, env) == -1)
+    if (execve(normalize_cmd(tab_cmd[0]), tab_cmd) == -1)
     {
         freemalloc(tab_cmd, size_tab(tab_cmd));
         error_exit(EXIT_FAILURE);
@@ -65,7 +65,7 @@ void execution (char *input_cmd, char *env[])
 }
 
 
-void redirection (char *input_cmd, int previous_pipe[2], int next_pipe[2], char *env[])
+void redirection (char *input_cmd, int previous_pipe[2], int next_pipe[2])
 {
     pid_t pid;
    // int status;
@@ -82,14 +82,14 @@ void redirection (char *input_cmd, int previous_pipe[2], int next_pipe[2], char 
         close(previous_pipe[0]);
         close(next_pipe[1]);       
 
-        execution(input_cmd, env);
+        execution(input_cmd);
     }
 
 
 
 }
 
-void execute_first_cmd(int pipe_fd[2], char **tab_cmds, char *env[])
+void execute_first_cmd(int pipe_fd[2], char **tab_cmds)
 {
     pid_t pid;
    // int status;
@@ -101,7 +101,7 @@ void execute_first_cmd(int pipe_fd[2], char **tab_cmds, char *env[])
         close(pipe_fd[0]);
         dup2(pipe_fd[1],1);
         close(pipe_fd[1]);
-        execution(tab_cmds[0], env);
+        execution(tab_cmds[0]);
     }    
     else
     {
@@ -112,7 +112,7 @@ void execute_first_cmd(int pipe_fd[2], char **tab_cmds, char *env[])
 }
 
 
-void execute_last_cmd(int pipe_fd[2], char **tab_cmds, int nbr_cmds, char *env[])
+void execute_last_cmd(int pipe_fd[2], char **tab_cmds, int nbr_cmds)
 {
     pid_t pid;
    // int status;
@@ -125,7 +125,7 @@ void execute_last_cmd(int pipe_fd[2], char **tab_cmds, int nbr_cmds, char *env[]
         close(pipe_fd[1]);
         dup2(pipe_fd[0],0);
         close(pipe_fd[0]);
-        execution(tab_cmds[nbr_cmds-1], env);
+        execution(tab_cmds[nbr_cmds-1]);
     }
     else
     {
@@ -150,11 +150,11 @@ void	redir (char *cmd, char **env)
 	{
 		close(pipefd[0]);
 		dup2(pipefd[1], STDOUT);
-		exec(cmd, env);
+		exec(cmd);
 	}
 }*/
 
-void ms_pipe2_dep(char **tab_cmds, char *env[])
+void ms_pipe2_dep(char **tab_cmds)
 {
 
     int pipe_fd1[2];
@@ -174,7 +174,7 @@ void ms_pipe2_dep(char **tab_cmds, char *env[])
 
     //PROCESSUS 1
     pipe(pipe_fd1);
-    execute_first_cmd(pipe_fd1, tab_cmds, env);
+    execute_first_cmd(pipe_fd1, tab_cmds);
     
 
     i = 0;
@@ -184,7 +184,7 @@ void ms_pipe2_dep(char **tab_cmds, char *env[])
         {
 
             pipe(pipe_fd2);
-            redirection(tab_cmds[i + 1], pipe_fd1, pipe_fd2, env);
+            redirection(tab_cmds[i + 1], pipe_fd1, pipe_fd2);
 
             close(pipe_fd1[0]);
             close(pipe_fd1[1]);          
@@ -193,7 +193,7 @@ void ms_pipe2_dep(char **tab_cmds, char *env[])
         {
 
             pipe(pipe_fd1);
-            redirection(tab_cmds[i + 1], pipe_fd2, pipe_fd1, env);
+            redirection(tab_cmds[i + 1], pipe_fd2, pipe_fd1);
 
             close(pipe_fd2[0]);
             close(pipe_fd2[1]);
@@ -203,7 +203,7 @@ void ms_pipe2_dep(char **tab_cmds, char *env[])
     
     if (i % 2 == 1)
     {
-        //execute_last_cmd(pipe_fd2, tab_cmds, nbr_cmds, env);
+        //execute_last_cmd(pipe_fd2, tab_cmds, nbr_cmds);
         pid = fork();
         if (pid == 0)
         {
@@ -212,14 +212,14 @@ void ms_pipe2_dep(char **tab_cmds, char *env[])
             close(pipe_fd2[1]);
             dup2(pipe_fd2[0],0);
             close(pipe_fd2[0]);
-            execution(tab_cmds[nbr_cmds-1], env);
+            execution(tab_cmds[nbr_cmds-1]);
         }
         close(pipe_fd2[0]);
         close(pipe_fd2[1]);  
     }
     else if (i % 2 == 0)
     {
-        //execute_last_cmd(pipe_fd1, tab_cmds, nbr_cmds, env);
+        //execute_last_cmd(pipe_fd1, tab_cmds, nbr_cmds);
         pid = fork();
         if (pid == 0)
         {
@@ -229,7 +229,7 @@ void ms_pipe2_dep(char **tab_cmds, char *env[])
             close(pipe_fd1[1]);
             dup2(pipe_fd1[0],0);
             close(pipe_fd1[0]);
-            execution(tab_cmds[nbr_cmds-1], env);
+            execution(tab_cmds[nbr_cmds-1]);
         }
         close(pipe_fd1[0]);
         close(pipe_fd1[1]);  
@@ -270,7 +270,7 @@ void printMSG(char *msg, int index_process,int fd)
 }
 
 
-void boucle_executor (char *tab_cmd, int (*pipe_fd)[2], int (*former_pipe)[2], char *env[], int fd_debug2)
+void boucle_executor (char *tab_cmd, int (*pipe_fd)[2], int (*former_pipe)[2], int fd_debug2)
 {
     int pid;
 
@@ -290,12 +290,12 @@ void boucle_executor (char *tab_cmd, int (*pipe_fd)[2], int (*former_pipe)[2], c
     {
         close((*pipe_fd)[0]);
         dup2((*pipe_fd)[1], 1);
-        execution(tab_cmd, env);
+        execution(tab_cmd);
     }
 
 }
 
-void ms_pipe2(char **tab_cmds, char *env[])
+void ms_pipe2(char **tab_cmds)
 {
 
     int pipe_fd[2];
@@ -325,13 +325,13 @@ void ms_pipe2(char **tab_cmds, char *env[])
     {
         close(pipe_fd[0]);
         dup2(pipe_fd[1], 1);
-        execution(tab_cmds[0], env);
+        execution(tab_cmds[0]);
     }
 
     i = 0;
     while (i < process_num - 2)
     {
-        boucle_executor(tab_cmds[i+1], &pipe_fd, &former_pipe, env, fd_debug2);
+        boucle_executor(tab_cmds[i+1], &pipe_fd, &former_pipe, fd_debug2);
         i++;
     }
 
@@ -342,7 +342,7 @@ void ms_pipe2(char **tab_cmds, char *env[])
     }
     else
     {
-        execution(tab_cmds[process_num-1], env);
+        execution(tab_cmds[process_num-1]);
     }
 
     while(process_num > 0)
@@ -354,7 +354,7 @@ void ms_pipe2(char **tab_cmds, char *env[])
     close(fd_debug2);
 }
 /*
-void ms_pipe2(char **tab_cmds, char *env[])
+void ms_pipe2(char **tab_cmds)
 {
 
 
@@ -365,7 +365,7 @@ void ms_pipe2(char **tab_cmds, char *env[])
 */
 
 /*
-int main (int argc, char *argv[], char *env[])
+int main (int argc, char *argv[])
 {
     
     char *tab_cmd_test1[6];
@@ -377,7 +377,7 @@ int main (int argc, char *argv[], char *env[])
     tab_cmd_test1[4] = "cat -e";
     tab_cmd_test1[5] = NULL;
 
-    ms_pipe2(tab_cmd_test1, env);
+    ms_pipe2(tab_cmd_test1);
     
     
     
@@ -390,7 +390,7 @@ int main (int argc, char *argv[], char *env[])
     tab_cmd_test2[2] = "wc";
     tab_cmd_test2[3] = NULL;
 
-    ms_pipe2(tab_cmd_test2, env);
+    ms_pipe2(tab_cmd_test2);
     
 
     
@@ -402,7 +402,7 @@ int main (int argc, char *argv[], char *env[])
     tab_cmd_test3[1] = "grep a";
     tab_cmd_test3[2] = NULL;
 
-    ms_pipe2(tab_cmd_test3, env);
+    ms_pipe2(tab_cmd_test3);
     
     
 

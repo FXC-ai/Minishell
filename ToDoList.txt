@@ -1,4 +1,3 @@
-echo -n a reparer
 cd leaks
 
 Essayez ctrl-\ après avoir lancé une commande bloquante, comme cat ou grep sans argument.

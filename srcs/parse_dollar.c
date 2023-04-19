@@ -6,22 +6,22 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 11:01:12 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/19 11:16:21 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/19 18:09:37 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
 
 
-char *find_env_variable (char *var_name, char *env[])
+char *find_env_variable (char *var_name)
 {
 	int i = 0;
 
-	while (env[i] != NULL)
+	while (global_sig.env[i] != NULL)
 	{
-		if (ft_strncmp(env[i], var_name, ft_strlen(var_name)) == 0 && env[i][ft_strlen(var_name)] == '=')
+		if (ft_strncmp(global_sig.env[i], var_name, ft_strlen(var_name)) == 0 && global_sig.env[i][ft_strlen(var_name)] == '=')
 		{
-            return &env[i][ft_strlen(var_name) + 1];
+            return &global_sig.env[i][ft_strlen(var_name) + 1];
 		}
 		i++;
 	}
@@ -103,7 +103,7 @@ int check_simple_quote2(char *cmd, char *trimmed_command)
     return in_quote && quote == '\'';
 }
 
-void parse_dollar(char **tab_cmds, char *env[])
+void parse_dollar(char **tab_cmds)
 {
     int i;
     int j;
@@ -133,7 +133,7 @@ void parse_dollar(char **tab_cmds, char *env[])
             if (check_simple_quote2(tab_cmds[i], trimmed_command) == 0)
             {
                 key = ft_strndup(trimmed_command+1, j-1);
-                env_variable = find_env_variable(key, env);
+                env_variable = find_env_variable(key);
                 if (env_variable != NULL)
                 {
                     tmp = ft_strndup(tab_cmds[i], ft_strlen(tab_cmds[i]) - ft_strlen(trimmed_command));

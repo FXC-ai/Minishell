@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   normalize_cmd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 11:37:57 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/14 12:27:23 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/19 17:51:43 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
 
-static char	**create_tab_paths(char *env[])
+static char	**create_tab_paths()
 {
 	int		i;
 	char	*paths;
@@ -21,10 +21,10 @@ static char	**create_tab_paths(char *env[])
 	i = 0;
 	paths = NULL;
 	paths_tab = NULL;
-	while (env[i])
+	while (global_sig.env[i])
 	{
-		if (strncmp(env[i], "PATH", 4) == 0)
-			paths = ft_substr(env[i], 5, ft_strlen(env[i]) - 4);
+		if (strncmp(global_sig.env[i], "PATH", 4) == 0)
+			paths = ft_substr(global_sig.env[i], 5, ft_strlen(global_sig.env[i]) - 4);
 		i++;
 	}
 	
@@ -50,13 +50,13 @@ static char	*create_path_cmd(char *path, char *cmd)
 	return (path_cmd);
 }
 
-static char	*cmd_exists(char *cmd, char *env[])
+static char	*cmd_exists(char *cmd)
 {
 	int		i;
 	char	**tab_paths;
 	char	*path_to_test;
 
-	tab_paths = create_tab_paths(env);
+	tab_paths = create_tab_paths();
 	if (tab_paths == NULL)
 		return (NULL);
 	i = 0;
@@ -95,7 +95,7 @@ static char	*cmd_exists(char *cmd, char *env[])
 	//faudra free result
 }*/
 
-char *normalize_cmd(char* str, char *env[])
+char *normalize_cmd(char* str)
 {	
 	//char *result;
 
@@ -108,5 +108,5 @@ char *normalize_cmd(char* str, char *env[])
 	}
 	
 	// Cas ou la commande est envoyée sans chemin
-	return cmd_exists(str, env);
+	return cmd_exists(str);
 }

@@ -56,14 +56,14 @@ void printMSG(char *msg, int index_process)
 
 }
 
-void execution (char *input_cmd, char *env[])
+void execution (char *input_cmd)
 {
     char **tab_cmd;
  
     tab_cmd = ft_split_lexer(input_cmd, ' ');
 
 
-    if (execve(normalize_cmd(tab_cmd[0], env), tab_cmd, env) == -1)
+    if (execve(normalize_cmd(tab_cmd[0]), tab_cmd) == -1)
     {
         freemalloc(tab_cmd, size_tab(tab_cmd));
         error_exit(EXIT_FAILURE);
@@ -72,7 +72,7 @@ void execution (char *input_cmd, char *env[])
 
 
 
-int ms_pipe3(int process_num, char **tab_cmds, char *env[]) 
+int ms_pipe3(int process_num, char **tab_cmds) 
 {
 
     int pids[process_num];
@@ -121,7 +121,7 @@ int ms_pipe3(int process_num, char **tab_cmds, char *env[])
 
             // printMSG(tab_cmds[i], i);
 
-            // execution(tab_cmds[i], env);
+            // execution(tab_cmds[i]);
             int x;
             if (read(pipes[i][0], &x, sizeof(int)) == -1) 
             {
@@ -194,7 +194,7 @@ int ms_pipe3(int process_num, char **tab_cmds, char *env[])
 }
 
 
-int main(int argc, char *argv[], char *env[])
+int main(int argc, char *argv[])
 {
 
 
@@ -206,7 +206,7 @@ int main(int argc, char *argv[], char *env[])
     tab_cmd_test2[3] = NULL;
 
 
-    ms_pipe3(3, tab_cmd_test2, env);
+    ms_pipe3(3, tab_cmd_test2);
 
 
     return 0;

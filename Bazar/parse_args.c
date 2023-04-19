@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   parse_args.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 12:36:34 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/03/24 16:37:30 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/19 17:42:10 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
-void    parsing(char **args, char *env[])//ACUTALLY NOT A PARSING AT ALL
+void    parsing(char **args)//ACUTALLY NOT A PARSING AT ALL
 {
 	int		i;
 	i = 0;
@@ -25,7 +25,7 @@ void    parsing(char **args, char *env[])//ACUTALLY NOT A PARSING AT ALL
 	/*tab[0] = args[0];
 	tab[1] = args[1];*/
 	ms_pipe2(args,env);
-	//process_redirection(args[0], env);
+	//process_redirection(args[0]);
 	//printf("Done\n");
 
 

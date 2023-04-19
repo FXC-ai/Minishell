@@ -49,13 +49,13 @@ char *ft_strndup(char *str, size_t n)
     return result;
 }
 
-char *find_env_variable (char *var_name, char *env[])
+char *find_env_variable (char *var_name)
 {
 	int i = 0;
 
-	while (env[i] != NULL)
+	while (global_sig.env[i] != NULL)
 	{
-		if (ft_strncmp(env[i], var_name, ft_strlen(var_name)) == 0 && env[i][ft_strlen(var_name)] == '=')
+		if (ft_strncmp(global_sig.env[i], var_name, ft_strlen(var_name)) == 0 && env[i][ft_strlen(var_name)] == '=')
 		{
             return &env[i][ft_strlen(var_name) + 1];
 		}
@@ -109,7 +109,7 @@ int check_simple_quote(char *cmd, char *trimmed_command)
 }
 
 
-void parse_dollar(char **tab_cmds, char *env[])
+void parse_dollar(char **tab_cmds)
 {
     int i;
     int j;
@@ -137,11 +137,11 @@ void parse_dollar(char **tab_cmds, char *env[])
             if (check_simple_quote(tab_cmds[i], trimmed_command) > 0)
             {
                 key = ft_strndup(trimmed_command+1, j-1);
-                env_variable = find_env_variable(key, env);
+                env_variable = find_env_variable(key);
                 if (env_variable != NULL)
                 {
                     tmp = ft_strndup(tab_cmds[i], ft_strlen(tab_cmds[i]) - ft_strlen(trimmed_command));
-                    str1 = ft_strjoin(tmp, env_variable);
+                    str1 = ft_strjoin(tmp_variable);
                     str2 = ft_strndup(trimmed_command + j, ft_strlen(trimmed_command + j));
 
                     char *check = tab_cmds[i];
@@ -162,7 +162,7 @@ void parse_dollar(char **tab_cmds, char *env[])
                         env_variable = "";
 
                     tmp = ft_strndup(tab_cmds[i], ft_strlen(tab_cmds[i]) - ft_strlen(trimmed_command));
-                    str1 = ft_strjoin(tmp, env_variable);
+                    str1 = ft_strjoin(tmp_variable);
                     str2 = ft_strndup(trimmed_command + j, ft_strlen(trimmed_command + j));
                     free(tab_cmds[i]);
                     tab_cmds[i] = NULL;
@@ -184,7 +184,7 @@ void parse_dollar(char **tab_cmds, char *env[])
 }
 
 
-int main (int argc, char *argv[], char *env[])
+int main (int argc, char *argv[])
 {
 
     char *tab_cmds[2];
@@ -195,7 +195,7 @@ int main (int argc, char *argv[], char *env[])
 
     //print_tab(tab_cmds);
 
-    parse_dollar(tab_cmds, env);
+    parse_dollar(tab_cmds);
 
     //print_tab(tab_cmds);
 

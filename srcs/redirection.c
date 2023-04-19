@@ -6,14 +6,14 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 17:05:42 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/19 13:46:26 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/19 17:52:01 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
 
 
-void	execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
+void	execute_command(char **parsed_args, int in_fd, int out_fd)
 {
 	int		r;
 	char	*cmd;
@@ -33,23 +33,23 @@ void	execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
 	if (r == BUILTIN_ECHO)
 		echo_process(parsed_args);
 	else if (r == BUILTIN_CD)
-		cd_process(parsed_args, env);
+		cd_process(parsed_args);
 	else if (r == BUILTIN_PWD)
 		pwd_process(parsed_args);
 	else if (r == BUILTIN_EXPORT)
-		export_process(parsed_args, env);
+		export_process(parsed_args);
 	else if (r == BUILTIN_UNSET)
-		unset_process(parsed_args, env);
+		unset_process(parsed_args);
 	else if (r == BUILTIN_ENV)
-		env_process(parsed_args, env);
+		env_process(parsed_args);
 	else if (r == BUILTIN_EXIT)
 		exit_process(parsed_args);
 	else
 	{
-		cmd = normalize_cmd(parsed_args[0], env);
+		cmd = normalize_cmd(parsed_args[0]);
 		if (cmd == NULL)
 			print_command_not_found(parsed_args[0]);
-		execve(normalize_cmd(parsed_args[0], env), parsed_args, env);
+		execve(normalize_cmd(parsed_args[0]), parsed_args, global_sig.env);
 		perror(parsed_args[0]);
 		exit(errno);
 	}
@@ -90,11 +90,10 @@ int process_delimiter(char *del)
 	return fd;
 }
 
-int		process_redirection(char **redirections, int **in_out_fd, char *env[])
+int		process_redirection(char **redirections, int **in_out_fd)
 {
 	char	*redirection;
 
-	(void) env;
 	(*in_out_fd)[0] = STDIN_FILENO;
 	(*in_out_fd)[1] = STDOUT_FILENO;
 	

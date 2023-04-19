@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_pipe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 12:35:43 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/14 11:55:42 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/19 17:42:10 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@ static void	error_exit(int code_error)
 }
 
 
-void execution (char *input_cmd, char *env[])
+void execution (char *input_cmd)
 {
 	char **tab_cmd;
  
 	tab_cmd = ft_split_lexer(input_cmd, ' ');
 
-	if (execve(normalize_cmd(tab_cmd[0], env), tab_cmd, env) == -1)
+	if (execve(normalize_cmd(tab_cmd[0]), tab_cmd) == -1)
 	{
 		freemalloc(tab_cmd, size_tab(tab_cmd));
 		error_exit(EXIT_FAILURE);
@@ -34,7 +34,7 @@ void execution (char *input_cmd, char *env[])
 }
 
 
-void redirection (char *input_cmd, int previous_pipe[2], int next_pipe[2], char *env[])
+void redirection (char *input_cmd, int previous_pipe[2], int next_pipe[2])
 {
 	pid_t pid;
 
@@ -51,12 +51,12 @@ void redirection (char *input_cmd, int previous_pipe[2], int next_pipe[2], char 
 		close(previous_pipe[0]);
 		close(next_pipe[1]);       
 
-		process_redirection(input_cmd, env);
+		process_redirection(input_cmd);
 		exit(0);
 	}
 }
 /*
-void redirection (t_cmd_to_execute cmd_to_execute, char *env[])
+void redirection (t_cmd_to_execute cmd_to_execute)
 {
 	pid_t pid;
 
@@ -72,13 +72,13 @@ void redirection (t_cmd_to_execute cmd_to_execute, char *env[])
 		close(cmd_to_execute.previous_pipe[0]);
 		close(cmd_to_execute.next_pipe[1]);       
 
-		process_redirection(cmd_to_execute.cmd, env, 0);
+		process_redirection(cmd_to_execute.cmd, 0);
 	}
 }
 */
 
 /*
-void execute_first_cmd(int pipe_fd[2], char **tab_cmds, char *env[])
+void execute_first_cmd(int pipe_fd[2], char **tab_cmds)
 {
 	pid_t pid;
 
@@ -88,13 +88,13 @@ void execute_first_cmd(int pipe_fd[2], char **tab_cmds, char *env[])
 		close(pipe_fd[0]);
 		dup2(pipe_fd[1],1);
 		close(pipe_fd[1]);
-		process_redirection(tab_cmds[0], env, 0);
+		process_redirection(tab_cmds[0], 0);
 	}    
 
 }
 */
 
-void execute_first_cmd(t_cmd_to_execute cmd_to_execute0, char *env[])
+void execute_first_cmd(t_cmd_to_execute cmd_to_execute0)
 {
 	pid_t pid;
 
@@ -104,7 +104,7 @@ void execute_first_cmd(t_cmd_to_execute cmd_to_execute0, char *env[])
 		close(cmd_to_execute0.next_pipe[0]);
 		dup2(cmd_to_execute0.next_pipe[1],1);
 		close(cmd_to_execute0.next_pipe[1]);
-		process_redirection(cmd_to_execute0.cmd, env);
+		process_redirection(cmd_to_execute0.cmd);
 		exit(0);
 	}    
 
@@ -120,7 +120,7 @@ void set_cmd_to_execute(int index, int *pipe_previous, int pipe_next, char *cmd)
 }
 */
 
-void ms_pipe2(char **tab_cmds, int nbr_cmds, char *env[])
+void ms_pipe2(char **tab_cmds, int nbr_cmds)
 {
 
 	int pipe_fd1[2];
@@ -138,8 +138,8 @@ void ms_pipe2(char **tab_cmds, int nbr_cmds, char *env[])
 
 	pipe(pipe_fd1);
 
-	// execute_first_cmd(pipe_fd1, tab_cmds, env);
-	execute_first_cmd(cmd_to_execute0, env);
+	// execute_first_cmd(pipe_fd1, tab_cmds);
+	execute_first_cmd(cmd_to_execute0);
 	i = 0;
 	while (i < nbr_cmds - 2)
 	{
@@ -147,7 +147,7 @@ void ms_pipe2(char **tab_cmds, int nbr_cmds, char *env[])
 		{
 
 			pipe(pipe_fd2);
-			redirection(tab_cmds[i + 1], pipe_fd1, pipe_fd2, env);
+			redirection(tab_cmds[i + 1], pipe_fd1, pipe_fd2);
 			close(pipe_fd1[0]);
 			close(pipe_fd1[1]);          
 		}
@@ -155,7 +155,7 @@ void ms_pipe2(char **tab_cmds, int nbr_cmds, char *env[])
 		{
 
 			pipe(pipe_fd1);
-			redirection(tab_cmds[i + 1], pipe_fd2, pipe_fd1, env);
+			redirection(tab_cmds[i + 1], pipe_fd2, pipe_fd1);
 
 			close(pipe_fd2[0]);
 			close(pipe_fd2[1]);
@@ -171,7 +171,7 @@ void ms_pipe2(char **tab_cmds, int nbr_cmds, char *env[])
 			close(pipe_fd2[1]);
 			dup2(pipe_fd2[0],0);
 			close(pipe_fd2[0]);
-			process_redirection(tab_cmds[nbr_cmds-1], env);
+			process_redirection(tab_cmds[nbr_cmds-1]);
 			exit(0);
 		}
 		close(pipe_fd2[1]);
@@ -185,7 +185,7 @@ void ms_pipe2(char **tab_cmds, int nbr_cmds, char *env[])
 			close(pipe_fd1[1]);
 			dup2(pipe_fd1[0],0);
 			close(pipe_fd1[0]);
-			process_redirection(tab_cmds[nbr_cmds-1], env);
+			process_redirection(tab_cmds[nbr_cmds-1]);
 			exit(0);
 		}
 		close(pipe_fd1[0]);
