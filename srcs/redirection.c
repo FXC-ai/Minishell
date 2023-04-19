@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 17:05:42 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/18 11:52:38 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/19 13:46:26 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	execute_command(char **parsed_args, int in_fd, int out_fd, char *env[])
 	else if (r == BUILTIN_ENV)
 		env_process(parsed_args, env);
 	else if (r == BUILTIN_EXIT)
-		exit_process();
+		exit_process(parsed_args);
 	else
 	{
 		cmd = normalize_cmd(parsed_args[0], env);
