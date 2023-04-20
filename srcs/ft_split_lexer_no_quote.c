@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_lexer_no_quote.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 14:59:24 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/20 11:49:48 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/20 17:32:49 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,61 +59,54 @@ static int	count_chr_no_quote(const char *str)
 	return (count);
 }
 
-static int process(char const *str, char **result, int nb_word)
+static int	process(char const *str, char **result, int nb_word)
 {
-    int i = 0;
-    int j = 0;
-    int start = 0;
-    int in_quote = 0;
-    char quote = '\0';
-    int in_word = 0;
+	int		i;
+	int		j;
+	int		start;
+	int		in_quote;
+	char	quote;
+	int		in_word;
 
+	quote = '\0';
+	in_word = 0;
+	i = 0;
+	j = 0;
+	in_quote = 0;
+	start = 0;
 	while (str[i] != '\0')
 	{
-        //printf("sdfsdffsddfs\n");
-        //printf("%d [%c] in quote = [%d], quote = [%c], in_word = [%d]\n", i, str[i], in_quote, quote, in_word);
-        if (in_word == 0 && in_quote == 0 && !is_space(str[i]))
-        {
-            if (is_quote(str[i]))
-            {
-                quote = str[i];
-                in_quote = 1;
-            }
-            start = i;
-            in_word = 1;
-        }
-        else if (in_word == 1 && in_quote == 0 && is_quote(str[i]))
-        {
-            quote = str[i];
-            in_quote = 1;
-            //result[j++] = ft_substr(str, start, i - start);
-            //start = i;
-            //printf("result[%d] = [%s]\n", j-1, result[j-1]);
-        }
-        else if (in_word == 1 && in_quote == 1 && str[i] == quote)
-        {
-            quote = '\0';
-            in_quote = 0;
-            //in_word = 0;
-            //result[j++] = ft_substr(str, start, i - start + 1);//EDITTTTTTTTTTTTT
-            //printf("result[%d] = [%s]\n", j-1, result[j-1]);
-        }
+		if (in_word == 0 && in_quote == 0 && !is_space(str[i]))
+		{
+			if (is_quote(str[i]))
+			{
+				quote = str[i];
+				in_quote = 1;
+			}
+			start = i;
+			in_word = 1;
+		}
+		else if (in_word == 1 && in_quote == 0 && is_quote(str[i]))
+		{
+			quote = str[i];
+			in_quote = 1;
+		}
+		else if (in_word == 1 && in_quote == 1 && str[i] == quote)
+		{
+			quote = '\0';
+			in_quote = 0;
+		}
 		else if (in_word == 1 && in_quote == 0 && is_space(str[i]))
 		{
 			in_word = 0;
-            result[j++] = ft_substr(str, start, i - start);
-            //printf("result[%d] = [%s]\n", j-1, result[j-1]);
+			result[j++] = ft_substr(str, start, i - start);
 		}
 		i++;
-        
 	}
-    
-    //printf("Nb word %d\n", nb_word);
-    //printf("nb_word = %d j = %d\n", nb_word, j);
-    if (j < nb_word)
-        result[j++] = ft_substr(str, start, i - start);
-    result[j] = NULL;
-    return (0);
+	if (j < nb_word)
+		result[j++] = ft_substr(str, start, i - start);
+	result[j] = NULL;
+	return (0);
 }
 
 char	**ft_split_lexer_no_quote(char *s)

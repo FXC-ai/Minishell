@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 17:00:40 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/19 17:42:10 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/20 17:34:17 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,7 +230,6 @@ char **separate_command (char *tab_cmds)
 		}
 	}
 	result[j] = NULL;
-	//print_tab("separate command", result);
 	return (result);
 }
 
@@ -251,12 +250,13 @@ t_parsed_args **init_parsed_args (char **tab_cmds)
 		if (current_struct == NULL)
 			return (NULL);
 		tmp = separate_command(tab_cmds[i]);
+		print_tab("tmp", tmp);
 		current_struct->cmd_args = ft_split_lexer_no_quote(concatenate_strings_with_spaces(tmp));
 		remove_quote_in_tab(current_struct->cmd_args);
 		freemalloc(tmp, size_tab(tmp));
 		current_struct->redirections = separate_redirections(tab_cmds[i]);
-		//print_tab("redirections", current_struct->redirections);
-		//print_tab(" command ",current_struct->cmd_args);
+		print_tab("redirections", current_struct->redirections);
+		print_tab(" command ",current_struct->cmd_args);
 		list_struct[i] = current_struct;
 		i++;
 	}
@@ -364,7 +364,7 @@ int lexer(char *str)
     }
 
 	parse_dollar(result);
-
+	print_tab("result", result);
 	cmd_red_lst = init_parsed_args(result);
 	freemalloc(result, size_tab(result));
 

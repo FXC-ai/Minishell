@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   normalize_cmd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 11:37:57 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/19 17:51:43 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/20 15:54:31 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,14 +65,14 @@ static char	*cmd_exists(char *cmd)
 		path_to_test = create_path_cmd(tab_paths[i], cmd);
 		if (access(path_to_test, F_OK) == 0)
 		{
-			ft_free_tabs(tab_paths, size_tab(tab_paths));
+			freemalloc(tab_paths, size_tab(tab_paths));
 			return (path_to_test);
 		}
 		free(path_to_test);
 		path_to_test = NULL;
 		i++;
 	}
-	ft_free_tabs(tab_paths, size_tab(tab_paths));
+	freemalloc(tab_paths, size_tab(tab_paths));
 	return (NULL);
 }
 

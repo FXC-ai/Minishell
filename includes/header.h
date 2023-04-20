@@ -13,16 +13,17 @@
 # include <fcntl.h>
 # include <termios.h>
 # include <errno.h>
+# include <stdbool.h>
 
 # define BUFFER_SIZE 1024
 
-#define BUILTIN_ECHO 1
-#define BUILTIN_CD 2
-#define BUILTIN_PWD 3
-#define BUILTIN_EXPORT 4
+# define BUILTIN_ECHO 1
+# define BUILTIN_CD 2
+# define BUILTIN_PWD 3
+# define BUILTIN_EXPORT 4
 # define BUILTIN_UNSET 5
 # define BUILTIN_ENV 6
-#define BUILTIN_EXIT 7
+# define BUILTIN_EXIT 7
 
 # define NO_SUCH_FILE_DIRECTORY 1
 # define COMMAND_NOT_FOUND 127
@@ -104,7 +105,6 @@ int		process_redirection(char **redirections, int **in_out_fd);
 //UTILS.C
 int		is_space(char c);
 void	print_tab(char *title, char **tab);
-void	ft_free_tabs(char **tab, int h);
 int		size_tab(char **tab);
 void	freemalloc(char **result, int j);
 char	*ft_strndup(char *str, size_t n);
