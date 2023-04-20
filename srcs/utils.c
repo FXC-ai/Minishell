@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 17:35:07 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/19 12:14:52 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/20 13:56:28 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,8 @@ void	print_tab(char *title, char **tab)
 	}
 	while (tab[i])
 	{
-		printf("line : [%s]\n",tab[i++]);
+		printf("line [%d]: [%s]\n",i,tab[i]);
+		i++;
 	}
 	printf("-----------------------------\n");
 }

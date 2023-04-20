@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 17:15:10 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/20 12:58:39 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/20 13:59:04 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,19 +43,21 @@ static int ft_unset(char *token)
 	j = 0;
 	while (global_sig.env[i] != NULL)
 	{
-		printf("ft_stncmp = %d && global_sig.env[i][%zu]\n", ft_strncmp(global_sig.env[i], key, len), len);
+		//printf("ft_stncmp = %d && global_sig.env[i][%zu]\n", ft_strncmp(global_sig.env[i], key, len), len);
 		if (ft_strncmp(global_sig.env[i], key, len) != 0 || global_sig.env[i][len] != '=')
 		{
 			new_env[j] = ft_strdup(global_sig.env[i]);
-			printf("new_env[%d] = %s\n", j, new_env[j]);
-			usleep(250000);
+			//printf("new_env[%d] = %s\n", j, new_env[j]);
+			//usleep(250000);
 			j++;
 		}
 		i++;
 	}
 
-	new_env[i] = NULL;
+	new_env[j] = NULL;
 	freemalloc(global_sig.env, size_tab(global_sig.env));
+	global_sig.env = NULL;
+	print_tab("new env", new_env);
 	cpy_env(new_env);
 	freemalloc(new_env, size_tab(global_sig.env));
 	//print_tab("ENV", global_sig.env);

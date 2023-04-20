@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 11:39:22 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/20 12:53:27 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/20 13:57:37 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ void	cpy_env(char **env)
 	int		i;
 
 	size_env = size_tab(env);
+	printf("%d\n",size_env);
 	global_sig.env = malloc(sizeof(char *) * (size_env + 1));
 	if (global_sig.env == NULL)
 		return ;
