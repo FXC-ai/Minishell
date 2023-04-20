@@ -3,28 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   normalize_with_space.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: victorgiordani01 <victorgiordani01@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 11:04:56 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/13 17:08:37 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/20 21:53:44 by victorgiord      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
 
-
-void cut_end_space(char **str)
+void	cut_end_space(char **str)
 {
-	int i;
-	int length;
-	char *copy_str;
+	int		i;
+	int		length;
+	char	*copy_str;
 
 	length = 0;
 	i = 0;
 	while ((*str)[length])
-	{
 		length++;
-	}
 	copy_str = malloc(length + 1);
 	while ((*str)[i])
 	{
@@ -33,11 +30,8 @@ void cut_end_space(char **str)
 	}
 	copy_str[i] = '\0';
 	length--;
-
 	while (copy_str[length] == ' ')
-	{
 		length--;
-	}
 	free(*str);
 	*str = malloc(length + 2);
 	i = 0;
@@ -49,51 +43,3 @@ void cut_end_space(char **str)
 	(*str)[i] = '\0';
 	free(copy_str);
 }
-
-void normalize_with_space(char **str)
-{
-	char *p;
-	char *prev;
-	char quote;
-	int	i;
-
-	prev = NULL;
-	quote = '\0';
-	i = 0;
-	while (str[i])
-	{
-		p = str[i];
-		while (*p != '\0')
-		{
-			if (quote != '\0' && *p == quote)
-			{
-				quote = '\0';
-			}
-			else if (quote == '\0' && (*p == '\'' || *p == '\"'))
-			{
-				quote = *p;
-				p++;
-			}
-			else if (quote == '\0' && (*p == '<' || *p == '>'))
-			{
-				if (prev != NULL && !is_space(*prev) && *prev != '\'' && *prev != '\"' && *prev != *p) {
-					ft_memmove(p + 1, p, ft_strlen(p) + 1);
-					*p = ' ';
-					prev = p;
-				}
-				p++;
-				if (*(p) != '\0' && !is_space(*(p)) && *(p) != '\'' && *(p) != '\"' && *(p) != *(p - 1)) {
-					ft_memmove(p + 1, p, ft_strlen(p) + 1);
-					*(p) = ' ';
-				}
-			}
-			else
-			{
-				prev = p;
-				p++;
-			}
-		}
-		i++;
-	}
-}
-

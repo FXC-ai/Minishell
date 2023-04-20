@@ -3,28 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: victorgiordani01 <victorgiordani01@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 17:00:40 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/20 17:34:17 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/20 22:03:16 by victorgiord      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
 
-int is_valid_chevron (char *tab_cmd, char chev_type)
+int	is_valid_chevron(char *tab_cmd, char chev_type)
 {
-    int i;
-    int count;
-	int in_quote;
-	char quote;
+	int		i;
+	int		count;
+	int		in_quote;
+	char	quote;
 
-    count = 0;
-    i = 0;
+	count = 0;
+	i = 0;
 	in_quote = 0;
 	quote = '\0';
-    while (tab_cmd[i] != '\0')
-    {
+	while (tab_cmd[i] != '\0')
+	{
 		if (tab_cmd[i] == '\'' || tab_cmd[i] == '\"')
 		{
 			if (in_quote == 0)
@@ -38,62 +38,54 @@ int is_valid_chevron (char *tab_cmd, char chev_type)
 				in_quote = 0;
 			}
 		}
-        if (tab_cmd[i] == chev_type && in_quote == 0)
-        {
-            if (tab_cmd[i + 1] == chev_type)
-                i++;
-            i++;
-            while (is_space(tab_cmd[i]) == 1)
-                i++;
-            if (is_chevron(tab_cmd[i]) == 1)
-                return -1;
-            count++;
-        }
-        i++;
-    }
-    return count;
+		if (tab_cmd[i] == chev_type && in_quote == 0)
+		{
+			if (tab_cmd[i + 1] == chev_type)
+				i++;
+			i++;
+			while (is_space(tab_cmd[i]) == 1)
+				i++;
+			if (is_chevron(tab_cmd[i]) == 1)
+				return (-1);
+			count++;
+		}
+		i++;
+	}
+	return (count);
 }
 
-static int find_lenght(char *cmd, char chev_type)
-{
-    int i;
-	int lenght;
-
-    i = 0;
-    lenght = 0;
-
-    while (cmd[i])
-    {
-        if (cmd[i] == chev_type)
-        {
-
-            if (cmd[i+1] == chev_type)
-            {
-                i++;
-            }
-            i++;
-            while (is_space(cmd[i]) == 1)
-            {
-                i++;
-            }
-            while (cmd[i] && cmd[i] != ' ' && !is_chevron(cmd[i]))
-            {
-                i++;
-            }
-            lenght = i;
-            break;
-        }
-        i++;
-    }
-	return lenght;
-}
-
-static int find_lenght_command(char *cmd)
+static int	find_lenght(char *cmd, char chev_type)
 {
 	int	i;
-	int in_quote;
-	char quote;
-	int length;
+	int	lenght;
+
+	i = 0;
+	lenght = 0;
+	while (cmd[i])
+	{
+		if (cmd[i] == chev_type)
+		{
+			if (cmd[i + 1] == chev_type)
+				i++;
+			i++;
+			while (is_space(cmd[i]) == 1)
+				i++;
+			while (cmd[i] && cmd[i] != ' ' && !is_chevron(cmd[i]))
+				i++;
+			lenght = i;
+			break ;
+		}
+		i++;
+	}
+	return (lenght);
+}
+
+static int	find_lenght_command(char *cmd)
+{
+	int		i;
+	int		in_quote;
+	char	quote;
+	int		length;
 
 	in_quote = 0;
 	quote = '\0';
@@ -113,28 +105,24 @@ static int find_lenght_command(char *cmd)
 				quote = '\0';
 				in_quote = 0;
 			}
-			//printf("quote = %c in_quote = %d\n", quote, in_quote);
 		}
 		if (cmd[i] && in_quote == 0 && is_chevron(cmd[i]))
-		{
-			
 			return (length);
-		}
 		length++;
 		i++;
 	}
 	return (length);
 }
 
-char **separate_redirections (char *tab_cmds)
+char **separate_redirections(char *tab_cmds)
 {
-	int i;
-	int j;
-	int lenght;
-	int in_quote;
-	char quote;
-	char **result;
-	int	nbr_chev;
+	int		i;
+	int		j;
+	int		lenght;
+	int		in_quote;
+	char	quote;
+	char	**result;
+	int		nbr_chev;
 
 	quote = '\0';
 	in_quote = 0;
@@ -164,7 +152,7 @@ char **separate_redirections (char *tab_cmds)
 		}
 		if (in_quote == 0 && (tab_cmds[i] == '<' || tab_cmds[i] == '>'))
 		{
-			lenght = find_lenght(tab_cmds+i, tab_cmds[i]);
+			lenght = find_lenght(tab_cmds + i, tab_cmds[i]);
 			result[j++] = ft_substr(tab_cmds, i, lenght);
 			i += lenght - 2;
 		}
@@ -174,12 +162,12 @@ char **separate_redirections (char *tab_cmds)
 	return (result);
 }
 
-char **separate_command (char *tab_cmds)
+char	**separate_command(char *tab_cmds)
 {
-	int i;
-	int j;
-	int length;
-	char **result;
+	int		i;
+	int		j;
+	int		length;
+	char	**result;
 
 	j = 0;
 	i = 0;
@@ -188,7 +176,7 @@ char **separate_command (char *tab_cmds)
 		length = find_lenght_command(tab_cmds + i);
 		if (length != 0)
 			j++;
-		i+=length;
+		i += length;
 		while (is_chevron(tab_cmds[i]))
 		{			
 			while (tab_cmds[i] && is_chevron(tab_cmds[i]))
@@ -204,19 +192,17 @@ char **separate_command (char *tab_cmds)
 	result = malloc((j + 1) * sizeof(char *));
 	if (result == NULL)
 		return (NULL);
-
 	i = 0;
 	j = 0;
 	while (tab_cmds[i])
 	{
-		
 		length = find_lenght_command(tab_cmds + i);
 		if (length != 0)
 		{
 			result[j] = ft_substr(tab_cmds, i, length);
 			j++;
 		}
-		i+=length;
+		i += length;
 		while (is_chevron(tab_cmds[i]))
 		{			
 			while (tab_cmds[i] && is_chevron(tab_cmds[i]))
@@ -233,12 +219,12 @@ char **separate_command (char *tab_cmds)
 	return (result);
 }
 
-t_parsed_args **init_parsed_args (char **tab_cmds)
+t_parsed_args	**init_parsed_args(char **tab_cmds)
 {
-	t_parsed_args **list_struct;
-	t_parsed_args *current_struct;
-	char **tmp;
-	int i;
+	t_parsed_args	**list_struct;
+	t_parsed_args	*current_struct;
+	char			**tmp;
+	int				i;
 
 	list_struct = malloc((size_tab(tab_cmds) + 1) * sizeof(t_parsed_args * ));
 	if (list_struct == NULL)
@@ -264,7 +250,6 @@ t_parsed_args **init_parsed_args (char **tab_cmds)
 	return (list_struct);
 }
 
-
 char	check_redirections (char *str, char type_chev)
 {
 	char *str_from_chev;
@@ -280,28 +265,26 @@ char	check_redirections (char *str, char type_chev)
 		if (is_chevron(*str_from_chev) == 1 || *str_from_chev == '\0')
 		{
 			global_sig.ms_errno = 258;
-			return *str_from_chev;
+			return (*str_from_chev);
 		}
 	}
-	return 1;
+	return (1);
 }
 
-char *error_redirection_msg (char chr_err)
+char	*error_redirection_msg(char chr_err)
 {
 	if (chr_err == '>')
-		return ft_strdup("minishell: syntax error near unexpected token `>'\n");
+		return (ft_strdup("minishell: syntax error near unexpected token `>'\n"));
 	else if (chr_err == '<')
-		return ft_strdup("minishell: syntax error near unexpected token `<'\n");
-	return ft_strdup("minishell: syntax error near unexpected token `newline'\n");
+		return (ft_strdup("minishell: syntax error near unexpected token `<'\n"));
+	return (ft_strdup("minishell: syntax error near unexpected token `newline'\n"));
 }
 
-int check_redirections_process (char **tab_cmds)
+int	check_redirections_process(char **tab_cmds)
 {
-	int i;
-	int result;
-	char *error_msg;
+	int		i;
+	char	*error_msg;
 
-	result = 0;
 	i = 0;
 	while (tab_cmds[i] != NULL)
 	{
@@ -334,47 +317,37 @@ int check_redirections_process (char **tab_cmds)
 
 int lexer(char *str)
 {
-	char	**result;
-	char	c = '|';
-	int     i;
-	int		*in_out_fd;
-	t_parsed_args **cmd_red_lst;
+	char			**result;
+	char			c = '|';
+	int				i;
+	int				*in_out_fd;
+	t_parsed_args	**cmd_red_lst;
 
 	in_out_fd = malloc(2 * sizeof(int));
 	if (in_out_fd == NULL)
-		return 0;
-
-    i = 0;
+		return (0);
+	i = 0;
 	result = ft_split_lexer(str, c);
-
-	//print_tab("ft_split_lexer", result);
 	if (check_redirections_process(result) == 0)
 	{
 		free(in_out_fd);
 		freemalloc(result, size_tab(result));
 		return (1);
 	}
-
 	if (result == NULL)
-		return 0;
-    while (result[i])
-    {   
-        cut_end_space(&(result[i]));
-        i++;
-    }
-
+		return (0);
+	while (result[i])
+		cut_end_space(&(result[i++]));
 	parse_dollar(result);
 	print_tab("result", result);
 	cmd_red_lst = init_parsed_args(result);
 	freemalloc(result, size_tab(result));
-
 	in_out_fd[0] = STDIN_FILENO;
 	in_out_fd[1] = STDOUT_FILENO;
-
 	if (cmd_red_lst[1] == NULL)
 	{
 		if (process_single_command(cmd_red_lst, in_out_fd) == -1)
-			return (-1);	
+			return (-1);
 	}
 	else
 	{

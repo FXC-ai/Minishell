@@ -3,19 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: victorgiordani01 <victorgiordani01@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 11:39:22 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/20 14:56:23 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/20 22:04:42 by victorgiord      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../includes/header.h"
 
 t_sig	global_sig;
 
-void	sig_init()
+void	sig_init(void)
 {
 	global_sig.sig_int = 0;
 	global_sig.sig_quit = 0;
@@ -66,7 +65,7 @@ int	check_entry(char *line)
 	return (1);
 }
 
-void	wait_for_input()
+void	wait_for_input(void)
 {
 	char	*line;
 
@@ -91,14 +90,12 @@ void	wait_for_input()
 	}
 }
 
-
 void	cpy_env(char **env)
 {
 	int		size_env;
 	int		i;
 
 	size_env = size_tab(env);
-	//printf("%d\n",size_env);
 	global_sig.env = malloc(sizeof(char *) * (size_env + 1));
 	if (global_sig.env == NULL)
 		return ;
@@ -109,18 +106,13 @@ void	cpy_env(char **env)
 		i++;
 	}
 	global_sig.env[i] = NULL;
-	//print_tab("copie de env", result);
-
 }
-
 
 int	main(int ac, char **argv, char *env[])
 {
 	struct termios		tm;
 
 	cpy_env(env);
-	
-
 	(void) argv;
 	(void) ac;
 	sig_init();

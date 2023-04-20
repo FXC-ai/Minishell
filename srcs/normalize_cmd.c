@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   normalize_cmd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: victorgiordani01 <victorgiordani01@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 11:37:57 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/20 15:54:31 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/20 21:37:39 by victorgiord      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
 
-static char	**create_tab_paths()
+static char	**create_tab_paths(void)
 {
 	int		i;
 	char	*paths;
@@ -27,13 +27,11 @@ static char	**create_tab_paths()
 			paths = ft_substr(global_sig.env[i], 5, ft_strlen(global_sig.env[i]) - 4);
 		i++;
 	}
-	
 	if (paths != NULL)
 	{
 		paths_tab = ft_split(paths, ':');
 		free(paths);
 	}
-		
 	paths = NULL;
 	return (paths_tab);
 }
@@ -76,37 +74,15 @@ static char	*cmd_exists(char *cmd)
 	return (NULL);
 }
 
-/*static char *extract_command_name(const char *full_path)
-{
-	//F_OK = LE FICHIER EXITSTE, X_OK LE FICHIER EST EXECUTABLE
-	if (full_path == NULL || access(full_path, F_OK | X_OK) != 0)
-	{
-		return NULL;
-	}
-	const char *last_slash = strrchr(full_path, '/');
-	if (last_slash == NULL)
-	{
-		return strdup(full_path);
-	} 
-	else
-	{
-		return strdup(last_slash + 1);
-	}
-	//faudra free result
-}*/
-
-char *normalize_cmd(char* str)
+char	*normalize_cmd(char *str)
 {	
-	//char *result;
-
 	if (str == NULL || str[0] == '\0')
-		return str;
+		return (str);
 	// Cas ou la commande est envoyée sous forme de chemin
 	if (ft_strchr(str, '/') != NULL)
 	{
-		return str;
+		return (str);
 	}
-	
 	// Cas ou la commande est envoyée sans chemin
-	return cmd_exists(str);
+	return (cmd_exists(str));
 }
