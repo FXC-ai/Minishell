@@ -6,35 +6,35 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 17:15:10 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/20 13:59:04 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/20 15:24:02 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/header.h"
 
-static int ft_unset(char *token)
+int ft_unset(char *token)
 {
-	char    *key;
 	size_t  len;
 	int		i;
 	int		j;
 	char **new_env;
 
-
-	new_env = malloc((size_tab(global_sig.env) + 1 - 1) * sizeof(char *));
+	if (key_already_exist(token) == 1)
+	{
+		new_env = malloc((size_tab(global_sig.env)) * sizeof(char *));
+	}
+	else
+		new_env = malloc((size_tab(global_sig.env) + 1) * sizeof(char *));
 	if (new_env == NULL)
 		return 0;
-
-
-	key = token;
-	len = ft_strlen(key);
+	len = ft_strlen(token);
 	i = 0;
 	while (token[i] != '\0' && token[i] != '=')
 	{
 		if (ft_isalnum(token[i]) == 0)
 		{
 			printf("export: `%s': not a valid identifier\n", token);
-			return (1);
+			return (0);
 		}
 		i++;
 	}
@@ -44,20 +44,24 @@ static int ft_unset(char *token)
 	while (global_sig.env[i] != NULL)
 	{
 		//printf("ft_stncmp = %d && global_sig.env[i][%zu]\n", ft_strncmp(global_sig.env[i], key, len), len);
-		if (ft_strncmp(global_sig.env[i], key, len) != 0 || global_sig.env[i][len] != '=')
+		if (ft_strncmp(global_sig.env[i], token, len) != 0 || global_sig.env[i][len] != '=')
 		{
+			
 			new_env[j] = ft_strdup(global_sig.env[i]);
 			//printf("new_env[%d] = %s\n", j, new_env[j]);
 			//usleep(250000);
 			j++;
 		}
+		// else
+		// {
+		// 	printf("\n[ppo[po[p\n");
+		// }
 		i++;
 	}
 
 	new_env[j] = NULL;
 	freemalloc(global_sig.env, size_tab(global_sig.env));
 	global_sig.env = NULL;
-	print_tab("new env", new_env);
 	cpy_env(new_env);
 	freemalloc(new_env, size_tab(global_sig.env));
 	//print_tab("ENV", global_sig.env);
@@ -76,7 +80,7 @@ int unset_process (char **parsed_args)
 	i = 1;
 	while (parsed_args[i] != NULL)
 	{
-		printf("parsed_args[%d] = %s\n",i, parsed_args[i]);
+		//printf("parsed_args[%d] = %s\n",i, parsed_args[i]);
 		ft_unset(parsed_args[i]);
 		i++;
 	}

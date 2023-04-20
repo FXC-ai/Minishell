@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 11:39:22 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/20 13:57:37 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/20 14:56:23 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void	cpy_env(char **env)
 	int		i;
 
 	size_env = size_tab(env);
-	printf("%d\n",size_env);
+	//printf("%d\n",size_env);
 	global_sig.env = malloc(sizeof(char *) * (size_env + 1));
 	if (global_sig.env == NULL)
 		return ;

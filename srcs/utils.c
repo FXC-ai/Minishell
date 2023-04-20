@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 17:35:07 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/20 13:56:28 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/20 15:14:35 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,4 +196,42 @@ void	print_command_not_found(char *str)
 int is_chevron (char c)
 {
     return c == '>' || c == '<';
+}
+
+int key_already_exist(char *key)
+{
+	int i;
+	int j;
+
+	i = 0;
+	while (global_sig.env[i])
+	{
+		j = 0;
+		while ((global_sig.env[i][j]) == key[j])
+		{
+			j++;
+		}
+		if (j == (int)ft_strlen(key))
+		{
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
+char *get_key_from_token(char *token)
+{
+	int i;
+
+	i = 0;
+	while (token[i])
+	{
+		if (token[i] == '=')
+		{
+			return ft_substr(token, 0, i);
+		}
+		i++;
+	}
+	return (token);
 }

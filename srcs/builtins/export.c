@@ -3,49 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 14:32:31 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/19 17:56:26 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/20 15:43:43 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/header.h"
 
-int	key_already_exist(char *key)
+
+
+void add_to_env(char *ligne, char *value)
 {
-	int		i;
-	int		j;
-
-	i = 0;
-	while (global_sig.env[i])
-	{
-		j = 0;
-		while ((global_sig.env[i][j]) == key[j])
-		{
-			j++;
-		}
-		if (j == (int) ft_strlen(key))
-		{
-			return (1);
-		}
-		i++;
-	}
-	return (0);
-}
-
-void	add_to_env(char *ligne, char *value)
-{
-	char	*result;
-	int		i;
-	int		j;
-	char	**s_result;
-
-	
+	char *result;
+	int i;
+	int j;
+	char **s_result;
 
 	s_result = ft_split(ligne, '=');
 	unset_process_str(s_result[0]);
-	
+
 	i = 0;
 	j = 0;
 
@@ -73,10 +51,43 @@ void	add_to_env(char *ligne, char *value)
 	freemalloc(s_result, size_tab(s_result));
 }
 
-void	print_export(void)
+static void ft_export(char *token)
 {
-	int	i;
-	int	j;
+	printf("Token %s\n", token);
+	char **new_env;
+	int i;
+	char *key;
+
+	key = get_key_from_token(token);
+	i = 0;
+	if (key_already_exist(key) == 1)
+	{
+		new_env = malloc((size_tab(global_sig.env) + 1) * sizeof(char *));
+	}
+	else
+	{
+		new_env = malloc((size_tab(global_sig.env) + 2) * sizeof(char *));
+	}
+	ft_unset(key);
+	free(key);
+	while (global_sig.env[i])
+	{
+		new_env[i] = ft_strdup(global_sig.env[i]);
+		i++;
+	}
+
+	new_env[i] = ft_strdup(token);
+	new_env[i + 1] = NULL;
+
+	freemalloc(global_sig.env, size_tab(global_sig.env));
+	cpy_env(new_env);
+	freemalloc(new_env, size_tab(new_env));
+}
+
+void print_export(void)
+{
+	int i;
+	int j;
 
 	i = 0;
 	while (global_sig.env[i])
@@ -102,32 +113,53 @@ void	print_export(void)
 	}
 }
 
-void	export_process(char **current_c)
+static int check_entry_export(char *token)
 {
-	int		i;
-	char	*equal_sign;
-	char	*value;
-	char	*key;
+	int	i;
+	int	has_egal;
+
+	has_egal = 0;
+	i = 0;
+	while (token[i])
+	{
+		if (token[0] == '=')
+		{
+			ft_putstr_fd("export: `", 2);
+			ft_putstr_fd(token, 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
+			global_sig.ms_errno = 1;
+			return (0);
+		}
+		if (ft_strlen(token) <= 1)
+		{
+			return (0);
+		}
+		if (token[i] == '=')
+		{
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
+void export_process(char **parsed_args)
+{
+	int i;
 
 	i = 0;
-	if (current_c[1] == NULL)
+	if (parsed_args[1] == NULL)
 		print_export();
 	else
 	{
-		while (current_c[1][i] != '\0' && current_c[1][i] != '=')
+		i = 1;
+		while (parsed_args[i] != NULL)
 		{
-			if (ft_isalnum(current_c[1][i]) == 0)
+			if (check_entry_export(parsed_args[i]) == 1)
 			{
-				printf("export: `%s': not a valid identifier\n", current_c[1]);
-				return ;
+				ft_export(parsed_args[i]);
 			}
 			i++;
 		}
-		equal_sign = ft_strchr(current_c[1], '=');
-		if (equal_sign == NULL)
-			return ;
-		key = current_c[1];
-		value = ++equal_sign;
-		add_to_env(key, value);
 	}
 }

@@ -113,6 +113,8 @@ int		is_chevron (char c);
 void	free_struct(t_parsed_args **cmd_red_lst);
 char	*concatenate_strings_with_spaces(char **strings);
 void	remove_quote_in_tab(char **tab);
+int key_already_exist(char *key);
+char *get_key_from_token(char *token);
 
 // IS_BUILTINS.C
 int		is_builtins(char *str);
@@ -146,6 +148,8 @@ void	export_process(char **current_command);
 void	add_to_env(char *ligne, char *value);
 void    exit_process(char **parsed_args);
 int		unset_process_str(char *key);
+
+int ft_unset(char *token);
 
 extern t_sig global_sig;
 
