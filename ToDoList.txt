@@ -1,7 +1,10 @@
+echo $HOME$HOME affiche rien
+
+
 cd leaks
 
 Essayez ctrl-\ après avoir lancé une commande bloquante, comme cat ou grep sans argument.
-verifier di l utilisation des " et des ' est consistante dans le lexer
+
 unset leaks
 unset sans rien segfault
 unset et export doivent pouvoir creer plusieurs variables 
