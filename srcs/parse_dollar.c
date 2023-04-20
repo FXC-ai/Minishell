@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   parse_dollar.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 11:01:12 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/19 18:09:37 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/19 18:47:21 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
 
-
 char *find_env_variable (char *var_name)
 {
-	int i = 0;
+	int	i;
 
+	i = 0;
 	while (global_sig.env[i] != NULL)
 	{
 		if (ft_strncmp(global_sig.env[i], var_name, ft_strlen(var_name)) == 0 && global_sig.env[i][ft_strlen(var_name)] == '=')
@@ -25,82 +25,72 @@ char *find_env_variable (char *var_name)
 		}
 		i++;
 	}
-    return NULL;
-
+	return (NULL);
 }
 
-
-int check_simple_quote(char *cmd, char *trimmed_command)
+int	check_simple_quote(char *cmd, char *trimmed_command)
 {
-    int size_cmd;
-    int size_trimmed_cmd;
-    int size_back;
-    int result;
+	int	size_cmd;
+	int	size_trimmed_cmd;
+	int	size_back;
+	int	result;
 
-    result = 2;    
-    size_cmd = ft_strlen(cmd);
-    size_trimmed_cmd = ft_strlen(trimmed_command);
-    size_back = size_cmd - size_trimmed_cmd;
-
-    while (size_back > 0)
-    {
-        if (cmd[size_back] == '\'')
-        {
-            result--;
-            break;
-        }
-        if (cmd[size_back] == '\"')
-        {
-            break;
-        }
-        size_back--;
-    }
-
-    while (*trimmed_command != '\0')
-    {
-        if (*trimmed_command == '\'')
-        {
-            result--;
-            break;
-        }
-        if (cmd[size_back] == '\"')
-        {
-            break;
-        }
-        trimmed_command++;
-    }
-    return result;
+	result = 2;
+	size_cmd = ft_strlen(cmd);
+	size_trimmed_cmd = ft_strlen(trimmed_command);
+	size_back = size_cmd - size_trimmed_cmd;
+	while (size_back > 0)
+	{
+		if (cmd[size_back] == '\'')
+		{
+			result--;
+			break ;
+		}
+		if (cmd[size_back] == '\"')
+			break ;
+		size_back--;
+	}
+	while (*trimmed_command != '\0')
+	{
+		if (*trimmed_command == '\'')
+		{
+			result--;
+			break ;
+		}
+		if (cmd[size_back] == '\"')
+			break ;
+		trimmed_command++;
+	}
+	return (result);
 }
 
-int check_simple_quote2(char *cmd, char *trimmed_command)
+int	check_simple_quote2(char *cmd, char *trimmed_command)
 {
-    int i;
-    int in_quote;
-    char quote;
+	int		i;
+	int		in_quote;
+	char	quote;
 
-    quote = '\0';
-    in_quote = 0;
-    i = 0;
-
-    while (&cmd[i] != trimmed_command)
-    {
-        if (cmd[i] == '\'' || cmd[i] == '\"')
-        {
-            if (in_quote == 0)
-            {
-                quote = cmd[i];
-                in_quote = 1;
-            }
-            else if (cmd[i] == quote)
-            {
-                quote = '\0';
-                in_quote = 0;
-            }
-        }
-        i++;
-    }
-
-    return in_quote && quote == '\'';
+	quote = '\0';
+	in_quote = 0;
+	i = 0;
+	while (&cmd[i] != trimmed_command)
+	{
+		if (cmd[i] == '\'' || cmd[i] == '\"')
+		{
+			if (in_quote == 0)
+			{
+				quote = cmd[i];
+				in_quote = 1;
+			}
+			else if (cmd[i] == quote)
+			{
+				quote = '\0';
+				in_quote = 0;
+			}
+		}
+		i++;
+	}
+	return (in_quote && quote == '\'');
 }
 
 void parse_dollar(char **tab_cmds)

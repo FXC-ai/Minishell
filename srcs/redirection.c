@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/*/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 17:05:42 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/19 18:16:16 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../includes/header.h"
 
@@ -71,13 +71,6 @@ int process_delimiter(char *del)
 	while (rdd > 0)
 	{
 		buffer[rdd] = '\0';
-		if (ft_strcmp(buffer, "\4\n") == 0)
-		{
-			close(fd);
-			unlink("TMPDOC");
-			free(del_n);
-			return (-1);
-		}
 		if (ft_strcmp(del_n, buffer) == 0)
 		{
 			break;
