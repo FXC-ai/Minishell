@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_dollar.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 11:01:12 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/19 18:47:21 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/20 16:35:41 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,67 +104,71 @@ void parse_dollar(char **tab_cmds)
     char *str1;
     char *str2;
 
-
     i = 0;
     while (tab_cmds[i] != NULL)
     {
         trimmed_command = ft_strchr(tab_cmds[i], '$');
-        
-        while (trimmed_command != NULL && *trimmed_command != '\0')
+        //printf("trimmed_command = %s\n", trimmed_command);
+        if (trimmed_command != NULL && (!is_space(trimmed_command[1]) && trimmed_command[1] != '\0'))
         {
-            j = 0;
-            while (is_space(trimmed_command[j]) != 1 
-                    && trimmed_command[j] != '\0'
-                    && trimmed_command[j] != '\''
-                    && trimmed_command[j] != '\"')
-                j++;
-
-            //check_simple_quote2(tab_cmds[i], trimmed_command);
-            if (check_simple_quote2(tab_cmds[i], trimmed_command) == 0)
+            while (trimmed_command != NULL && *trimmed_command != '\0')
             {
-                key = ft_strndup(trimmed_command+1, j-1);
-                env_variable = find_env_variable(key);
-                if (env_variable != NULL)
+                j = 1;
+                while (is_space(trimmed_command[j]) != 1 
+                        && trimmed_command[j] != '\0'
+                        && trimmed_command[j] != '\''
+                        && trimmed_command[j] != '\"'
+                        && trimmed_command[j] != '$'
+                        )
+                    j++;
+
+                //check_simple_quote2(tab_cmds[i], trimmed_command);
+                if (check_simple_quote2(tab_cmds[i], trimmed_command) == 0)
                 {
-                    tmp = ft_strndup(tab_cmds[i], ft_strlen(tab_cmds[i]) - ft_strlen(trimmed_command));
-                    str1 = ft_strjoin(tmp, env_variable);
-                    str2 = ft_strndup(trimmed_command + j, ft_strlen(trimmed_command + j));
+                    key = ft_strndup(trimmed_command+1, j-1);
+                    env_variable = find_env_variable(key);
+                    if (env_variable != NULL)
+                    {
+                        tmp = ft_strndup(tab_cmds[i], ft_strlen(tab_cmds[i]) - ft_strlen(trimmed_command));
+                        str1 = ft_strjoin(tmp, env_variable);
+                        str2 = ft_strndup(trimmed_command + j, ft_strlen(trimmed_command + j));
 
-                    //printf("tmp = [%s] | str1 = [%s] | str2 = [%s]\n", tmp, str1, str2);
+                        //printf("tmp = [%s] | str1 = [%s] | str2 = [%s]\n", tmp, str1, str2);
 
-                    free(tab_cmds[i]);
-                    tab_cmds[i] = NULL;
-                    tab_cmds[i] = ft_strjoin(str1, str2);
-                    free(key);
-                    free(tmp);
-                    free(str1);
-                    free(str2);
-                    trimmed_command = ft_strchr(tab_cmds[i], '$');
+                        free(tab_cmds[i]);
+                        tab_cmds[i] = NULL;
+                        tab_cmds[i] = ft_strjoin(str1, str2);
+                        free(key);
+                        free(tmp);
+                        free(str1);
+                        free(str2);
+                        trimmed_command = ft_strchr(tab_cmds[i], '$');
+                    }
+                    else
+                    {
+                        if (trimmed_command[1] == '?')
+                            env_variable = ft_itoa(global_sig.ms_errno);
+                        else
+                            env_variable = ft_strdup("");
+
+                        tmp = ft_strndup(tab_cmds[i], ft_strlen(tab_cmds[i]) - ft_strlen(trimmed_command));
+                        str1 = ft_strjoin(tmp, env_variable);
+                        str2 = ft_strndup(trimmed_command + j, ft_strlen(trimmed_command + j));
+                        free(tab_cmds[i]);
+                        tab_cmds[i] = NULL;
+                        tab_cmds[i] = ft_strjoin(str1, str2);
+                        free(key);
+                        free(tmp);
+                        free(str1);
+                        free(str2);
+                        free(env_variable);
+                        trimmed_command = ft_strchr(tab_cmds[i], '$');
+                    }
                 }
                 else
                 {
-                    if (trimmed_command[1] == '?')
-                        env_variable = ft_itoa(global_sig.ms_errno);
-                    else
-                        env_variable = ft_strdup("");
-
-                    tmp = ft_strndup(tab_cmds[i], ft_strlen(tab_cmds[i]) - ft_strlen(trimmed_command));
-                    str1 = ft_strjoin(tmp, env_variable);
-                    str2 = ft_strndup(trimmed_command + j, ft_strlen(trimmed_command + j));
-                    free(tab_cmds[i]);
-                    tab_cmds[i] = NULL;
-                    tab_cmds[i] = ft_strjoin(str1, str2);
-                    free(key);
-                    free(tmp);
-                    free(str1);
-                    free(str2);
-                    free(env_variable);
-                    trimmed_command = ft_strchr(tab_cmds[i], '$');
+                    trimmed_command = ft_strchr(trimmed_command +1, '$');
                 }
-            }
-            else
-            {
-                trimmed_command = ft_strchr(trimmed_command +1, '$');
             }
         }
         //printf("result = [%s]\n", tab_cmds[i]);
