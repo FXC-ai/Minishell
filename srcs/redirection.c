@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 17:05:42 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/21 16:55:34 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/21 17:58:30 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	execute_command(char **parsed_args, int in_fd, int out_fd)
 {
 	char	*cmd;
-
 
 	if (in_fd != STDIN_FILENO)
 	{

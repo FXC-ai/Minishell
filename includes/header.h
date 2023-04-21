@@ -159,6 +159,9 @@ char *get_key_from_token(char *token);
 int		count_chr(char *str, char c);
 int	is_quote(char c);
 void	init_utils(t_utils *u);
+char	check_redirections(char *str, char type_chev);
+int	chr_is_in_quote(char *str, int ind_char);
+int	check_redirections_process(char **tab_cmds);
 
 // IS_BUILTINS.C
 int		is_builtins(char *str);
