@@ -1,5 +1,5 @@
 SRCS	=	$(addprefix srcs/, main.c signal.c is_builtins.c normalize_cmd.c lexer.c ft_split_lexer.c process_commands.c process_redirections.c \
-				process_single_command.c\
+				process_single_command.c process_commands2.c\
 				utils.c utils2.c utils3.c utils4.c redirection.c ft_split_lexer_no_quote.c pre_parsing.c) \
 			$(addprefix srcs/builtins/, echo.c cd.c pwd.c env.c exit.c unset.c export.c) \
 			$(addprefix srcs/dollars_manage/, check_quote.c parse_dollar.c) \
@@ -26,7 +26,7 @@ INCLUDE = includes
 
 $(NAME): $(OBJS)
 	make -C libft
-	$(CC) -o $(NAME) $(OBJS) -Llibft -lft -I $(INCLUDE) -lreadline -L ../../.brew/opt/readline/lib -I ../../.brew/opt/readline/include -fsanitize=address
+	$(CC) -o $(NAME) $(OBJS) -Llibft -lft -I $(INCLUDE) -lreadline -L ../../.brew/opt/readline/lib -I ../../.brew/opt/readline/include
 
 all: $(NAME)
 
