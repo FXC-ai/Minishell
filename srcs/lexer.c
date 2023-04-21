@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 17:00:40 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/21 11:11:27 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/21 15:05:46 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,13 +236,13 @@ t_parsed_args	**init_parsed_args(char **tab_cmds)
 		if (current_struct == NULL)
 			return (NULL);
 		tmp = separate_command(tab_cmds[i]);
-		print_tab("tmp", tmp);
+		//print_tab("tmp", tmp);
 		current_struct->cmd_args = ft_split_lexer_no_quote(concatenate_strings_with_spaces(tmp));
 		remove_quote_in_tab(current_struct->cmd_args);
 		freemalloc(tmp, size_tab(tmp));
 		current_struct->redirections = separate_redirections(tab_cmds[i]);
-		print_tab("redirections", current_struct->redirections);
-		print_tab(" command ",current_struct->cmd_args);
+		//print_tab("redirections", current_struct->redirections);
+		//print_tab(" command ",current_struct->cmd_args);
 		list_struct[i] = current_struct;
 		i++;
 	}
@@ -250,70 +250,101 @@ t_parsed_args	**init_parsed_args(char **tab_cmds)
 	return (list_struct);
 }
 
-char	check_redirections (char *str, char type_chev)
+int chr_is_in_quote (char *str, int ind_char)
 {
-	char *str_from_chev;
+	int		i;
+	int		in_quote;
+	char	quote;
 
-	str_from_chev = ft_strchr(str, type_chev);
-	if (str_from_chev != NULL)
+	if ((size_t) ind_char > ft_strlen(str))
 	{
-		str_from_chev++;
-		if (*str_from_chev == type_chev)
-			str_from_chev++;
-		while (is_space(*str_from_chev) == 1)
-			str_from_chev++;
-		if (is_chevron(*str_from_chev) == 1 || *str_from_chev == '\0')
-		{
-			g_env.ms_errno = 258;
-			return (*str_from_chev);
-		}
+		return (-1);
 	}
-	return (1);
+
+	in_quote = 0;
+	quote = '\0';
+	i = 0;
+
+	while (i < ind_char)
+	{
+		if (str[i] == '\'' || str[i] == '\"')
+		{
+			if (in_quote == 0)
+			{
+				quote = str[i];
+				in_quote = 1;
+			}
+			else if (str[i] == quote)
+			{
+				quote = '\0';
+				in_quote = 0;
+			}
+		}
+		i++;
+	}
+	return in_quote;
+
 }
 
-char	*error_redirection_msg(char chr_err)
+char	check_redirections (char *str, char type_chev)
 {
-	if (chr_err == '>')
-		return (ft_strdup("minishell: syntax error near unexpected token `>'\n"));
-	else if (chr_err == '<')
-		return (ft_strdup("minishell: syntax error near unexpected token `<'\n"));
-	return (ft_strdup("minishell: syntax error near unexpected token `newline'\n"));
+	int	i;
+
+	i = 1;
+	if (str[i] == type_chev)
+		i++;
+
+	while (is_space(str[i]) && str[i] != '\0')
+	{
+		i++;
+	}
+
+	if (is_chevron(str[i]))
+		return str[i];
+
+	if (str[i] == '\0')
+		return str[i];
+
+	return (1);
 }
 
 int	check_redirections_process(char **tab_cmds)
 {
 	int		i;
-	char	*error_msg;
+	int		j;
+	char	chk_char;
 
 	i = 0;
 	while (tab_cmds[i] != NULL)
 	{
-		if (check_redirections(tab_cmds[i], '>') != 1)
+		j = 0;
+		while (tab_cmds[i][j] != '\0')
 		{
-			error_msg = error_redirection_msg(check_redirections(tab_cmds[i], '>'));
-			ft_putstr_fd(error_msg, 2);
-			free(error_msg);
-			return (0);
-		}
-		else if (check_redirections(tab_cmds[i], '<') != 1)
-		{
-			error_msg = error_redirection_msg(check_redirections(tab_cmds[i], '<'));
-			ft_putstr_fd(error_msg, 2);
-			free(error_msg);
-			return (0);
-		}
-		else if (check_redirections(tab_cmds[i], '<') == '\0' || check_redirections(tab_cmds[i], '>') == '\0')
-		{
-			error_msg = error_redirection_msg('\0');
-			ft_putstr_fd(error_msg, 2);
-			free(error_msg);
-			return (0);
+			if (is_chevron(tab_cmds[i][j]) && chr_is_in_quote(tab_cmds[i], j) == 0)
+			{
+				chk_char = check_redirections(tab_cmds[i] + j, tab_cmds[i][j]);
+				if (chk_char != 1)
+				{
+					g_env.ms_errno = 258;
+					ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
+					if (is_chevron(chk_char))
+					{
+						ft_putchar_fd(chk_char ,2);
+						ft_putstr_fd("'\n" ,2);
+					}
+					else
+					{
+						ft_putstr_fd("newline'\n" ,2);
+					}
+					return (0);
+				}
+			}
+			j++;
 		}
 		i++;
 	}
 	return (1);
 }
-
 
 int lexer(char *str)
 {
@@ -328,6 +359,7 @@ int lexer(char *str)
 		return (0);
 	i = 0;
 	result = ft_split_lexer(str, c);
+	//print_tab("result qm", result);
 	if (check_redirections_process(result) == 0)
 	{
 		free(in_out_fd);
@@ -339,7 +371,7 @@ int lexer(char *str)
 	while (result[i])
 		cut_end_space(&(result[i++]));
 	parse_dollar(result);
-	print_tab("result", result);
+	//print_tab("result", result);
 	cmd_red_lst = init_parsed_args(result);
 	freemalloc(result, size_tab(result));
 	in_out_fd[0] = STDIN_FILENO;

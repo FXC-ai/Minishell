@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 14:14:50 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/20 17:19:41 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/21 11:37:08 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,12 @@ void	cd_process(char **parsed_args)
 		if (getcwd(cwd, sizeof(cwd)) != NULL)
 		{
 			ligne = ft_strjoin("PWD=", cwd);
-			add_to_env(ligne, cwd);
+			ft_unset("PWD");
+			ft_export(ligne);
 			free(ligne);
 			ligne = ft_strjoin("OLDPWD=", temp);
-			add_to_env(ligne, temp);
+			ft_unset("OLDPWD");
+			ft_export(ligne);
 			free(ligne);
 		}		
 	}

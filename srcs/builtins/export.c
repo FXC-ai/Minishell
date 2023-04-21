@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 14:32:31 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/21 11:11:27 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/21 11:33:20 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	add_to_env(char *ligne, char *value)
 	freemalloc(s_result, size_tab(s_result));
 }
 
-static void	ft_export(char *token)
+void	ft_export(char *token)
 {
 	char	**new_env;
 	int		i;

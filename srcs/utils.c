@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 17:35:07 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/20 17:41:55 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/21 14:07:38 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	*concatenate_strings_with_spaces(char **strings)
 		dest += ft_strlen(strings[i++]);
 	}
 	*dest = '\0';
-	printf("REsult %s\n", result);
+	//printf("REsult %s\n", result);
 	return (result);
 }
 
