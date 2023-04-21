@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 total 288$
 drwxr-xr-x  23 fcoindre  2022_lausanne    782 Apr 21 18:37 .$
 drwxr-xr-x   9 fcoindre  2022_lausanne    306 Apr 21 17:02 ..$
@@ -46,3 +47,15 @@ drwxr-xr-x  73 fcoindre  2022_lausanne   2482 Apr 21 18:36 libft$
 drwxr-xr-x  38 fcoindre  2022_lausanne   1292 Apr 21 18:36 srcs$
 -rw-r--r--   1 fcoindre  2022_lausanne   2246 Apr 21 17:02 test.c$
 -rw-r--r--   1 fcoindre  2022_lausanne   4113 Apr 21 17:02 tests.sh$
+=======
+Bazar
+Makefile
+README.md
+a
+b
+includes
+libft
+minishell
+srcs
+tests.sh
+>>>>>>> e6914132a34b7c59d6664146a1426fcfa6768281
