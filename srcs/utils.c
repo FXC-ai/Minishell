@@ -6,11 +6,17 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 17:35:07 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/20 17:41:55 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/21 12:08:02 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
+
+void	malloc_error(void)
+{
+	perror("Erreur d'allocation de mémoire");
+	exit(1);
+}
 
 char	*concatenate_strings_with_spaces(char **strings)
 {
@@ -26,10 +32,7 @@ char	*concatenate_strings_with_spaces(char **strings)
 	total_length += i - 1 + 1;
 	result = malloc(total_length * sizeof(char));
 	if (result == NULL)
-	{
-		perror("Erreur d'allocation de mémoire");
-		exit(1);
-	}
+		malloc_error();
 	dest = result;
 	i = 0;
 	while (strings[i])
@@ -40,7 +43,6 @@ char	*concatenate_strings_with_spaces(char **strings)
 		dest += ft_strlen(strings[i++]);
 	}
 	*dest = '\0';
-	printf("REsult %s\n", result);
 	return (result);
 }
 

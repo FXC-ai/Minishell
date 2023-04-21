@@ -3,43 +3,53 @@
 /*                                                        :::      ::::::::   */
 /*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: victorgiordani01 <victorgiordani01@stud    +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 16:15:28 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/20 22:01:37 by victorgiord      ###   ########.fr       */
+/*   Updated: 2023/04/21 12:51:55 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
 
-void	remove_quote_in_tab(char **tab) {
-	int i;
-	int	j;
-	char *line;
-	char *new_line;
+void	remove_quotes_from_line(char *line)
+{
+	int		j;
+	int		new_line_idx;
+	bool	inside_single_quote;
+	bool	inside_double_quote;
+	char	*new_line;
+
+	new_line = malloc(strlen(line) + 1);
+	new_line_idx = 0;
+	inside_single_quote = false;
+	inside_double_quote = false;
+	j = 0;
+	while (line[j])
+	{
+		if (line[j] == '\'' && !inside_double_quote)
+			inside_single_quote = !inside_single_quote;
+		else if (line[j] == '\"' && !inside_single_quote)
+			inside_double_quote = !inside_double_quote;
+		else
+			new_line[new_line_idx++] = line[j];
+		j++;
+	}
+	new_line[new_line_idx] = '\0';
+	ft_strlcpy(line, new_line, ft_strlen(line) + 1);
+	free(new_line);
+}
+
+void	remove_quote_in_tab(char **tab)
+{
+	int		i;
+	char	*line;
 
 	i = 0;
 	while (tab[i])
 	{
 		line = tab[i];
-		new_line = malloc(strlen(line) + 1);
-		int new_line_idx = 0;
-		bool inside_single_quote = false;
-		bool inside_double_quote = false;
-		j = 0;
-		while (line[j])
-		{
-			if (line[j] == '\'' && !inside_double_quote)
-				inside_single_quote = !inside_single_quote;
-			else if (line[j] == '\"' && !inside_single_quote)
-				inside_double_quote = !inside_double_quote;
-			else
-				new_line[new_line_idx++] = line[j];
-			j++;
-		}
-		new_line[new_line_idx] = '\0';
-		ft_strlcpy(line, new_line, ft_strlen(line) + 1);
-		free(new_line);
+		remove_quotes_from_line(line);
 		i++;
 	}
 }
@@ -54,4 +64,33 @@ void	print_command_not_found(char *str)
 int	is_chevron(char c)
 {
 	return (c == '>' || c == '<');
+}
+
+int	count_chr(const char *str, char c)
+{
+	int		count;
+	int		i;
+	int		in_quote;
+	char	quote;
+
+	count = 0;
+	i = 0;
+	in_quote = 0;
+	quote = '\0';
+	while (str[i] != '\0')
+	{
+		if (str[i] == c && in_quote == 0)
+			count++;
+		if (is_quote(str[i]) == 1 && in_quote == 0)
+		{
+			in_quote = 1;
+			quote = str[i++];
+		}
+		if (str[i] == quote && in_quote == 1)
+			in_quote = 0;
+		i++;
+	}
+	if (str[i - 1] != c)
+		count++;
+	return (count);
 }

@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 17:05:42 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/21 11:11:27 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/21 11:57:53 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	execute_command(char **parsed_args, int in_fd, int out_fd)
 {
-	int		r;
 	char	*cmd;
 
 	if (in_fd != STDIN_FILENO)
@@ -27,22 +26,7 @@ void	execute_command(char **parsed_args, int in_fd, int out_fd)
 		dup2(out_fd, STDOUT_FILENO);
 		close(out_fd);
 	}
-	r = is_builtins(*parsed_args);
-	if (r == BUILTIN_ECHO)
-		echo_process(parsed_args);
-	else if (r == BUILTIN_CD)
-		cd_process(parsed_args);
-	else if (r == BUILTIN_PWD)
-		pwd_process(parsed_args);
-	else if (r == BUILTIN_EXPORT)
-		export_process(parsed_args);
-	else if (r == BUILTIN_UNSET)
-		unset_process(parsed_args);
-	else if (r == BUILTIN_ENV)
-		env_process(parsed_args);
-	else if (r == BUILTIN_EXIT)
-		exit_process(parsed_args);
-	else
+	if (execute_builtins(parsed_args) == 0)
 	{
 		if (parsed_args[0] == NULL)
 			exit(0);
@@ -84,66 +68,27 @@ int	process_redirection(char **redirections, int **in_out_fd)
 {
 	char	*redirection;
 
-	(*in_out_fd)[0] = STDIN_FILENO;
-	(*in_out_fd)[1] = STDOUT_FILENO;
 	while (*redirections)
 	{
-		redirection = *redirections;
+		redirection = *redirections++;
 		if (ft_strncmp(redirection, ">>", 2) == 0)
 		{
-			redirection++;
-			redirection++;
-			while (is_space(*redirection))
-				redirection++;
-			(*in_out_fd)[1] = open(redirection, O_WRONLY | O_CREAT | O_APPEND, 0777);
-			if ((*in_out_fd)[1] == -1)
-			{
-				perror(redirection);
-				g_env.ms_errno = 1;
+			if (process_double_right_r(&redirection, in_out_fd) == 0)
 				return (-1);
-			}
 		}
 		else if (ft_strncmp(redirection, ">", 1) == 0)
 		{
-			redirection++;
-			while (is_space(*redirection))
-				redirection++;
-			(*in_out_fd)[1] = open(redirection, O_WRONLY | O_CREAT | O_TRUNC, 0777);
-			if ((*in_out_fd)[1] == -1)
-			{
-				perror(redirection);
-				g_env.ms_errno = 1;
+			if (process_single_right_r(&redirection, in_out_fd) == 0)
 				return (-1);
-			}
 		}
 		else if (ft_strncmp(redirection, "<<", 2) == 0)
 		{
-			redirection++;
-			redirection++;
-			while (is_space(*redirection))
-				redirection++;
-			(*in_out_fd)[0] = process_delimiter(redirection);
-			if ((*in_out_fd)[0] == -1)
-			{
-				perror(redirection);
-				g_env.ms_errno = 1;
+			if (process_double_left_r(&redirection, in_out_fd) == 0)
 				return (-1);
-			}
 		}
 		else if (ft_strncmp(redirection, "<", 1) == 0)
-		{
-			redirection++;
-			while (is_space(*redirection))
-				redirection++;
-			(*in_out_fd)[0] = open(redirection, O_RDONLY, 0777);
-			if ((*in_out_fd)[0] == -1)
-			{
-				perror(redirection);
-				g_env.ms_errno = 1;
+			if (process_single_left_r(&redirection, in_out_fd) == 0)
 				return (-1);
-			}
-		}
-		redirections++;
 	}
 	return (1);
 }

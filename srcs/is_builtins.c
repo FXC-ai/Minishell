@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 11:46:13 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/19 18:36:06 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/21 11:32:58 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,28 @@ int	is_builtins(char *str)
 	if (ft_strncmp(str, "exit", get_max_length(str, "exit")) == 0)
 		return (7);
 	return (0);
+}
+
+int	execute_builtins(char **parsed_args)
+{
+	int	r;
+
+	r = is_builtins(*parsed_args);
+	if (r == BUILTIN_ECHO)
+		echo_process(parsed_args);
+	else if (r == BUILTIN_CD)
+		cd_process(parsed_args);
+	else if (r == BUILTIN_PWD)
+		pwd_process(parsed_args);
+	else if (r == BUILTIN_EXPORT)
+		export_process(parsed_args);
+	else if (r == BUILTIN_UNSET)
+		unset_process(parsed_args);
+	else if (r == BUILTIN_ENV)
+		env_process(parsed_args);
+	else if (r == BUILTIN_EXIT)
+		exit_process(parsed_args);
+	else
+		return (0);
+	return (1);
 }

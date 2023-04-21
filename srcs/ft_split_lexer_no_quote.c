@@ -6,106 +6,94 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 14:59:24 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/20 17:32:49 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/21 14:45:19 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
 
-static int	is_quote(char c)
+static void	wtf(t_utils *u, const char *str)
 {
-	return (c == '\'' || c == '"');
+	u->quote = str[u->i];
+	u->in_quote = 1;
 }
 
 static int	count_chr_no_quote(const char *str)
 {
-	int		count;
-	int		i;
-	int		in_quote;
-	char	quote;
-	int		in_word;
+	t_utils	u;
 
-	count = 0;
-	i = 0;
-	in_quote = 0;
-	quote = '\0';
-	in_word = 0;
-	while (str[i] != '\0')
+	init_utils(&u);
+	while (str[u.i] != '\0')
 	{
-		if (in_word == 0 && in_quote == 0 && !is_space(str[i]))
+		if (u.in_word == 0 && u.in_quote == 0 && !is_space(str[u.i]))
 		{
-			if (is_quote(str[i]))
+			if (is_quote(str[u.i]))
 			{
-				quote = str[i];
-				in_quote = 1;
+				u.quote = str[u.i];
+				u.in_quote = 1;
 			}
-			in_word = 1;
-			count++;
+			u.in_word = 1;
+			u.count++;
 		}
-		else if (in_word == 1 && in_quote == 0 && is_quote(str[i]))
-		{
-			quote = str[i];
-			in_quote = 1;
-		}
-		else if (in_word == 1 && in_quote == 1 && str[i] == quote)
-		{
-			quote = '\0';
-			in_quote = 0;
-		}
-		else if (in_word == 1 && in_quote == 0 && is_space(str[i]))
-			in_word = 0;
-		i++;
+		else if (u.in_word == 1 && u.in_quote == 0 && is_quote(str[u.i]))
+			wtf(&u, str);
+		else if (u.in_word == 1 && u.in_quote == 1 && str[u.i] == u.quote)
+			u.in_quote = 0;
+		else if (u.in_word == 1 && u.in_quote == 0 && is_space(str[u.i]))
+			u.in_word = 0;
+		u.i++;
 	}
-	return (count);
+	return (u.count);
+}
+
+static	int	process_while(t_utils *u, char const *str)
+{
+	if (u->in_word == 0 && u->in_quote == 0 && !is_space(str[u->i]))
+	{
+		if (is_quote(str[u->i]))
+		{
+			u->quote = str[u->i];
+			u->in_quote = 1;
+		}
+		u->start = u->i;
+		u->in_word = 1;
+		return (1);
+	}
+	else if (u->in_word == 1 && u->in_quote == 0 && is_quote(str[u->i]))
+	{
+		u->quote = str[u->i];
+		u->in_quote = 1;
+		return (1);
+	}
+	else if (u->in_word == 1 && u->in_quote == 1 && str[u->i] == u->quote)
+	{
+		u->quote = '\0';
+		u->in_quote = 0;
+		return (1);
+	}
+	return (0);
 }
 
 static int	process(char const *str, char **result, int nb_word)
 {
-	int		i;
-	int		j;
-	int		start;
-	int		in_quote;
-	char	quote;
-	int		in_word;
+	t_utils	u;
 
-	quote = '\0';
-	in_word = 0;
-	i = 0;
-	j = 0;
-	in_quote = 0;
-	start = 0;
-	while (str[i] != '\0')
+	init_utils(&u);
+	while (str[u.i] != '\0')
 	{
-		if (in_word == 0 && in_quote == 0 && !is_space(str[i]))
+		if (process_while(&u, str) == 0 && u.in_word == 1
+			&& u.in_quote == 0 && is_space(str[u.i]))
 		{
-			if (is_quote(str[i]))
-			{
-				quote = str[i];
-				in_quote = 1;
-			}
-			start = i;
-			in_word = 1;
+			u.in_word = 0;
+			result[(u.j++)] = ft_substr(str, u.start, u.i - u.start);
 		}
-		else if (in_word == 1 && in_quote == 0 && is_quote(str[i]))
-		{
-			quote = str[i];
-			in_quote = 1;
-		}
-		else if (in_word == 1 && in_quote == 1 && str[i] == quote)
-		{
-			quote = '\0';
-			in_quote = 0;
-		}
-		else if (in_word == 1 && in_quote == 0 && is_space(str[i]))
-		{
-			in_word = 0;
-			result[j++] = ft_substr(str, start, i - start);
-		}
-		i++;
+		(u.i++);
 	}
-	if (j < nb_word)
-		result[j++] = ft_substr(str, start, i - start);
-	result[j] = NULL;
+	if (u.j < nb_word)
+	{
+		result[(u.j++)] = ft_substr(str, u.start, u.i - u.start);
+	}
+	result[u.j] = NULL;
 	return (0);
 }
 

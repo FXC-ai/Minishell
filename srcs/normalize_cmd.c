@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 11:37:57 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/21 11:11:27 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/21 12:10:05 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,9 @@ char	*normalize_cmd(char *str)
 {	
 	if (str == NULL || str[0] == '\0')
 		return (str);
-	// Cas ou la commande est envoyée sous forme de chemin
 	if (ft_strchr(str, '/') != NULL)
 	{
 		return (str);
 	}
-	// Cas ou la commande est envoyée sans chemin
 	return (cmd_exists(str));
 }

@@ -6,16 +6,11 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 16:02:00 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/19 18:35:50 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/21 12:54:43 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
-
-static int	is_quote(char c)
-{
-	return (c == '\'' || c == '"');
-}
 
 int	check_quotes(char *str)
 {
@@ -44,4 +39,38 @@ int	check_quotes(char *str)
 		return (1);
 	printf("Please close \" or \'\n");
 	return (0);
+}
+
+int	check_blank_line(char *line)
+{
+	int	i;
+
+	i = 0;
+	while (is_space(line[i]))
+	{
+		i++;
+	}
+	if (line[i] == '\0')
+	{
+		return (0);
+	}
+	return (1);
+}
+
+int	check_entry(char *line)
+{
+	if (!line)
+		return (0);
+	if (ft_strlen(line) == 0)
+		return (0);
+	if (ft_strlen(line) == 1 && line[0] == '\n')
+		return (0);
+	add_history(line);
+	if (check_blank_line(line) == 0)
+		return (0);
+	if (check_quotes(line) == 0)
+		return (0);
+	if (ft_strncmp(line, " ", ft_strlen(line)) == 0)
+		return (0);
+	return (1);
 }

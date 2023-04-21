@@ -3,7 +3,6 @@ Makefile
 README.md
 ToDoList.txt
 a
-aa
 fichier
 fichier2
 file_test0

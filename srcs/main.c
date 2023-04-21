@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 11:39:22 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/21 11:11:27 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/21 11:14:38 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,40 +29,6 @@ void	disable_ctrl_chars(void)
 	tcgetattr(STDIN_FILENO, &attributes);
 	attributes.c_lflag &= ~ECHO;
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &attributes);
-}
-
-int	check_blank_line(char *line)
-{
-	int	i;
-
-	i = 0;
-	while (is_space(line[i]))
-	{
-		i++;
-	}
-	if (line[i] == '\0')
-	{
-		return (0);
-	}
-	return (1);
-}
-
-int	check_entry(char *line)
-{
-	if (!line)
-		return (0);
-	if (ft_strlen(line) == 0)
-		return (0);
-	if (ft_strlen(line) == 1 && line[0] == '\n')
-		return (0);
-	add_history(line);
-	if (check_blank_line(line) == 0)
-		return (0);
-	if (check_quotes(line) == 0)
-		return (0);
-	if (ft_strncmp(line, " ", ft_strlen(line)) == 0)
-		return (0);
-	return (1);
 }
 
 void	wait_for_input(void)

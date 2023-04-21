@@ -41,6 +41,31 @@ typedef struct	s_sig
 
 } t_sig;
 
+typedef struct s_utils
+{
+	int		i;
+	int		j;
+	int		start;
+	int		in_quote;
+	char	quote;
+	int		in_word;
+	int		count;
+} t_utils;
+
+
+typedef struct s_utilsd
+{
+	int		i;
+	int		j;
+	char	*trimmed_command;
+	char	*env_variable;
+	char	*key;
+	char	*tmp;
+	char	*str1;
+	char	*str2;
+} t_d;
+
+
 typedef struct s_cmd_to_execute {
 
 	int index;
@@ -79,8 +104,6 @@ char	*find_env_variable (char *var_name);
 
 //PARSE_REDIRECTION.C
 void parse_redirection_right(char **tab_cmds);
-
-
 void parse_redirection_left(char **tab_cmds);
 
 
@@ -91,8 +114,7 @@ void	normalize_arguments_order(char **str1);
 
 //LEXER.C
 int		lexer(char *str);
-char	**ft_split_lexer(char const *str, char c);
-int		count_chr(const char *str, char c);
+char	**ft_split_lexer(char *str, char c);
 
 //FT_LEXER_NO_QUOTE.C
 char	**ft_split_lexer_no_quote(char *str);
@@ -101,6 +123,13 @@ char	**ft_split_lexer_no_quote(char *str);
 void	execute_command(char **parsed_args, int in_fd, int out_fd);
 int 	process_delimiter(char *del);
 int		process_redirection(char **redirections, int **in_out_fd);
+
+//PROCESS_REDIRECTIONS.C
+
+int process_double_right_r(char **redirection, int **in_out_fd);
+int process_double_left_r(char **redirection, int **in_out_fd);
+int process_single_right_r(char **redirection, int **in_out_fd);
+int process_single_left_r(char **redirection, int **in_out_fd);
 
 //UTILS.C
 int		is_space(char c);
@@ -115,15 +144,25 @@ char	*concatenate_strings_with_spaces(char **strings);
 void	remove_quote_in_tab(char **tab);
 int key_already_exist(char *key);
 char *get_key_from_token(char *token);
+int		count_chr(const char *str, char c);
+int	is_quote(char c);
+void	init_utils(t_utils *u);
 
 // IS_BUILTINS.C
 int		is_builtins(char *str);
+int	execute_builtins(char **parsed_args);
 
 // PRE_PARSING.C
 int check_quotes(char *line);
+int	check_blank_line(char *line);
+int	check_entry(char *line);
 
 // NORMALIZE_CMD.C
 char	*normalize_cmd(char* str);
+
+//CHECK_QUOTE.C
+int	check_simple_quote(char *cmd, char *trimmed_command);
+int	check_simple_quote2(char *cmd, char *trimmed_command);
 
 //MS_PIPE.C
 //void	execute_last_cmd(int pipe_fd[2], char **tab_cmds, int nbr_cmds);
@@ -137,6 +176,9 @@ char	*normalize_cmd(char* str);
 //PROCESS_COMMANDS.C
 int process_multiple_commands(t_parsed_args **cmd_red_lst);
 int	process_single_command(t_parsed_args **cmd_red_lst, int *in_out_fd);
+
+
+
 
 //BUILTINS
 void	echo_process(char **cmd);

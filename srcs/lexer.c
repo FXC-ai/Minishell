@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 17:00:40 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/21 11:11:27 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/21 12:11:01 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -336,8 +336,6 @@ int lexer(char *str)
 	}
 	if (result == NULL)
 		return (0);
-	while (result[i])
-		cut_end_space(&(result[i++]));
 	parse_dollar(result);
 	print_tab("result", result);
 	cmd_red_lst = init_parsed_args(result);
