@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 23:39:04 by victorgiord       #+#    #+#             */
-/*   Updated: 2023/04/21 16:02:50 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/21 17:18:11 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,40 @@ static void pipe_creator(int i, t_pair_pipes *pair_pipes)
 		}
 	}
 }
+/*
+void static pipe_executor (t_pair_pipes *pair_pipes, int i)
+{
+	pipe_creator(i, pair_pipes);
+	if (i == 0)
+	{
+		execute_first_command(cmd_red_lst[i]->cmd_args, in_out_fd, pair_pipes->pipe_fd1);
+	}
+	else if (i == nbr_cmd - 1)
+	{
+		if (i % 2 == 0)
+			execute_last_command(cmd_red_lst[i]->cmd_args, in_out_fd, pair_pipes->pipe_fd2);
+		else if (i % 2 == 1)
+			execute_last_command(cmd_red_lst[i]->cmd_args, in_out_fd, pair_pipes->pipe_fd1);
+	}
+	else
+	{
+		if (i % 2 == 0)
+		{
+			execute_middle_command(cmd_red_lst[i]->cmd_args, in_out_fd, pair_pipes->pipe_fd2, pair_pipes->pipe_fd1);
+			close(pair_pipes->pipe_fd2[0]);
+			close(pair_pipes->pipe_fd2[1]);
+		}
+		else if (i % 2 == 1)
+		{
+			execute_middle_command(cmd_red_lst[i]->cmd_args, in_out_fd, pair_pipes->pipe_fd1, pair_pipes->pipe_fd2);
+			close(pair_pipes->pipe_fd1[0]);
+			close(pair_pipes->pipe_fd1[1]);
+		}
+	}
+
+
+}
+*/
 
 static void close_pair_pipes(t_pair_pipes *pair_pipes)
 {
