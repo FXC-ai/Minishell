@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_split_lexer.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/21 16:17:15 by vgiordan          #+#    #+#             */
+/*   Updated: 2023/04/21 16:27:24 by vgiordan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/header.h"
 
 static char	*word_dup(char *str, int start, int finish)
@@ -8,70 +20,54 @@ static char	*word_dup(char *str, int start, int finish)
 	i = 0;
 	word = malloc((finish - start + 1) * sizeof(char));
 	if (!word)
-		return (NULL);
+		exit(errno);
 	while (start < finish)
 		word[i++] = str[start++];
 	word[i] = '\0';
 	return (word);
 }
 
-static int process(char *s, char **result, char c)
+static void	p1(char *s, char **result, t_utils *u)
 {
-	int i = 0;
-	int j = 0;
-	int words_count;
-	int start = 0;
-	int in_quotes = 0;
-	char quote_char = '\0';
+	if (u->j < u->count)
+		result[u->j++] = word_dup(s, u->start, u->i);
+	while (s[u->i + 1] && s[u->i + 1] == ' ' && !u->in_quote)
+		u->i++;
+	u->start = u->i + 1;
+}
 
-	words_count = count_chr(s, c);
-	while (s[i])
+static int	process(char *s, char **result, char c)
+{
+	t_utils	u;
+
+	init_utils(&u);
+	u.count = count_chr(s, c);
+	while (s[u.i])
 	{
-		if ((s[i] == '\'' || s[i] == '\"') && !in_quotes)
+		if ((s[u.i] == '\'' || s[u.i] == '\"') && !u.in_quote)
 		{
-			in_quotes = 1;
-			quote_char = s[i];
+			u.in_quote = 1;
+			u.quote = s[u.i];
 		}
-		else if ((s[i] == '\'' || s[i] == '\"') && in_quotes && s[i] == quote_char)
-		{
-			in_quotes = 0;
-		}
-		else if (!in_quotes && s[i] == c)
-		{
-			if (j < words_count)
-			{
-				result[j++] = word_dup(s, start, i);
-				if (!result[j - 1])
-				{
-					freemalloc(result, j - 1);
-					return (-1);
-				}
-			}
-			while (s[i + 1] && s[i + 1] == ' ' && !in_quotes)
-				i++;
-			start = i + 1;
-		}
-		i++;
+		else if ((s[u.i] == '\'' || s[u.i] == '\"')
+			&& u.in_quote && s[u.i] == u.quote)
+			u.in_quote = 0;
+		else if (!u.in_quote && s[u.i] == c)
+			p1(s, result, &u);
+		u.i++;
 	}
-	if (in_quotes == 1)
+	if (u.in_quote == 1)
 		return (-2);
-	if (!in_quotes && j < words_count)
-	{
-		result[j++] = word_dup(s, start, i);
-		if (!result[j - 1])
-		{
-			freemalloc(result, j - 1);
-			return (-1);
-		}
-	}
-	result[j] = NULL;
+	if (!u.in_quote && u.j < u.count)
+		result[u.j++] = word_dup(s, u.start, u.i);
+	result[u.j] = NULL;
 	return (0);
 }
 
 char	**ft_split_lexer(char *s, char c)
 {
 	char	**result;
-	int     r;
+	int		r;
 
 	result = malloc((count_chr(s, c) + 1) * sizeof(char *));
 	if (!result)

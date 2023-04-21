@@ -123,6 +123,10 @@ void	normalize_arguments_order(char **str1);
 //LEXER.C
 int		lexer(char *str);
 char	**ft_split_lexer(char *str, char c);
+int	is_valid_chevron(char *tab_cmd, char chev_type);
+
+//INIT_STRUCT.C
+t_parsed_args	**init_parsed_args(char **tab_cmds);
 
 //FT_LEXER_NO_QUOTE.C
 char	**ft_split_lexer_no_quote(char *str);
