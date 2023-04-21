@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 23:39:04 by victorgiord       #+#    #+#             */
-/*   Updated: 2023/04/21 12:14:26 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/21 16:02:50 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,16 +180,16 @@ int	process_multiple_commands(t_parsed_args **cmd_red_lst)
 }
 
 
-static void executor (t_parsed_args **cmd_red_lst, int *in_out_fd, int with_exit)
+static void executor (t_parsed_args **cmd_red_lst, int **in_out_fd, int with_exit)
 {
-		execute_command(cmd_red_lst[0]->cmd_args, in_out_fd[0], in_out_fd[1]);
-		if (in_out_fd[0] != STDIN_FILENO)
+		execute_command(cmd_red_lst[0]->cmd_args, (*in_out_fd)[0], (*in_out_fd)[1]);
+		if ((*in_out_fd)[0] != STDIN_FILENO)
 		{
-			close(in_out_fd[0]);
+			close((*in_out_fd)[0]);
 		}
-		if (in_out_fd[1] != STDOUT_FILENO)
+		if ((*in_out_fd)[1] != STDOUT_FILENO)
 		{
-			close(in_out_fd[1]);
+			close((*in_out_fd)[1]);
 		}
 		if (with_exit == 1)
 		{
@@ -203,7 +203,10 @@ int	process_single_command(t_parsed_args **cmd_red_lst, int *in_out_fd)
 	int	r;
 	int	status;
 
+
+	//print_tab("AVANT", cmd_red_lst[0]->cmd_args);
 	r = is_builtins(cmd_red_lst[0]->cmd_args[0]);
+	//printf("R = [%d]\n", r);
 	if (process_redirection(cmd_red_lst[0]->redirections, &in_out_fd) == -1)
 	{
 		free(in_out_fd);
@@ -211,12 +214,12 @@ int	process_single_command(t_parsed_args **cmd_red_lst, int *in_out_fd)
 		return (-1);
 	}
 	if (r == BUILTIN_CD || r == BUILTIN_EXPORT || r == BUILTIN_UNSET || r == BUILTIN_EXIT)
-		executor(cmd_red_lst, in_out_fd, 0);
+		executor(cmd_red_lst, &in_out_fd, 0);
 	else
 	{
 		g_env.pid = fork();
 		if (g_env.pid == 0)
-			executor(cmd_red_lst, in_out_fd, 1);
+			executor(cmd_red_lst, &in_out_fd, 1);
 		else
 		{
 			waitpid(g_env.pid, &status, 0);

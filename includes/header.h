@@ -152,7 +152,7 @@ char	*concatenate_strings_with_spaces(char **strings);
 void	remove_quote_in_tab(char **tab);
 int key_already_exist(char *key);
 char *get_key_from_token(char *token);
-int		count_chr(const char *str, char c);
+int		count_chr(char *str, char c);
 int	is_quote(char c);
 void	init_utils(t_utils *u);
 

@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 11:46:13 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/21 11:32:58 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/21 16:02:53 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int	execute_builtins(char **parsed_args)
 {
 	int	r;
 
+	//print_tab("parsed_args", parsed_args);
 	r = is_builtins(*parsed_args);
 	if (r == BUILTIN_ECHO)
 		echo_process(parsed_args);

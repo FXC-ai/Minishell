@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 17:00:40 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/21 15:29:07 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/21 16:04:05 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,8 +241,8 @@ t_parsed_args	**init_parsed_args(char **tab_cmds)
 		remove_quote_in_tab(current_struct->cmd_args);
 		freemalloc(tmp, size_tab(tmp));
 		current_struct->redirections = separate_redirections(tab_cmds[i]);
-		//print_tab("redirections", current_struct->redirections);
-		//print_tab(" command ",current_struct->cmd_args);
+		print_tab("redirections", current_struct->redirections);
+		print_tab(" command ",current_struct->cmd_args);
 		list_struct[i] = current_struct;
 		i++;
 	}
@@ -358,7 +358,9 @@ int lexer(char *str)
 	if (in_out_fd == NULL)
 		return (0);
 	i = 0;
+	printf("STRING %s\n", str);
 	result = ft_split_lexer(str, c);
+	print_tab("result", result);
 	//print_tab("result qm", result);
 	if (check_redirections_process(result) == 0)
 	{
@@ -368,8 +370,9 @@ int lexer(char *str)
 	}
 	if (result == NULL)
 		return (0);
+	print_tab("result", result);
 	parse_dollar(result);
-	//print_tab("result", result);
+	print_tab("result", result);
 	cmd_red_lst = init_parsed_args(result);
 	freemalloc(result, size_tab(result));
 	in_out_fd[0] = STDIN_FILENO;
