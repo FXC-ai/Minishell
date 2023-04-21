@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 23:39:04 by victorgiord       #+#    #+#             */
-/*   Updated: 2023/04/21 17:18:11 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/21 18:30:40 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	execute_first_command(char **cmd, int *in_out_fd, int pipe_fd[])
 	}
 }
 
-void	execute_middle_command(char **cmd, int *in_out_fd, int pipe_fd_in[], int pipe_fd_out[])
+void	ex_m_cm(char **cmd, int *in_out_fd, int pipe_fd_in[], int pipe_fd_out[])
 {
 	g_env.pid = fork();
 	if (g_env.pid == 0)
@@ -79,7 +79,7 @@ void	execute_last_command(char **cmd, int *in_out_fd, int pipe_fd_in[])
 	}
 }
 
-static void pipe_creator(int i, t_pair_pipes *pair_pipes)
+static void	pipe_creator(int i, t_pair_pipes *pair_pipes)
 {
 	if (i % 2 == 0)
 	{
@@ -98,42 +98,37 @@ static void pipe_creator(int i, t_pair_pipes *pair_pipes)
 		}
 	}
 }
-/*
-void static pipe_executor (t_pair_pipes *pair_pipes, int i)
+
+static void	pipex(t_parsed_args **cmdrl, t_pair_pipes *p, int i, int *in_out_fd)
 {
-	pipe_creator(i, pair_pipes);
+	pipe_creator(i, p);
 	if (i == 0)
-	{
-		execute_first_command(cmd_red_lst[i]->cmd_args, in_out_fd, pair_pipes->pipe_fd1);
-	}
-	else if (i == nbr_cmd - 1)
+		execute_first_command(cmdrl[i]->cmd_args, in_out_fd, p->pipe_fd1);
+	else if (i == size_struct(cmdrl) - 1)
 	{
 		if (i % 2 == 0)
-			execute_last_command(cmd_red_lst[i]->cmd_args, in_out_fd, pair_pipes->pipe_fd2);
+			execute_last_command(cmdrl[i]->cmd_args, in_out_fd, p->pipe_fd2);
 		else if (i % 2 == 1)
-			execute_last_command(cmd_red_lst[i]->cmd_args, in_out_fd, pair_pipes->pipe_fd1);
+			execute_last_command(cmdrl[i]->cmd_args, in_out_fd, p->pipe_fd1);
 	}
 	else
 	{
 		if (i % 2 == 0)
 		{
-			execute_middle_command(cmd_red_lst[i]->cmd_args, in_out_fd, pair_pipes->pipe_fd2, pair_pipes->pipe_fd1);
-			close(pair_pipes->pipe_fd2[0]);
-			close(pair_pipes->pipe_fd2[1]);
+			ex_m_cm(cmdrl[i]->cmd_args, in_out_fd, p->pipe_fd2, p->pipe_fd1);
+			close(p->pipe_fd2[0]);
+			close(p->pipe_fd2[1]);
 		}
 		else if (i % 2 == 1)
 		{
-			execute_middle_command(cmd_red_lst[i]->cmd_args, in_out_fd, pair_pipes->pipe_fd1, pair_pipes->pipe_fd2);
-			close(pair_pipes->pipe_fd1[0]);
-			close(pair_pipes->pipe_fd1[1]);
+			ex_m_cm(cmdrl[i]->cmd_args, in_out_fd, p->pipe_fd1, p->pipe_fd2);
+			close(p->pipe_fd1[0]);
+			close(p->pipe_fd1[1]);
 		}
 	}
-
-
 }
-*/
 
-static void close_pair_pipes(t_pair_pipes *pair_pipes)
+static void	close_pair_pipes(t_pair_pipes *pair_pipes)
 {
 	close(pair_pipes->pipe_fd1[0]);
 	close(pair_pipes->pipe_fd1[1]);
@@ -141,20 +136,40 @@ static void close_pair_pipes(t_pair_pipes *pair_pipes)
 	close(pair_pipes->pipe_fd2[1]);
 }
 
+static void	wait_all_process(int nbr_cmd, int *status)
+{
+	int	i;
+
+	i = 0;
+	while (i < nbr_cmd)
+	{
+		waitpid(-1, status, 0);
+		if (WIFEXITED(*status))
+		{
+			g_env.ms_errno = WEXITSTATUS(*status);
+		}
+		i++;
+	}
+}
+
+static void	init_in_out(int **in_out_fd)
+{
+	(*in_out_fd)[0] = STDIN_FILENO;
+	(*in_out_fd)[1] = STDOUT_FILENO;
+}
+
 int	process_multiple_commands(t_parsed_args **cmd_red_lst)
 {
-	int	*in_out_fd;
-	t_pair_pipes pair_pipes;
-	int	i = 0;
-	int	nbr_cmd;
-	int	status;
+	int				*in_out_fd;
+	t_pair_pipes	pair_pipes;
+	int				i;
+	int				status;
 
-	nbr_cmd = size_struct(cmd_red_lst);
+	i = 0;
 	in_out_fd = malloc(2 * sizeof(int));
 	if (in_out_fd == NULL)
 		return (-1);
-	in_out_fd[0] = STDIN_FILENO;
-	in_out_fd[1] = STDOUT_FILENO;
+	init_in_out(&in_out_fd);
 	while (cmd_red_lst[i])
 	{
 		if (process_redirection(cmd_red_lst[i]->redirections, &in_out_fd) == -1)
@@ -163,103 +178,13 @@ int	process_multiple_commands(t_parsed_args **cmd_red_lst)
 			free_struct(cmd_red_lst);
 		}
 		else
-		{
-			pipe_creator(i, &pair_pipes);
-			if (i == 0)
-			{
-				execute_first_command(cmd_red_lst[i]->cmd_args, in_out_fd, pair_pipes.pipe_fd1);
-			}
-			else if (i == nbr_cmd - 1)
-			{
-				if (i % 2 == 0)
-					execute_last_command(cmd_red_lst[i]->cmd_args, in_out_fd, pair_pipes.pipe_fd2);
-				else if (i % 2 == 1)
-					execute_last_command(cmd_red_lst[i]->cmd_args, in_out_fd, pair_pipes.pipe_fd1);
-			}
-			else
-			{
-				if (i % 2 == 0)
-				{
-					execute_middle_command(cmd_red_lst[i]->cmd_args, in_out_fd, pair_pipes.pipe_fd2, pair_pipes.pipe_fd1);
-					close(pair_pipes.pipe_fd2[0]);
-					close(pair_pipes.pipe_fd2[1]);
-				}
-				else if (i % 2 == 1)
-				{
-					execute_middle_command(cmd_red_lst[i]->cmd_args, in_out_fd, pair_pipes.pipe_fd1, pair_pipes.pipe_fd2);
-					close(pair_pipes.pipe_fd1[0]);
-					close(pair_pipes.pipe_fd1[1]);
-				}
-			}
-		}
+			pipex(cmd_red_lst, &pair_pipes, i, in_out_fd);
 		i++;
 	}
 	close_pair_pipes(&pair_pipes);
-	/*close(pair_pipes.pipe_fd1[0]);
-	close(pair_pipes.pipe_fd1[1]);
-	close(pair_pipes.pipe_fd2[0]);
-	close(pair_pipes.pipe_fd2[1]);*/
-	i = 0;
-	while (i < nbr_cmd)
-	{
-		waitpid(-1, &status, 0);
-		if (WIFEXITED(status))
-		{
-			g_env.ms_errno = WEXITSTATUS(status);
-		}
-		i++;
-	}
+	wait_all_process(size_struct(cmd_red_lst), &status);
 	free(in_out_fd);
 	return (1);
 }
 
 
-static void executor (t_parsed_args **cmd_red_lst, int **in_out_fd, int with_exit)
-{
-		execute_command(cmd_red_lst[0]->cmd_args, (*in_out_fd)[0], (*in_out_fd)[1]);
-		if ((*in_out_fd)[0] != STDIN_FILENO)
-		{
-			close((*in_out_fd)[0]);
-		}
-		if ((*in_out_fd)[1] != STDOUT_FILENO)
-		{
-			close((*in_out_fd)[1]);
-		}
-		if (with_exit == 1)
-		{
-			exit(SUCCESS);			
-		}
-}
-
-
-int	process_single_command(t_parsed_args **cmd_red_lst, int *in_out_fd)
-{
-	int	r;
-	int	status;
-
-
-	//print_tab("AVANT", cmd_red_lst[0]->cmd_args);
-	r = is_builtins(cmd_red_lst[0]->cmd_args[0]);
-	//printf("R = [%d]\n", r);
-	if (process_redirection(cmd_red_lst[0]->redirections, &in_out_fd) == -1)
-	{
-		free(in_out_fd);
-		free_struct(cmd_red_lst);
-		return (-1);
-	}
-	if (r == BUILTIN_CD || r == BUILTIN_EXPORT || r == BUILTIN_UNSET || r == BUILTIN_EXIT)
-		executor(cmd_red_lst, &in_out_fd, 0);
-	else
-	{
-		g_env.pid = fork();
-		if (g_env.pid == 0)
-			executor(cmd_red_lst, &in_out_fd, 1);
-		else
-		{
-			waitpid(g_env.pid, &status, 0);
-			if (WIFEXITED(status))
-				g_env.ms_errno = WEXITSTATUS(status);
-		}
-	}
-	return (1);
-}
