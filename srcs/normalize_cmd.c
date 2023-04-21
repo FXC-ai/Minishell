@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   normalize_cmd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: victorgiordani01 <victorgiordani01@stud    +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 11:37:57 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/20 21:37:39 by victorgiord      ###   ########.fr       */
+/*   Updated: 2023/04/21 11:11:27 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ static char	**create_tab_paths(void)
 	i = 0;
 	paths = NULL;
 	paths_tab = NULL;
-	while (global_sig.env[i])
+	while (g_env.env[i])
 	{
-		if (strncmp(global_sig.env[i], "PATH", 4) == 0)
-			paths = ft_substr(global_sig.env[i], 5, ft_strlen(global_sig.env[i]) - 4);
+		if (strncmp(g_env.env[i], "PATH", 4) == 0)
+			paths = ft_substr(g_env.env[i], 5, ft_strlen(g_env.env[i]) - 4);
 		i++;
 	}
 	if (paths != NULL)

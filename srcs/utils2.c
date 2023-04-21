@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 15:51:25 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/20 16:58:36 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/21 11:11:27 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,10 @@ int	key_already_exist(char *key)
 	int	j;
 
 	i = 0;
-	while (global_sig.env[i])
+	while (g_env.env[i])
 	{
 		j = 0;
-		while ((global_sig.env[i][j]) == key[j])
+		while ((g_env.env[i][j]) == key[j])
 		{
 			j++;
 		}

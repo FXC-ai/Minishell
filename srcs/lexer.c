@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: victorgiordani01 <victorgiordani01@stud    +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 17:00:40 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/20 22:03:16 by victorgiord      ###   ########.fr       */
+/*   Updated: 2023/04/21 11:11:27 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -264,7 +264,7 @@ char	check_redirections (char *str, char type_chev)
 			str_from_chev++;
 		if (is_chevron(*str_from_chev) == 1 || *str_from_chev == '\0')
 		{
-			global_sig.ms_errno = 258;
+			g_env.ms_errno = 258;
 			return (*str_from_chev);
 		}
 	}

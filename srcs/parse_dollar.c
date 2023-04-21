@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_dollar.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: victorgiordani01 <victorgiordani01@stud    +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 11:01:12 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/20 22:00:09 by victorgiord      ###   ########.fr       */
+/*   Updated: 2023/04/21 11:11:27 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ char	*find_env_variable(char *var_name)
 	int	i;
 
 	i = 0;
-	while (global_sig.env[i] != NULL)
+	while (g_env.env[i] != NULL)
 	{
-		if (ft_strncmp(global_sig.env[i], var_name, ft_strlen(var_name)) == 0 && global_sig.env[i][ft_strlen(var_name)] == '=')
-			return (&global_sig.env[i][ft_strlen(var_name) + 1]);
+		if (ft_strncmp(g_env.env[i], var_name, ft_strlen(var_name)) == 0 && g_env.env[i][ft_strlen(var_name)] == '=')
+			return (&g_env.env[i][ft_strlen(var_name) + 1]);
 		i++;
 	}
 	return (NULL);
@@ -138,7 +138,7 @@ void	parse_dollar(char **tab_cmds)
 					else
 					{
 						if (trimmed_command[1] == '?')
-							env_variable = ft_itoa(global_sig.ms_errno);
+							env_variable = ft_itoa(g_env.ms_errno);
 						else
 							env_variable = ft_strdup("");
 						tmp = ft_strndup(tab_cmds[i], ft_strlen(tab_cmds[i]) - ft_strlen(trimmed_command));

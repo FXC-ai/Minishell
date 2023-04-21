@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 12:15:22 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/20 12:07:25 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/21 11:11:27 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	handler(int sig)
 	{
 		ft_putstr_fd("\n", 1);
 		rl_replace_line("", 0);
-		if (global_sig.program_in_process == 0)
+		if (g_env.program_in_process == 0)
 		{
 			rl_on_new_line();
 		}
@@ -26,7 +26,7 @@ static void	handler(int sig)
 	}
 	if (sig == SIGQUIT)
 	{
-		if (global_sig.program_in_process == 1)
+		if (g_env.program_in_process == 1)
 		{
 			write(1, "Quit\n", 5);
 		}

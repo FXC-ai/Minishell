@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 17:15:10 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/20 18:29:11 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/21 11:11:27 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@ static char	**alloc_env(char ***new_env, char *token)
 {
 	if (key_already_exist(token) == 1)
 	{
-		*new_env = malloc((size_tab(global_sig.env)) * sizeof(char *));
+		*new_env = malloc((size_tab(g_env.env)) * sizeof(char *));
 	}
 	else
-		*new_env = malloc((size_tab(global_sig.env) + 1) * sizeof(char *));
+		*new_env = malloc((size_tab(g_env.env) + 1) * sizeof(char *));
 	if (*new_env == NULL)
 		return (NULL);
 	return (*new_env);
@@ -56,18 +56,18 @@ int	ft_unset(char *token)
 		return (1);
 	i = 0;
 	j = 0;
-	while (global_sig.env[i] != NULL)
+	while (g_env.env[i] != NULL)
 	{
-		if (ft_strncmp(global_sig.env[i], token, len) != 0
-			|| global_sig.env[i][len] != '=')
-			new_env[j++] = ft_strdup(global_sig.env[i]);
+		if (ft_strncmp(g_env.env[i], token, len) != 0
+			|| g_env.env[i][len] != '=')
+			new_env[j++] = ft_strdup(g_env.env[i]);
 		i++;
 	}
 	new_env[j] = NULL;
-	freemalloc(global_sig.env, size_tab(global_sig.env));
-	global_sig.env = NULL;
+	freemalloc(g_env.env, size_tab(g_env.env));
+	g_env.env = NULL;
 	cpy_env(new_env);
-	freemalloc(new_env, size_tab(global_sig.env));
+	freemalloc(new_env, size_tab(g_env.env));
 	return (1);
 }
 
@@ -95,14 +95,14 @@ int	unset_process_str(char *key)
 
 	len = ft_strlen(key);
 	i = 0;
-	while (global_sig.env[i] != NULL)
+	while (g_env.env[i] != NULL)
 	{
-		if (ft_strncmp(global_sig.env[i], key, len) == 0
-			&& global_sig.env[i][len] == '=')
+		if (ft_strncmp(g_env.env[i], key, len) == 0
+			&& g_env.env[i][len] == '=')
 		{
-			while (global_sig.env[i] != NULL)
+			while (g_env.env[i] != NULL)
 			{
-				global_sig.env[i] = global_sig.env[i + 1];
+				g_env.env[i] = g_env.env[i + 1];
 				i++;
 			}
 			break ;

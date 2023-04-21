@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: victorgiordani01 <victorgiordani01@stud    +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 14:32:31 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/20 21:23:15 by victorgiord      ###   ########.fr       */
+/*   Updated: 2023/04/21 11:11:27 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@ void	add_to_env(char *ligne, char *value)
 		result[j++] = value[i++];
 	result[j] = '\0';
 	i = 0;
-	while (global_sig.env[i])
+	while (g_env.env[i])
 		i++;
-	global_sig.env[i] = result;
-	global_sig.env[i + 1] = NULL;
+	g_env.env[i] = result;
+	g_env.env[i + 1] = NULL;
 	freemalloc(s_result, size_tab(s_result));
 }
 
@@ -50,19 +50,19 @@ static void	ft_export(char *token)
 	key = get_key_from_token(token);
 	i = 0;
 	if (key_already_exist(key) == 1)
-		new_env = malloc((size_tab(global_sig.env) + 1) * sizeof(char *));
+		new_env = malloc((size_tab(g_env.env) + 1) * sizeof(char *));
 	else
-		new_env = malloc((size_tab(global_sig.env) + 2) * sizeof(char *));
+		new_env = malloc((size_tab(g_env.env) + 2) * sizeof(char *));
 	ft_unset(key);
 	free(key);
-	while (global_sig.env[i])
+	while (g_env.env[i])
 	{
-		new_env[i] = ft_strdup(global_sig.env[i]);
+		new_env[i] = ft_strdup(g_env.env[i]);
 		i++;
 	}
 	new_env[i] = ft_strdup(token);
 	new_env[i + 1] = NULL;
-	freemalloc(global_sig.env, size_tab(global_sig.env));
+	freemalloc(g_env.env, size_tab(g_env.env));
 	cpy_env(new_env);
 	freemalloc(new_env, size_tab(new_env));
 }
@@ -73,22 +73,22 @@ void	print_export(void)
 	int	j;
 
 	i = 0;
-	while (global_sig.env[i])
+	while (g_env.env[i])
 	{
 		j = 0;
 		printf("declare -x ");
-		while (global_sig.env[i][j] && global_sig.env[i][j] != '=')
+		while (g_env.env[i][j] && g_env.env[i][j] != '=')
 		{
-			printf("%c", global_sig.env[i][j]);
+			printf("%c", g_env.env[i][j]);
 			j++;
 		}
-		if (global_sig.env[i][j] == '=')
+		if (g_env.env[i][j] == '=')
 		{
 			printf("=");
 			printf("\"");
 			j++;
-			while (global_sig.env[i][j])
-				printf("%c", global_sig.env[i][j++]);
+			while (g_env.env[i][j])
+				printf("%c", g_env.env[i][j++]);
 		}
 		printf("\"");
 		printf("\n");
@@ -108,7 +108,7 @@ static int	check_entry_export(char *token)
 			ft_putstr_fd("export: `", 2);
 			ft_putstr_fd(token, 2);
 			ft_putstr_fd("': not a valid identifier\n", 2);
-			global_sig.ms_errno = 1;
+			g_env.ms_errno = 1;
 			return (0);
 		}
 		if (ft_strlen(token) <= 1)

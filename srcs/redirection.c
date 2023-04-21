@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: victorgiordani01 <victorgiordani01@stud    +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 17:05:42 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/20 21:49:54 by victorgiord      ###   ########.fr       */
+/*   Updated: 2023/04/21 11:11:27 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	execute_command(char **parsed_args, int in_fd, int out_fd)
 		cmd = normalize_cmd(parsed_args[0]);
 		if (cmd == NULL)
 			print_command_not_found(parsed_args[0]);
-		execve(normalize_cmd(parsed_args[0]), parsed_args, global_sig.env);
+		execve(normalize_cmd(parsed_args[0]), parsed_args, g_env.env);
 		perror(parsed_args[0]);
 		exit(errno);
 	}
@@ -99,7 +99,7 @@ int	process_redirection(char **redirections, int **in_out_fd)
 			if ((*in_out_fd)[1] == -1)
 			{
 				perror(redirection);
-				global_sig.ms_errno = 1;
+				g_env.ms_errno = 1;
 				return (-1);
 			}
 		}
@@ -112,7 +112,7 @@ int	process_redirection(char **redirections, int **in_out_fd)
 			if ((*in_out_fd)[1] == -1)
 			{
 				perror(redirection);
-				global_sig.ms_errno = 1;
+				g_env.ms_errno = 1;
 				return (-1);
 			}
 		}
@@ -126,7 +126,7 @@ int	process_redirection(char **redirections, int **in_out_fd)
 			if ((*in_out_fd)[0] == -1)
 			{
 				perror(redirection);
-				global_sig.ms_errno = 1;
+				g_env.ms_errno = 1;
 				return (-1);
 			}
 		}
@@ -139,7 +139,7 @@ int	process_redirection(char **redirections, int **in_out_fd)
 			if ((*in_out_fd)[0] == -1)
 			{
 				perror(redirection);
-				global_sig.ms_errno = 1;
+				g_env.ms_errno = 1;
 				return (-1);
 			}
 		}

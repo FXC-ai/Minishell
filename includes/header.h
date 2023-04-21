@@ -151,6 +151,6 @@ int		unset_process_str(char *key);
 
 int ft_unset(char *token);
 
-extern t_sig global_sig;
+extern t_sig g_env;
 
 #endif

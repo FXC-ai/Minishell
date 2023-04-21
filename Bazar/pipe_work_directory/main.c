@@ -53,9 +53,9 @@ char *find_env_variable (char *var_name)
 {
 	int i = 0;
 
-	while (global_sig.env[i] != NULL)
+	while (g_env.env[i] != NULL)
 	{
-		if (ft_strncmp(global_sig.env[i], var_name, ft_strlen(var_name)) == 0 && env[i][ft_strlen(var_name)] == '=')
+		if (ft_strncmp(g_env.env[i], var_name, ft_strlen(var_name)) == 0 && env[i][ft_strlen(var_name)] == '=')
 		{
             return &env[i][ft_strlen(var_name) + 1];
 		}
