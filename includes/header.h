@@ -176,6 +176,11 @@ char	*normalize_cmd(char* str);
 int	check_simple_quote(char *cmd, char *trimmed_command);
 int	check_simple_quote2(char *cmd, char *trimmed_command);
 
+//INIT STRUCT
+
+char	**separate_command(char *tab_cmds);
+char	**separate_redirections(char *tab_cmds);
+
 //MS_PIPE.C
 //void	execute_last_cmd(int pipe_fd[2], char **tab_cmds, int nbr_cmds);
 //void	execute_first_cmd(int pipe_fd[2], char **tab_cmds);
