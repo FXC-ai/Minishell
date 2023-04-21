@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 17:05:42 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/21 17:58:30 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/21 18:08:16 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,19 @@ int	process_delimiter(char *del)
 	return (fd);
 }
 
+static int	process(char *redirection, int **in_out_fd)
+{
+	if (ft_strncmp(redirection, "<<", 2) == 0)
+	{
+		if (process_double_left_r(&redirection, in_out_fd) == 0)
+			return (-1);
+	}
+	else if (ft_strncmp(redirection, "<", 1) == 0)
+		if (process_single_left_r(&redirection, in_out_fd) == 0)
+			return (-1);
+	return (1);
+}
+
 int	process_redirection(char **redirections, int **in_out_fd)
 {
 	char	*redirection;
@@ -83,14 +96,11 @@ int	process_redirection(char **redirections, int **in_out_fd)
 			if (process_single_right_r(&redirection, in_out_fd) == 0)
 				return (-1);
 		}
-		else if (ft_strncmp(redirection, "<<", 2) == 0)
+		else
 		{
-			if (process_double_left_r(&redirection, in_out_fd) == 0)
+			if (process(redirection, in_out_fd) == -1)
 				return (-1);
 		}
-		else if (ft_strncmp(redirection, "<", 1) == 0)
-			if (process_single_left_r(&redirection, in_out_fd) == 0)
-				return (-1);
 	}
 	return (1);
 }

@@ -1,0 +1,10 @@
+Bazar
+Makefile
+README.md
+a
+b
+includes
+libft
+minishell
+srcs
+tests.sh
