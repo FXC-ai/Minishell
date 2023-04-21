@@ -85,6 +85,14 @@ typedef struct s_parsed_args {
 
 } t_parsed_args;
 
+typedef struct s_pair_pipes
+{
+	int	pipe_fd1[2];
+	int	pipe_fd2[2];
+} t_pair_pipes;
+
+
+
 void	rl_replace_line (const char *text, int clear_undo);
 
 
@@ -192,7 +200,7 @@ void    exit_process(char **parsed_args);
 int		unset_process_str(char *key);
 
 int ft_unset(char *token);
-
+void	ft_export(char *token);
 extern t_sig g_env;
 
 #endif

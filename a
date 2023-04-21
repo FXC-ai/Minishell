@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Bazar
 Makefile
 README.md
@@ -15,3 +16,6 @@ srcs
 test.c
 tests.sh
 v
+=======
+root               211   0.0  0.2  4429472  12800   ??  Ss    7:57PM   0:02.71 /usr/libexec/UserEventAgent (System)
+>>>>>>> 00195cf9ed626bc43c99709412d248dd3ca0f17b
