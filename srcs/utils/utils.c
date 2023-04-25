@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 17:35:07 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/21 15:29:17 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/25 13:26:35 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/header.h"
+#include "../../includes/header.h"
 
 void	malloc_error(void)
 {
@@ -50,25 +50,6 @@ int	is_space(char c)
 {
 	return (c == ' ' || c == '\t' || c == '\n'
 		|| c == '\r' || c == '\f' || c == '\v');
-}
-
-void	print_tab(char *title, char **tab)
-{
-	int	i;
-
-	i = 0;
-	printf("--------------%s------------\n", title);
-	if (tab[i] == NULL)
-	{
-		printf("TAB IS NULL\n");
-		return ;
-	}
-	while (tab[i])
-	{
-		printf("line [%d]: [%s]\n", i, tab[i]);
-		i++;
-	}
-	printf("-----------------------------\n");
 }
 
 char	*ft_strndup(char *str, size_t n)

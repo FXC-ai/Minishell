@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 17:54:05 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/20 18:07:41 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/25 14:32:39 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,15 @@ void	exit_process(char **parsed_args)
 	}
 	else if (nbr_tokens > 1)
 	{
+		if (is_numeric(parsed_args[1]) == 0)
+		{
+			ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
+			exit(255);
+		}
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-		exit (255);
+		ft_putstr_fd("exit\n", 1);
+		g_env.ms_errno = 1;
+		return ;
 	}
 	ft_putstr_fd("exit\n", 2);
 	exit(0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 17:17:52 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/21 11:11:27 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/25 13:50:43 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,6 @@ void	env_process(char **parsed_args)
 	{
 		g_env.ms_errno = 127;
 		perror("env");
+		exit(127);
 	}
 }

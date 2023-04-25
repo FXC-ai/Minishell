@@ -3,14 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 14:14:50 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/21 17:57:38 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/25 13:39:13 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/header.h"
+
+static void	unsetexport(char *key, char *ligne)
+{
+	ft_unset(key);
+	ft_export(ligne);
+}
 
 void	cd_process(char **parsed_args)
 {
@@ -25,17 +31,16 @@ void	cd_process(char **parsed_args)
 	{
 		if (chdir(parsed_args[1]) != 0)
 		{
+			g_env.ms_errno = 1;
 			perror("cd");
 		}
 		else if (getcwd(cwd, sizeof(cwd)) != NULL)
 		{
 			ligne = ft_strjoin("PWD=", cwd);
-			ft_unset("PWD");
-			ft_export(ligne);
+			unsetexport("PWD", ligne);
 			free(ligne);
 			ligne = ft_strjoin("OLDPWD=", temp);
-			ft_unset("OLDPWD");
-			ft_export(ligne);
+			unsetexport("OLDPWD", ligne);
 			free(ligne);
 		}
 	}

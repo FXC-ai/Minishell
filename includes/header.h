@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 19:06:18 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/21 19:15:25 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/25 13:19:24 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,121 +100,118 @@ typedef struct s_pair_pipes
 	int	pipe_fd2[2];
 }	t_pair_pipes;
 
-void	rl_replace_line(const char *text, int clear_undo);
+void			rl_replace_line(const char *text, int clear_undo);
 
 //MAIN.C
-void	sig_init(void);
-void	disable_ctrl_chars(void);
-int		check_entry(char *line);
-void	wait_for_input(void);
-void	cpy_env(char **env);
+void			sig_init(void);
+void			disable_ctrl_chars(void);
+int				check_entry(char *line);
+void			wait_for_input(void);
+void			cpy_env(char **env);
 
 //SIGNAL.C
-void	signal_handler(void);
+void			signal_handler(void);
 
 //PARSE_DOLLAR.C
-void	parse_dollar(char **tab_cmds);
-char	*find_env_variable(char *var_name);
+void			parse_dollar(char **tab_cmds);
+char			*find_env_variable(char *var_name);
 
 //PARSE_REDIRECTION.C
-void	parse_redirection_right(char **tab_cmds);
-void	parse_redirection_left(char **tab_cmds);
+void			parse_redirection_right(char **tab_cmds);
+void			parse_redirection_left(char **tab_cmds);
 
 //NORMALIZE_WITH_SPACE.C
-void	cut_end_space(char **str);
-void	normalize_with_space(char **str);
-void	normalize_arguments_order(char **str1);
+void			cut_end_space(char **str);
+void			normalize_with_space(char **str);
+void			normalize_arguments_order(char **str1);
 
 //LEXER.C
-int		lexer(char *str);
-char	**ft_split_lexer(char *str, char c);
-int		is_valid_chevron(char *tab_cmd, char chev_type);
+int				lexer(char *str);
+char			**ft_split_lexer(char *str, char c);
+int				is_valid_chevron(char *tab_cmd, char chev_type);
 
 //INIT_STRUCT.C
 t_parsed_args	**init_parsed_args(char **tab_cmds);
 
 //FT_LEXER_NO_QUOTE.C
-char	**ft_split_lexer_no_quote(char *str);
+char			**ft_split_lexer_no_quote(char *str);
 
 //REDIRECTION.C
-void	execute_command(char **parsed_args, int in_fd, int out_fd);
-int		process_delimiter(char *del);
-int		process_redirection(char **redirections, int **in_out_fd);
+void			execute_command(char **parsed_args, int in_fd, int out_fd);
+int				process_delimiter(char *del);
+int				process_redirection(char **redirections, int **in_out_fd);
 
 //PROCESS_REDIRECTIONS.C
 
-int		process_double_right_r(char **redirection, int **in_out_fd);
-int		process_double_left_r(char **redirection, int **in_out_fd);
-int		process_single_right_r(char **redirection, int **in_out_fd);
-int		process_single_left_r(char **redirection, int **in_out_fd);
+int				process_double_right_r(char **redirection, int **in_out_fd);
+int				process_double_left_r(char **redirection, int **in_out_fd);
+int				process_single_right_r(char **redirection, int **in_out_fd);
+int				process_single_left_r(char **redirection, int **in_out_fd);
 
 //UTILS.C
-int		is_space(char c);
-void	print_tab(char *title, char **tab);
-int		size_tab(char **tab);
-void	freemalloc(char **result, int j);
-char	*ft_strndup(char *str, size_t n);
-void	print_command_not_found(char *str);
-int		is_chevron (char c);
-void	free_struct(t_parsed_args **cmd_red_lst);
-char	*concatenate_strings_with_spaces(char **strings);
-void	remove_quote_in_tab(char **tab);
-int		key_already_exist(char *key);
-char	*get_key_from_token(char *token);
-int		count_chr(char *str, char c);
-int		is_quote(char c);
-void	init_utils(t_utils *u);
-char	check_redirections(char *str, char type_chev);
-int		chr_is_in_quote(char *str, int ind_char);
-int		check_redirections_process(char **tab_cmds);
+int				is_space(char c);
+int				size_tab(char **tab);
+void			freemalloc(char **result, int j);
+char			*ft_strndup(char *str, size_t n);
+void			print_command_not_found(char *str);
+int				is_chevron(char c);
+void			free_struct(t_parsed_args **cmd_red_lst);
+char			*concatenate_strings_with_spaces(char **strings);
+void			remove_quote_in_tab(char **tab);
+int				key_already_exist(char *key);
+char			*get_key_from_token(char *token);
+int				count_chr(char *str, char c);
+int				is_quote(char c);
+void			init_utils(t_utils *u);
+char			check_redirections(char *str, char type_chev);
+int				chr_is_in_quote(char *str, int ind_char);
+int				check_redirections_process(char **tab_cmds);
 
 // IS_BUILTINS.C
-int		is_builtins(char *str);
-int		execute_builtins(char **parsed_args);
+int				is_builtins(char *str);
+int				execute_builtins(char **parsed_args);
 
 // PRE_PARSING.C
-int		check_quotes(char *line);
-int		check_blank_line(char *line);
-int		check_entry(char *line);
+int				check_quotes(char *line);
+int				check_blank_line(char *line);
+int				check_entry(char *line);
 
 // NORMALIZE_CMD.C
-char	*normalize_cmd(char* str);
+char			*normalize_cmd(char *str);
 
 //CHECK_QUOTE.C
-int		check_simple_quote(char *cmd, char *trimmed_command);
-int		check_simple_quote2(char *cmd, char *trimmed_command);
+int				check_simple_quote(char *cmd, char *trimmed_command);
+int				check_simple_quote2(char *cmd, char *trimmed_command);
 
 //INIT STRUCT
 
-char	**separate_command(char *tab_cmds);
-char	**separate_redirections(char *tab_cmds);
+char			**separate_command(char *tab_cmds);
+char			**separate_redirections(char *tab_cmds);
 
 //PROCESS_COMMANDS2.C
-int		size_struct(t_parsed_args **s);
-void	execute_first_command(char **cmd, int *in_out_fd, int pipe_fd[]);
-void	ex_m_cm(char **cmd, int *in_out_fd, int pipe_fd_in[], int pipe_fd_out[]);
-void	execute_last_command(char **cmd, int *in_out_fd, int pipe_fd_in[]);
-void	pipe_creator(int i, t_pair_pipes *pair_pipes);
-
-
+int				size_struct(t_parsed_args **s);
+void			execute_first_command(char **c, int *iofd, int pfd[]);
+void			ex_m_cm(char **c, int *iofd, int pfdin[], int pfdo[]);
+void			execute_last_command(char **c, int *iofd, int pfdin[]);
+void			pipe_creator(int i, t_pair_pipes *pair_pipes);
 
 //PROCESS_COMMANDS.C
-int		process_multiple_commands(t_parsed_args **cmd_red_lst);
-int		process_single_command(t_parsed_args **cmd_red_lst, int *in_out_fd);
+int				process_multiple_commands(t_parsed_args **cmd_red_lst);
+int				process_single_command(t_parsed_args **cmd_red_lst, int *iofd);
 
 //BUILTINS
-void	echo_process(char **cmd);
-void	cd_process(char **current_command);
-void	pwd_process();
-int		unset_process(char **parsed_args);
-void	env_process(char **parsed_args);
-void	export_process(char **current_command);
-void	add_to_env(char *ligne, char *value);
-void    exit_process(char **parsed_args);
-int		unset_process_str(char *key);
+void			echo_process(char **cmd);
+void			cd_process(char **current_command);
+void			pwd_process(void);
+int				unset_process(char **parsed_args);
+void			env_process(char **parsed_args);
+void			export_process(char **current_command);
+void			add_to_env(char *ligne, char *value);
+void			exit_process(char **parsed_args);
+int				unset_process_str(char *key);
 
-int		ft_unset(char *token);
-void	ft_export(char *token);
+int				ft_unset(char *token);
+void			ft_export(char *token);
 
-extern t_sig g_env;
+extern t_sig	g_env;
 #endif

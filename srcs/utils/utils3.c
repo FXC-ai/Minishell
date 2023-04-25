@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 16:15:28 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/21 16:12:53 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/25 13:23:10 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/header.h"
+#include "../../includes/header.h"
 
 void	remove_quotes_from_line(char *line)
 {

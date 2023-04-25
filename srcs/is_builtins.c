@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   is_builtins.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 11:46:13 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/21 17:58:06 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/25 11:52:56 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	execute_builtins(char **parsed_args)
 	else if (r == BUILTIN_CD)
 		cd_process(parsed_args);
 	else if (r == BUILTIN_PWD)
-		pwd_process(parsed_args);
+		pwd_process();
 	else if (r == BUILTIN_EXPORT)
 		export_process(parsed_args);
 	else if (r == BUILTIN_UNSET)

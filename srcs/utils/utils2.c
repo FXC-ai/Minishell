@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 15:51:25 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/21 11:11:27 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/25 13:23:06 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/header.h"
+#include "../../includes/header.h"
 
 void	free_struct(t_parsed_args **cmd_red_lst)
 {
