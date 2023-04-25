@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 19:06:18 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/25 13:19:24 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/25 16:15:44 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,6 @@
 
 typedef struct s_sig
 {
-	int		sig_int;
-	int		sig_quit;
 	int		ms_errno;
 	int		program_in_process;
 	pid_t	pid;

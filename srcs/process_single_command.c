@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 18:28:13 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/21 19:05:37 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/25 16:16:28 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,9 @@ static void	executor(t_parsed_args **cmd_red_lst, int **in_out_fd, int wth_ext)
 
 int	process_single_command(t_parsed_args **cmd_red_lst, int *in_out_fd)
 {
-	int	r;
-	int	status;
+	int		r;
+	int		status;
+	pid_t	pid;
 
 	r = is_builtins(cmd_red_lst[0]->cmd_args[0]);
 	if (process_redirection(cmd_red_lst[0]->redirections, &in_out_fd) == -1)
@@ -45,12 +46,12 @@ int	process_single_command(t_parsed_args **cmd_red_lst, int *in_out_fd)
 		executor(cmd_red_lst, &in_out_fd, 0);
 	else
 	{
-		g_env.pid = fork();
-		if (g_env.pid == 0)
+		pid = fork();
+		if (pid == 0)
 			executor(cmd_red_lst, &in_out_fd, 1);
 		else
 		{
-			waitpid(g_env.pid, &status, 0);
+			waitpid(pid, &status, 0);
 			if (WIFEXITED(status))
 				g_env.ms_errno = WEXITSTATUS(status);
 		}

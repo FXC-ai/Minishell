@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 16:15:28 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/25 13:23:10 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/04/25 16:20:23 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	remove_quotes_from_line(char *line)
 	bool	inside_double_quote;
 	char	*new_line;
 
-	new_line = malloc(strlen(line) + 1);
+	new_line = malloc(ft_strlen(line) + 1);
 	new_line_idx = 0;
 	inside_single_quote = false;
 	inside_double_quote = false;

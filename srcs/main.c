@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 11:39:22 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/21 11:14:38 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/04/25 16:16:41 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ t_sig	g_env;
 
 void	sig_init(void)
 {
-	g_env.sig_int = 0;
-	g_env.sig_quit = 0;
 	g_env.pid = 0;
 	g_env.ms_errno = 0;
 }
