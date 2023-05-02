@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 17:05:42 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/21 18:08:16 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/05/02 12:31:54 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	execute_command(char **parsed_args, int in_fd, int out_fd)
 			print_command_not_found(parsed_args[0]);
 		execve(normalize_cmd(parsed_args[0]), parsed_args, g_env.env);
 		perror(parsed_args[0]);
-		exit(errno);
+		exit(127);
 	}
 }
 
@@ -47,7 +47,7 @@ int	process_delimiter(char *del)
 	char	*del_n;
 
 	del_n = ft_strjoin(del, "\n");
-	fd = open("TMPDOC", O_TRUNC | O_CREAT | O_WRONLY, 0777);
+	fd = open("TMPDOC", O_TRUNC | O_CREAT | O_WRONLY);
 	rdd = read(STDIN_FILENO, buffer, sizeof(buffer) - 1);
 	while (rdd > 0)
 	{

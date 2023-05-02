@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 17:15:10 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/21 11:11:27 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/05/02 11:55:11 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ static int	is_valid(char *token)
 		if (ft_isalnum(token[i]) == 0)
 		{
 			printf("export: `%s': not a valid identifier\n", token);
+			g_env.ms_errno = 1;
 			return (0);
 		}
 		i++;
@@ -49,11 +50,11 @@ int	ft_unset(char *token)
 	int		j;
 	char	**new_env;
 
+	if (is_valid(token) == 0)
+		return (1);
 	if (alloc_env(&new_env, token) == NULL)
 		exit(errno);
 	len = ft_strlen(token);
-	if (is_valid(token) == 0)
-		return (1);
 	i = 0;
 	j = 0;
 	while (g_env.env[i] != NULL)
