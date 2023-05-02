@@ -3,38 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   process_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 23:39:04 by victorgiord       #+#    #+#             */
-/*   Updated: 2023/04/21 18:50:12 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/05/02 14:56:31 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
 
-static void	pipex(t_parsed_args **cmdrl, t_pair_pipes *p, int i, int *in_out_fd)
+static void	pipex(t_parsed_args **cmdrl, t_pair_pipes *p, int i, int *in_out_fd, int check_red)
 {
 	pipe_creator(i, p);
 	if (i == 0)
-		execute_first_command(cmdrl[i]->cmd_args, in_out_fd, p->pipe_fd1);
+		execute_first_command(cmdrl[i]->cmd_args, in_out_fd, p->pipe_fd1, check_red);
 	else if (i == size_struct(cmdrl) - 1)
 	{
 		if (i % 2 == 0)
-			execute_last_command(cmdrl[i]->cmd_args, in_out_fd, p->pipe_fd2);
+			execute_last_command(cmdrl[i]->cmd_args, in_out_fd, p->pipe_fd2, check_red);
 		else if (i % 2 == 1)
-			execute_last_command(cmdrl[i]->cmd_args, in_out_fd, p->pipe_fd1);
+			execute_last_command(cmdrl[i]->cmd_args, in_out_fd, p->pipe_fd1, check_red);
 	}
 	else
 	{
 		if (i % 2 == 0)
 		{
-			ex_m_cm(cmdrl[i]->cmd_args, in_out_fd, p->pipe_fd2, p->pipe_fd1);
+			ex_m_cm(cmdrl[i]->cmd_args, in_out_fd, p->pipe_fd2, p->pipe_fd1, check_red);
 			close(p->pipe_fd2[0]);
 			close(p->pipe_fd2[1]);
 		}
 		else if (i % 2 == 1)
 		{
-			ex_m_cm(cmdrl[i]->cmd_args, in_out_fd, p->pipe_fd1, p->pipe_fd2);
+			ex_m_cm(cmdrl[i]->cmd_args, in_out_fd, p->pipe_fd1, p->pipe_fd2, check_red);
 			close(p->pipe_fd1[0]);
 			close(p->pipe_fd1[1]);
 		}
@@ -77,6 +77,7 @@ int	process_multiple_commands(t_parsed_args **cmd_red_lst)
 	t_pair_pipes	pair_pipes;
 	int				i;
 	int				status;
+	int				check_red;
 
 	i = 0;
 	in_out_fd = malloc(2 * sizeof(int));
@@ -85,13 +86,19 @@ int	process_multiple_commands(t_parsed_args **cmd_red_lst)
 	init_in_out(&in_out_fd);
 	while (cmd_red_lst[i])
 	{
+		check_red = 1;
 		if (process_redirection(cmd_red_lst[i]->redirections, &in_out_fd) == -1)
 		{
-			free(in_out_fd);
-			free_struct(cmd_red_lst);
-		}
-		else
-			pipex(cmd_red_lst, &pair_pipes, i, in_out_fd);
+			//printf("Il y a un pb avec la redirection\n");
+			check_red = 0;
+			
+			//free(in_out_fd);
+			//free_struct(cmd_red_lst);
+		}	
+		pipex(cmd_red_lst, &pair_pipes, i, in_out_fd, check_red);
+
+	
+		
 		i++;
 	}
 	close_pair_pipes(&pair_pipes);

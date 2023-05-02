@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_commands2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 18:49:47 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/21 19:05:34 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/05/02 14:42:24 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	size_struct(t_parsed_args **s)
 	return (i);
 }
 
-void	execute_first_command(char **cmd, int *in_out_fd, int pipe_fd[])
+void	execute_first_command(char **cmd, int *in_out_fd, int pipe_fd[], int check_red)
 {
 	g_env.pid = fork();
 	if (g_env.pid == 0)
@@ -34,12 +34,13 @@ void	execute_first_command(char **cmd, int *in_out_fd, int pipe_fd[])
 		dup2(pipe_fd[1], STDOUT_FILENO);
 		close(pipe_fd[0]);
 		close(pipe_fd[1]);
-		execute_command(cmd, in_out_fd[0], in_out_fd[1]);
+		if (check_red == 1)
+			execute_command(cmd, in_out_fd[0], in_out_fd[1]);
 		exit (0);
 	}
 }
 
-void	ex_m_cm(char **cmd, int *in_out_fd, int pipe_fd_in[], int pipe_fd_out[])
+void	ex_m_cm(char **cmd, int *in_out_fd, int pipe_fd_in[], int pipe_fd_out[], int check_red)
 {
 	g_env.pid = fork();
 	if (g_env.pid == 0)
@@ -50,12 +51,13 @@ void	ex_m_cm(char **cmd, int *in_out_fd, int pipe_fd_in[], int pipe_fd_out[])
 		close(pipe_fd_out[1]);
 		close(pipe_fd_in[1]);
 		close(pipe_fd_out[0]);
-		execute_command(cmd, in_out_fd[0], in_out_fd[1]);
+		if (check_red == 1)
+			execute_command(cmd, in_out_fd[0], in_out_fd[1]);
 		exit (0);
 	}
 }
 
-void	execute_last_command(char **cmd, int *in_out_fd, int pipe_fd_in[])
+void	execute_last_command(char **cmd, int *in_out_fd, int pipe_fd_in[], int check_red)
 {
 	g_env.pid = fork();
 	if (g_env.pid == 0)
@@ -63,7 +65,8 @@ void	execute_last_command(char **cmd, int *in_out_fd, int pipe_fd_in[])
 		dup2(pipe_fd_in[0], STDIN_FILENO);
 		close(pipe_fd_in[1]);
 		close(pipe_fd_in[0]);
-		execute_command(cmd, in_out_fd[0], in_out_fd[1]);
+		if (check_red == 1)
+			execute_command(cmd, in_out_fd[0], in_out_fd[1]);
 		exit (0);
 	}
 }

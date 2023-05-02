@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 19:06:18 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/04/25 16:15:44 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/05/02 14:42:58 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,9 +188,9 @@ char			**separate_redirections(char *tab_cmds);
 
 //PROCESS_COMMANDS2.C
 int				size_struct(t_parsed_args **s);
-void			execute_first_command(char **c, int *iofd, int pfd[]);
-void			ex_m_cm(char **c, int *iofd, int pfdin[], int pfdo[]);
-void			execute_last_command(char **c, int *iofd, int pfdin[]);
+void			execute_first_command(char **c, int *iofd, int pfd[], int check_red);
+void			ex_m_cm(char **c, int *iofd, int pfdin[], int pfdo[], int check_red);
+void			execute_last_command(char **c, int *iofd, int pfdin[], int check_red);
 void			pipe_creator(int i, t_pair_pipes *pair_pipes);
 
 //PROCESS_COMMANDS.C

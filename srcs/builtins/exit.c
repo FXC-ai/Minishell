@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 17:54:05 by vgiordan          #+#    #+#             */
-/*   Updated: 2023/04/25 14:32:39 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/05/02 15:13:57 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void	process_single_token(char **parsed_args)
 	{
 		error_code = ft_atoi(parsed_args[1]);
 		ft_putstr_fd("exit\n", 2);
-		exit(error_code % 255);
+		exit(error_code % 256);
 	}
 	else
 	{
