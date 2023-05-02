@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 18:28:13 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/05/02 11:51:41 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/05/02 16:08:16 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,10 @@ static void	executor(t_parsed_args **cmd_red_lst, int **in_out_fd, int wth_ext)
 	}
 }
 
-int	free_s(int *in_out_fd, t_parsed_args **cmd)
+void	free_s(int *in_out_fd, t_parsed_args **cmd)
 {
 	free(in_out_fd);
 	free_struct(cmd);
-	return (-1);
 }
 
 int	process_single_command(t_parsed_args **cmd_red_lst, int *in_out_fd)
@@ -45,11 +44,9 @@ int	process_single_command(t_parsed_args **cmd_red_lst, int *in_out_fd)
 	r = is_builtins(cmd_red_lst[0]->cmd_args[0]);
 	if (process_redirection(cmd_red_lst[0]->redirections, &in_out_fd) == -1)
 	{
-		free(in_out_fd);
-		free_struct(cmd_red_lst);
+		free_s(in_out_fd, cmd_red_lst);
 		return (-1);
 	}
-		///]return (free_s(in_out_fd, cmd_red_lst));
 	if (r == 2 || r == 4 || r == BUILTIN_UNSET || r == BUILTIN_EXIT)
 		executor(cmd_red_lst, &in_out_fd, 0);
 	else

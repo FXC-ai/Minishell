@@ -3,7 +3,7 @@ SRCS	=	$(addprefix srcs/, main.c signal.c is_builtins.c normalize_cmd.c lexer.c 
 			$(addprefix srcs/builtins/, echo.c cd.c pwd.c env.c exit.c unset.c export.c) \
 			$(addprefix srcs/dollars_manage/, check_quote.c parse_dollar.c) \
 			$(addprefix srcs/init_struct/, init_commands.c init_redirections.c init.c) \
-			$(addprefix srcs/utils/, utils.c utils2.c utils3.c utils4.c)
+			$(addprefix srcs/utils/, utils.c utils2.c utils3.c utils4.c utils5.c)
 
 
 

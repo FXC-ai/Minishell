@@ -6,7 +6,7 @@
 /*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 19:06:18 by fcoindre          #+#    #+#             */
-/*   Updated: 2023/05/02 14:42:58 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/05/02 16:02:23 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,12 @@ typedef struct s_pair_pipes
 	int	pipe_fd2[2];
 }	t_pair_pipes;
 
+typedef struct s_i_check
+{
+	int	i;
+	int	check_red;
+}	t_i_check;
+
 void			rl_replace_line(const char *text, int clear_undo);
 
 //MAIN.C
@@ -164,6 +170,8 @@ void			init_utils(t_utils *u);
 char			check_redirections(char *str, char type_chev);
 int				chr_is_in_quote(char *str, int ind_char);
 int				check_redirections_process(char **tab_cmds);
+void			init_in_out(int **in_out_fd);
+void			wait_all_process(int nbr_cmd, int *status);
 
 // IS_BUILTINS.C
 int				is_builtins(char *str);
@@ -188,9 +196,9 @@ char			**separate_redirections(char *tab_cmds);
 
 //PROCESS_COMMANDS2.C
 int				size_struct(t_parsed_args **s);
-void			execute_first_command(char **c, int *iofd, int pfd[], int check_red);
-void			ex_m_cm(char **c, int *iofd, int pfdin[], int pfdo[], int check_red);
-void			execute_last_command(char **c, int *iofd, int pfdin[], int check_red);
+void			execute_first_command(char **c, int *iofd, int pfd[], int cr);
+void			ex_m_cm(char **c, int *iofd, t_pair_pipes *pp, int cr);
+void			execute_last_command(char **c, int *iofd, int pfdin[], int cr);
 void			pipe_creator(int i, t_pair_pipes *pair_pipes);
 
 //PROCESS_COMMANDS.C
