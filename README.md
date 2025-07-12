@@ -1,9 +1,5 @@
 # Minishell
 
-Grille de la correction
-
-[Minishell_Evaluation.pdf](Minishell%2002b146c5cf414b3385d5440234325476/Minishell_Evaluation.pdf)
-
 [GitHub - widium/Minishell: create a minimalist shell with the basic built-in Function of bash](https://github.com/widium/Minishell)
 
 # Liste des fonctions
